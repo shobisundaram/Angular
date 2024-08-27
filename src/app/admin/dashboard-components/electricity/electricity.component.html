@@ -1,0 +1,62 @@
+<nb-card size="large">
+  <div class="consumption-table">
+    <nb-card>
+      <nb-card-header>
+        <div>Trips Statistics </div>
+        <div class="subtitle">Completed/Requested</div>
+      </nb-card-header>
+    </nb-card>
+    <div class="table-header">
+      <div>{{'DASHBOARD.TRIPSTATISTICS' | translate}}</div>
+      <div class="subtitle">{{'DASHBOARD.COMPLETEORREQUEST' | translate}} </div>
+
+    </div>
+
+    <nb-tabset fullWidth>
+      <nb-tab *ngFor="let year of data" [tabTitle]="year.title" [active]="n">
+        <div class="stats-month" *ngFor="let month of year.months">
+          <div>
+            <span style="display: initial" class="month">{{ month.month }}</span>
+            <span class="delta" [ngClass]="{ 'down': month.down }">{{ month.delta }}</span>
+          </div>
+          <div class="results">
+            <b>{{ month.cost }}</b> / <b>{{ month.kWatts }}</b>
+          </div>
+        </div>
+      </nb-tab>
+    </nb-tabset>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="header-stats">
+        <div class="stats-block">
+          <div [hidden]="type === 'week'" style="font-weight: bold;color: #2a2a2a;">{{'DASHBOARD.TRIPCOMPLETESIN' |
+            translate}} {{label}}</div>
+          <div [hidden]="type !== 'week'" style="font-weight: bold;color: #2a2a2a;">{{'DASHBOARD.TRIPCOMPLETESFROM' |
+            translate}}
+            {{startWeekDate}} {{'DASHBOARD.TO' | translate}} {{endWeekDate}}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <input style="padding: 0.5rem 1.5rem;" fieldSize="small" class="form-control" nbInput
+            placeholder="{{ 'COMMON.CLICK_TO_SELECT_DATE' | translate }}" (ngModelChange)="logDate($event)"
+            [(ngModel)]="list" [nbDatepicker]="dt2" name="list" required readonly>
+          <nb-datepicker #dt2></nb-datepicker>
+        </div>
+
+        <div class="col-md-6">
+          <nb-select fullWidth [(selected)]="type">
+            <nb-option *ngFor="let period of types" (click)="changePeriod(period.value)" [value]="period.value">{{
+              period.label | translate }}
+            </nb-option>
+          </nb-select>
+        </div>
+      </div>
+
+    </div>
+    <ngx-electricity-chart [changedDate]="dateObj['list']" [statusType]="type"></ngx-electricity-chart>
+  </div>
+</nb-card>

@@ -1,0 +1,20 @@
+.ng-select {
+    width: 100%;
+    // border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    position: relative;
+  }
+  :host ::ng-deep nb-select.appearance-outline.size-medium .select-button {
+    line-height: inherit;
+    display: block;
+    width: 100%;
+    // font-size: 1rem;
+    font-weight: 400;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    padding: 0.375em 2.2rem 0.375em 1.125rem !important;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  

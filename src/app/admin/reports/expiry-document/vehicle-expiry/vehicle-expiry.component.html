@@ -1,0 +1,21 @@
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="">
+                {{'COMMON.VEHICLE_DOCUMENT_EXPIRY_DETAILS' | translate}}
+            </div>
+            <div class="">
+                <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary"
+                    nbTooltipPlacement="bottom" (click)="initialVehicleDocumentExpiryDetails()" nbButton ghost
+                    status="primary">
+                    <nb-icon icon="sync-outline"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="source"
+            (edit)="VehicledocumentExpiryDetails($event.data)">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

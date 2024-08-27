@@ -1,0 +1,97 @@
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="card-headers">
+                <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+                    (click)="goBackBtn()" nbButton ghost status="danger">
+                    <nb-icon icon="arrow-back-outline"></nb-icon>
+                </button>
+                <div class="" *ngIf="!stateForm.get('id').value">{{'STATE.ADDSTATE' | translate}}</div>
+                <div class="" *ngIf="stateForm.get('id').value">{{'STATE.EDITSTATE' | translate}}</div>
+            </div>
+            <div class="" *ngIf="stateForm.get('id').value">
+                <button nbButton ghost status="primary" [nbContextMenu]="items">
+                    <nb-icon icon="more-vertical"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+
+    <nb-card-body>
+        <form [formGroup]="stateForm" autocomplete="off">
+            <div class="form-group row">
+                <label for="countryname" class="label col-sm-3 col-form-label">{{'COUNTRY.COUNTRYNAME' |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <div class="col-sm-9">
+                    <ng-select fullWidth formControlName="countryname" id="countryname" (clear)="enableState = false"
+                        placeholder="{{'COUNTRY.COUNTRYNAME' | translate}}" (change)="onSelectCountry($event)">
+                        <ng-option *ngFor="let option of allCountries" [value]="option._id">{{option.name}}
+                        </ng-option>
+                    </ng-select>
+
+                    <div *ngIf="countryname.invalid && (countryname.dirty || countryname.touched)" class="alert-danger">
+                        <div *ngIf="countryname.errors?.['required']">
+                            {{'ERRORS.COUNTRYNAMEREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <section *ngIf="stateForm.get('countryname').valid">
+                <div class="form-group row">
+                    <label for="statename" class="label col-sm-3 col-form-label">{{'STATE.STATENAME' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <div class="col-sm-9">
+                        <input formControlName="statename" type="text" nbInput fullWidth id="statename"
+                            placeholder="{{'STATE.STATENAME' | translate}}" />
+                        <div *ngIf="statename.invalid && (statename.dirty || statename.touched)" class="alert-danger">
+                            <div *ngIf="statename.errors?.['required']">
+                                {{'ERRORS.STATENAMEREQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="statecode" class="label col-sm-3 col-form-label">{{'STATE.STATECODE' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <div class="col-sm-9">
+                        <input formControlName="statecode" type="text" nbInput fullWidth id="statecode"
+                            placeholder="{{'STATE.STATECODE' | translate}}" />
+                        <div *ngIf="statecode.invalid && (statecode.dirty || statecode.touched)" class="alert-danger">
+                            <div *ngIf="statecode.errors?.['required']">
+                                {{'ERRORS.STATECODEREQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        </form>
+        <!-- <pre>
+          {{ stateForm.value | json }}
+        </pre> -->
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="form-group row">
+            <div [ngClass]="stateForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+                <button fullWidth type="submit" nbButton status="success" (click)="addOrEditstate()">
+                    <span *ngIf="stateForm.get('id').value">
+                        <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                    </span>
+                    <span *ngIf="!stateForm.get('id').value">
+                        <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+    <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>

@@ -1,0 +1,13 @@
+<!-- <p>solar-chart-rider works!</p> -->
+
+<nb-card size="xsmall" class="solar-card">
+    <nb-card-header>Rider Counts</nb-card-header>
+    <nb-card-body>
+        <div echarts [options]="option" class="echart">
+        </div>
+        <div class="info">
+            <div class="value">{{value*out/100}} Active</div><br>
+            <div class="details"><span>out of</span> {{out}}</div>
+        </div>
+    </nb-card-body>
+</nb-card>

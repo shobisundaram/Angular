@@ -1,0 +1,83 @@
+<nb-card>
+    <nb-card-header>
+        {{'SETTINGS.SETTINGS' | translate}}
+    </nb-card-header>
+</nb-card>
+
+<div class="row">
+    <div class="col-md-6 margin-top">
+        <nb-card>
+            <nb-card-body>
+                <div class="row d-flex align-items-center" routerLink="../general-settings">
+                    <div class="col-md-3"> <button type="submit" nbButton status="primary"
+                            class="float-left card-button">
+                            <nb-icon icon="settings-outline"></nb-icon>
+                        </button></div>
+                    <div class="col-md-8 offset-md-1">
+                        <a><b>{{'SETTINGS.GENERAL_SETTINGS' | translate}}</b></a>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </div>
+    <div class="col-md-6 margin-top">
+        <nb-card>
+            <nb-card-body>
+                <div class="row d-flex align-items-center" routerLink="../firebase-settings">
+                    <div class="col-md-3"> <button type="submit" nbButton status="primary"
+                            class="float-left card-button">
+                            <nb-icon icon="layers-outline"></nb-icon>
+                        </button></div>
+                    <div class="col-md-8 offset-md-1">
+                        <a><b>{{'SETTINGS.FIREBASE_SETTINGS' | translate}}</b></a>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </div>
+    <div class="col-md-6 margin-top">
+        <nb-card>
+            <nb-card-body>
+                <div class="row d-flex align-items-center" routerLink="../email-configuration">
+                    <div class="col-md-3"> <button type="submit" nbButton status="primary"
+                            class="float-left card-button">
+                            <nb-icon icon="email-outline"></nb-icon>
+                        </button></div>
+                    <div class="col-md-8 offset-md-1">
+                        <a><b>{{'SETTINGS.EMAIL_GATEWAY' | translate}}</b></a>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </div>
+    <div class="col-md-6 margin-top">
+        <nb-card>
+            <nb-card-body>
+                <div class="row d-flex align-items-center" routerLink="../sms-configuration">
+                    <div class="col-md-3"> <button type="submit" nbButton status="primary"
+                            class="float-left card-button">
+                            <nb-icon icon="message-circle-outline"></nb-icon>
+                        </button></div>
+                    <div class="col-md-8 offset-md-1">
+                        <a><b>{{'SETTINGS.SMS_GATEWAY' | translate}}</b></a>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </div>
+    <div class="col-md-6 margin-top">
+        <nb-card>
+            <nb-card-body>
+                <div class="row d-flex align-items-center" routerLink="../payment-gateway-configuration">
+                    <div class="col-md-3"> <button type="submit" nbButton status="primary"
+                            class="float-left card-button">
+                            <nb-icon icon="credit-card-outline"></nb-icon>
+                        </button></div>
+                    <div class="col-md-8 offset-md-1">
+                        <a><b>{{'SETTINGS.PAYMENT_GATEWAY' | translate}}</b></a>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

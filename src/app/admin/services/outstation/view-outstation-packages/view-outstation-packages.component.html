@@ -1,0 +1,48 @@
+<nb-card>
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="w-50">
+        {{ "OUTSTATION.OUTSTATIONTABLE" | translate }}
+      </div>
+      <div class="d-flex justify-content-end align-items-center w-50">
+        <div class="w-50">
+          <ng-select
+            fullWidth
+            id="serviceAvailableCities"
+            name="serviceAvailableCities"
+            placeholder="{{ 'COMMON.SELECTSERVICEAVAILABLECITY' | translate }}"
+            (change)="selectedCity($event)"
+            [(ngModel)]="selectedCites"
+          >
+            <ng-option
+              *ngFor="let option of serviceAvailableCities"
+              [value]="option._id"
+            >
+              {{ option.name }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <button
+          nbTooltip="{{ 'COMMON.REFRESH_DATA' | translate }}"
+          nbTooltipStatus="primary"
+          nbTooltipPlacement="bottom"
+          (click)="initialTableDataRender()"
+          nbButton
+          ghost
+          status="primary"
+        >
+          <nb-icon icon="sync-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (create)="onAdd($event)"
+      (edit)="onEdit($event.data)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

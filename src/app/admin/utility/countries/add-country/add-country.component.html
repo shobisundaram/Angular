@@ -1,0 +1,84 @@
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="card-headers">
+                <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+                    (click)="goBackBtn()" nbButton ghost status="danger">
+                    <nb-icon icon="arrow-back-outline"></nb-icon>
+                </button>
+                <div class="" *ngIf="!countryForm.get('id').value">{{'COUNTRY.ADDCOUNTRY' | translate}}</div>
+                <div class="" *ngIf="countryForm.get('id').value">{{'COUNTRY.EDITCOUNTRY' | translate}}</div>
+            </div>
+            <div class="" *ngIf="countryForm.get('id').value">
+                <button nbButton ghost status="primary" [nbContextMenu]="items">
+                    <nb-icon icon="more-vertical"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+
+    <nb-card-body>
+        <form [formGroup]="countryForm" autocomplete="off">
+            <div class="form-group row">
+                <label for="countryname" class="label col-sm-3 col-form-label">{{'COUNTRY.COUNTRYNAME' | translate}}
+                    <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                <div class="col-sm-9">
+                    <input formControlName="countryname" type="text" nbInput fullWidth id="countryname"
+                        placeholder="{{'COUNTRY.COUNTRYNAME' | translate}}" />
+                    <div *ngIf="countryname.invalid && (countryname.dirty || countryname.touched)" class="alert-danger">
+                        <div *ngIf="countryname.errors?.['required']">
+                            {{'ERRORS.COUNTRYNAMEREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="countrycode" class="label col-sm-3 col-form-label">{{'COUNTRY.COUNTRYCODE' | translate}}
+                    <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                <div class="col-sm-9">
+                    <input formControlName="countrycode" type="text" nbInput fullWidth id="countrycode"
+                        placeholder="{{'COUNTRY.COUNTRYCODE' | translate}}" />
+                    <div *ngIf="countrycode.invalid && (countrycode.dirty || countrycode.touched)" class="alert-danger">
+                        <div *ngIf="countrycode.errors?.['required']">
+                            {{'ERRORS.COUNTRYCODEREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="phonecode" class="label col-sm-3 col-form-label">{{'COMMON.PHONECODE' | translate}}
+                    <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                <div class="col-sm-9">
+                    <input formControlName="phonecode" type="text" nbInput fullWidth id="phonecode"
+                        placeholder="{{'COMMON.PHONECODE' | translate}}" />
+                    <div *ngIf="phonecode.invalid && (phonecode.dirty || phonecode.touched)" class="alert-danger">
+                        <div *ngIf="phonecode.errors?.['required']">
+                            {{'ERRORS.PHONECODEREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- <pre>
+          {{ countryForm.value | json }}
+        </pre> -->
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="form-group row">
+            <div [ngClass]="countryForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+                <button fullWidth type="submit" nbButton status="success" (click)="addOrEditCountry()">
+                    <span *ngIf="countryForm.get('id').value">
+                        <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                    </span>
+                    <span *ngIf="!countryForm.get('id').value">
+                        <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+    <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>

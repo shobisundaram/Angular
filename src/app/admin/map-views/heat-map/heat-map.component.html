@@ -1,0 +1,31 @@
+<nb-card>
+    <nb-card-header class="card-headers">
+        <div>
+            {{ 'HEATMAP.HEATMAP' | translate }} | {{ 'HEATMAP.RIDE_REQUEST' | translate }}: {{requestCount}}
+        </div>
+        <div class="">
+            <form [formGroup]="mapFilterForm" autocomplete="off" class="card-headers">
+                <input fieldSize="small" [style.width]="'350px'" nbInput class="form-control"
+                    formControlName="dateTimeRange" id="dateTimeRange"
+                    placeholder="{{ 'COMMON.CLICK_TO_SELECT_DATE' | translate }}" [nbDatepicker]="dtRange1">
+                <nb-rangepicker #dtRange1></nb-rangepicker>
+                <div class="px-2">
+                    <button class="rounded-pill border-0" nbButton status="secondary" [disabled]="!mapFilterForm.valid"
+                        (click)="filterAPI()">
+                        <nb-icon icon="search"></nb-icon>
+                    </button>
+                </div>
+                <div class="px-2">
+                    <button class="rounded-pill border-0" nbButton status="secondary" [disabled]="!mapFilterForm.valid"
+                        (click)="clear()">
+                        {{'COMMON.CLEAR' | translate}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <div id="trackerMap" style="width: 100%; height: 500px;"></div>
+
+    </nb-card-body>
+</nb-card>

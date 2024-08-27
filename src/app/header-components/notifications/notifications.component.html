@@ -1,0 +1,60 @@
+<nb-card>
+  <nb-card-header>
+      {{'COMMON.NOTIFICATIONS' | translate }}
+  </nb-card-header>
+  <nb-card-body>
+      <div #scrollBox class="scrollable-container" style="height: 670px; overflow-y: scroll;">
+          <!-- <div class="d-flex justify-content-between flex-wrap py-3 border-bt"
+              *ngFor="let details of items;let i = index">
+                    <div class="wid-200">
+                        <p class="title-card mb-2" [ngClass]="{'info-bg': details.severity === 'INFO', 'warning-bg': details.severity === 'WARNING', 'danger-bg': details.severity === 'DANGER'}">{{details.severity}}</p>
+                    </div>
+                    <div class="wid-200">
+                        <p class="title mb-1">{{details.module}}</p>
+                    </div>
+                    <div class="wid-200">
+                        <p class="user">{{details.title}}</p>
+                    </div>
+                    <div class="wid-200">
+                        <p [class.single-line]="show !== i">{{(show === i) ? details.body : details.body}}</p>
+                        <a *ngIf="details.body.length > 50" (click)="toggleShow(i)">
+                          {{(show === i) ? '[Show less]' : '[Show more]'}}
+                        </a>
+                    </div>
+                  <div class="time wid-200">
+                      <nb-icon icon="clock-outline"></nb-icon> {{details.createdAt | date: 'dd/MM/yyyy h:mm a' }}
+                  </div>
+              <div *ngIf="allDataLoaded" class="end-of-data">No more data to load</div>
+          </div> -->
+          <div class="row  py-3 border-bt" *ngFor="let details of items;let i = index">
+            <div class="col">
+                <p class="title-card mb-2" [ngClass]="{'info-bg': details.severity === 'INFO', 'warning-bg': details.severity === 'WARNING', 'danger-bg': details.severity === 'DANGER'}">{{details.severity}}</p>
+            </div>
+            <div class="col">
+                <p class="title mb-1">{{details.module}}</p>
+            </div>
+            <div class="col">
+                <p class="user">{{details.title}}</p>
+            </div>
+            <div class="col-lg-5">
+                <p [class.single-line]="show !== i">{{(show === i) ? details.body : details.body}}</p>
+                <a *ngIf="details.body.length > 50" (click)="toggleShow(i)">
+                  {{(show === i) ? '[Show less]' : '[Show more]'}}
+                </a>
+            </div>
+          <div class="time col">
+              <nb-icon icon="clock-outline"></nb-icon> {{details.createdAt | date: 'dd/MM/yyyy h:mm a' }}
+          </div>
+          </div>
+          <!-- <div *ngIf="loading" class="loading"><b>Loading...</b></div> -->
+      </div>
+
+      <div class="scroll-to-top" [ngClass]="{'show-scrollTop': windowScrolled}">
+        <!-- <button (click)="scrollToTop()" class="scrollbtn">
+            <i class="fa fa-chevron-up"></i>
+        </button> -->
+        <nb-icon (click)="scrollToTop()" icon="arrow-upward-outline" class="scrollbtn">
+        </nb-icon>
+    </div>
+  </nb-card-body>
+</nb-card>

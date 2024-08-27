@@ -1,0 +1,19 @@
+<nb-card>
+    <nb-card-header>
+        <div class="row">
+            <div class="col-lg-6">
+                {{'SITESTATISTICS.REGISTERUSERS' | translate}}
+            </div>
+            <div class="col-lg-6"  *ngIf="showCity==true">
+                <nb-select fullWidth placeholder="{{city}}">
+                    <nb-option *ngFor="let city of SerivceCity" (click)="changeCity(city.name)" [value]="city.name">
+                        {{city.name}}
+                    </nb-option>
+                </nb-select>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <div echarts [options]="options" class="echart" style="height: 300px;"></div>
+    </nb-card-body>
+</nb-card>

@@ -1,0 +1,333 @@
+<nb-card>
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="card-headers">
+        <button
+          nbTooltip="{{ 'COMMON.GoBack' | translate }}"
+          nbTooltipStatus="danger"
+          nbTooltipPlacement="bottom"
+          (click)="goBackBtn()"
+          nbButton
+          ghost
+          status="danger"
+        >
+          <nb-icon icon="arrow-back-outline"></nb-icon>
+        </button>
+        <div class="" *ngIf="!outstationPackageForm.get('_id').value">
+          {{ "SERVICES.ADDSERVICE" | translate }}
+        </div>
+        <div class="" *ngIf="outstationPackageForm.get('_id').value">
+          {{ "SERVICES.EDITSERVICE" | translate }}
+        </div>
+      </div>
+      <div class="" *ngIf="outstationPackageForm.get('_id').value">
+        <button nbButton ghost status="primary" [nbContextMenu]="items">
+          <nb-icon icon="more-vertical"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form [formGroup]="outstationPackageForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="title" class="label col-sm-5 col-form-label"
+            >{{ "VEHICLEADD.VEHICLE/SERVICETYPE" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <ng-select
+            fullWidth
+            formControlName="serviceType"
+            id="serviceType"
+            placeholder="{{
+              'VEHICLEADD.SELECT_VEHICLE/SERVICETYPE' | translate
+            }}"
+          >
+            <ng-option *ngFor="let option of servicetypes" [value]="option._id"
+              >{{ option.name }}
+            </ng-option>
+          </ng-select>
+          <div
+            *ngIf="
+              serviceType.invalid && (serviceType.dirty || serviceType.touched)
+            "
+            class="alert-danger"
+          >
+            <div *ngIf="servicetype.errors?.['required']">
+              {{ "ERRORS.VEHICLE/SERVICETYPE_REQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="currency" class="label col-form-label"
+            >{{ "COMMON.CURRENCYNAME" | translate
+            }}<span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <ng-select
+            fullWidth
+            formControlName="currency"
+            id="currency"
+            placeholder="{{ 'COMMON.SELECTCURRENCY' | translate }}"
+          >
+            <ng-option *ngFor="let option of currencys" [value]="option._id">
+              {{ option.name }}
+            </ng-option>
+          </ng-select>
+          <div
+            *ngIf="currency.invalid && (currency.dirty || currency.touched)"
+            class="alert-danger"
+          >
+            <div *ngIf="currency.errors?.['required']">
+              {{ "ERRORS.CURRENCYREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="trip_type" class="label col-form-label"
+            >{{ "COMMON.TRIPTYPE" | translate
+            }}<span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <ng-select
+            fullWidth
+            formControlName="trip_type"
+            id="trip_type"
+            placeholder="{{ 'COMMON.SELECTTRIPTYPE' | translate }}"
+          >
+            <ng-option
+              *ngFor="let option of outstationTripType"
+              [value]="option.value"
+            >
+              {{ option.title }}
+            </ng-option>
+          </ng-select>
+          <div
+            *ngIf="trip_type.invalid && (trip_type.dirty || trip_type.touched)"
+            class="alert-danger"
+          >
+            <div *ngIf="trip_type.errors?.['required']">
+              {{ "ERRORS.CURRENCYREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="base_fee" class="label col-form-label"
+            >{{ "PRICING.FARE_DETAILS.BASE_FEE" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="base_fee"
+            type="number"
+            nbInput
+            fullWidth
+            id="base_fee"
+            placeholder="{{ 'PRICING.FARE_DETAILS.BASE_FEE' | translate }}"
+          />
+          <div
+            *ngIf="base_fee.invalid && (base_fee.dirty || base_fee.touched)"
+            class="alert-danger"
+          >
+            <div *ngIf="base_fee.errors?.['required']">
+              {{ "ERRORS.BASE_FEE_REQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="booking_fee" class="label col-form-label"
+            >{{ "PRICING.FARE_DETAILS.BOOKING_FEE" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="booking_fee"
+            type="number"
+            nbInput
+            fullWidth
+            id="booking_fee"
+            placeholder="{{ 'PRICING.FARE_DETAILS.BOOKING_FEE' | translate }}"
+          />
+          <div
+            *ngIf="
+              booking_fee.invalid && (booking_fee.dirty || booking_fee.touched)
+            "
+            class="alert-danger"
+          >
+            <div *ngIf="booking_fee.errors?.['required']">
+              {{ "ERRORS.BOOKING_FEE_REQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="commission" class="label col-form-label"
+            >{{ "PRICING.FARE_DETAILS.COMMISSION" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="commission"
+            type="number"
+            nbInput
+            fullWidth
+            id="commission"
+            placeholder="{{
+              'PRICING.FARE_DETAILS.COMMISSION_PLACEHOLDER' | translate
+            }}"
+          />
+          <div
+            *ngIf="
+              commission.invalid && (commission.dirty || commission.touched)
+            "
+            class="alert-danger"
+          >
+            <div *ngIf="commission.errors?.['required']">
+              {{ "ERRORS.COMMISSION_REQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="extraDistanceAmount" class="label col-form-label"
+            >{{ "OUTSTATION.EXTRADISTANCEAMOUNT" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="extraDistanceAmount"
+            type="number"
+            nbInput
+            fullWidth
+            id="extraDistanceAmount"
+            placeholder="{{ 'OUTSTATION.EXTRADISTANCEAMOUNT' | translate }}"
+          />
+          <div
+            *ngIf="
+              extraDistanceAmount.invalid &&
+              (extraDistanceAmount.dirty || extraDistanceAmount.touched)
+            "
+            class="alert-danger"
+          >
+            <div *ngIf="extraDistanceAmount.errors?.['required']">
+              {{ "ERRORS.SERVICETYPEREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="extraHoursAmount" class="label col-form-label"
+            >{{ "OUTSTATION.EXTRAHOURSAMOUNT" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="extraHoursAmount"
+            type="number"
+            nbInput
+            fullWidth
+            id="extraHoursAmount"
+            placeholder="{{ 'OUTSTATION.EXTRAHOURSAMOUNT' | translate }}"
+          />
+          <div
+            *ngIf="
+              extraHoursAmount.invalid &&
+              (extraHoursAmount.dirty || extraHoursAmount.touched)
+            "
+            class="alert-danger"
+          >
+            <div *ngIf="extraHoursAmount.errors?.['required']">
+              {{ "ERRORS.SERVICETYPEREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="row align-items-baseline">
+      <div class="col-md-12">
+        {{ "PRICING.TAX_DETAILS.TAX_DETAILS" | translate }}
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="taxDetailsForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="is_tax_applicable" class="label col-form-label">{{
+            "PRICING.TAX_DETAILS.IS_TAX_APPLICABLE" | translate
+          }}</label>
+          <ng-select
+            fullWidth
+            formControlName="is_tax_applicable"
+            id="is_tax_applicable"
+            placeholder="{{
+              'PRICING.TAX_DETAILS.IS_TAX_APPLICABLE' | translate
+            }}"
+          >
+            <ng-option *ngFor="let option of yesorno" [value]="option.value">
+              {{ option.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6">
+          <label for="tax" class="label col-form-label">{{
+            "PRICING.TAX_DETAILS.TAX" | translate
+          }}</label>
+          <input
+            formControlName="tax"
+            type="number"
+            nbInput
+            fullWidth
+            id="tax"
+            placeholder="{{
+              'PRICING.TAX_DETAILS.TAX_PLACEHOLDER' | translate
+            }}"
+          />
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="form-group row">
+      <div
+        [ngClass]="
+          outstationPackageForm.get('_id').value
+            ? 'offset-sm-0 col-sm-2'
+            : 'offset-sm-0 col-sm-2'
+        "
+      >
+        <button
+          fullWidth
+          type="submit"
+          nbButton
+          status="success"
+          (click)="addOrEditPackage()"
+        >
+          <span *ngIf="outstationPackageForm.get('_id').value">
+            <nb-icon icon="arrow-circle-up-outline"></nb-icon>
+            {{ "COMMON.UPDATEBTN" | translate }}
+          </span>
+          <span *ngIf="!outstationPackageForm.get('_id').value">
+            <nb-icon icon="save"></nb-icon> {{ "COMMON.SAVEBTN" | translate }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

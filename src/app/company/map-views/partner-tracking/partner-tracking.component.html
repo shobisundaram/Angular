@@ -1,0 +1,142 @@
+<nb-card class="nb-card-height-change">
+    <nb-card-header>
+        <div class="row align-items-baseline">
+            <div class="col-md-12">
+                {{'DRIERTRACKING.DRIVERSTRACKING' | translate}}
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <nb-card class="row">
+            <nb-card-body>
+                <form [formGroup]="mapFilterForm" autocomplete="off">
+                    <div class="d-flex justify-content-between flex-wrap">
+                        <div class="col px-2">
+                        <ng-select fullwidth formControlName="serviceCity" id="serviceCity" 
+                            placeholder="{{'COMMON.SELECTSERVICEAVAILABLECITY' | translate}}">
+                            <ng-option *ngFor="let option of serviceAvailableCities" [value]="option._id">
+                                {{option.name}}
+                            </ng-option>
+                        </ng-select>
+                        </div>
+                        <div class="col px-2">
+                        <!-- <button class="text-capitalize form-control" fullWidth type="submit" nbButton ghost status="secondary"
+                                (click)="openVehiclesDialog(vehiclesDialog)">{{selectedVehicleName ? selectedVehicleName
+                                : "All Vehicles"}}
+                            </button> -->
+                        <ng-select fullwidth placeholder="{{'COMMON.SELECT_VEHICLE' | translate}}" 
+                            (change)="onServiceTypeSelect($event)">
+                            <ng-option *ngFor="let option of servicetypes" [value]="option">
+                                {{option.name}}
+                            </ng-option>
+                        </ng-select>
+                        </div>
+
+                        <!-- <div class="col-md-1">
+                            {{mapFilterForm.value.curStatus ? mapFilterForm.value.curStatus : 'All'}}
+                        </div> -->
+                        <div class="col px-2">
+                        <ng-select fullwidth formControlName="curStatus" id="curStatus" 
+                            placeholder="{{'COMMON.SELECT_STATUS' | translate}}"
+                            (change)="onVehicleStatusSelect($event)">
+                            <ng-option *ngFor="let option of items" [value]="option">
+                                {{option.title}}
+                            </ng-option>
+                        </ng-select>
+                        </div>
+                        <div class="col px-2">
+                            <input fullWidth formControlName="partnerPhone" type="text" class="" nbInput
+                                id="partnerPhone" placeholder="{{'COMMON.PARTNER_PHONE'| translate}}">
+                            </div>
+                        <div class="col px-2">
+                        <input fullWidth #search formControlName="defaultLocation" type="text" class="" nbInput
+                            id="defaultLocation" placeholder="{{'COMMON.LOCATION'| translate}}">
+                        </div>
+                        <div class="px-2">
+                            <button class="rounded-pill border-0" nbButton status="secondary" (click)="filterAPI1()">
+                                <nb-icon icon="search"></nb-icon>
+                            </button>
+                        </div>
+                        <div class="px-2">
+                            <button class="rounded-pill border-0" nbButton status="secondary" (click)="clear()">
+                                {{'COMMON.CLEAR' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </nb-card-body>
+        </nb-card>
+        <div style="width: 100%; height: 500px;">
+            <div id="trackerMap" style="height: 500px;">
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>
+
+<ng-template #vehiclesDialog let-data let-ref="dialogRef">
+    <nb-card class="changePasswordDialogBox">
+        <nb-card-header>
+            <div class="row align-items-baseline" autocomplete="off">
+                <div class="col-md-11">
+                    {{ data }}
+                </div>
+                <div class="col-md-1">
+                    <button (click)="ref.close()" nbButton ghost status="danger">
+                        <nb-icon icon="close-outline"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-3">
+                    <button fullWidth type="submit" nbButton status="secondary" class="text-capitalize h-100 border-0"
+                        (click)="onServiceTypeSelect()">{{'COMMON.ALL_VEHICLE' | translate}}</button>
+                </div>
+                <div class="col-md-3" *ngFor="let data of servicetypes">
+                    <button nbButton status="secondary" class="text-capitalize h-100 border-0"
+                        (click)="onServiceTypeSelect(data._id, data.name)">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img src="{{baseurl}}{{data.image}}" class="serviceTypeImage">
+                            </div>
+                            <div class="col-md-12">
+                                {{data.name}}
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ng-template #statusDialog let-data let-ref="dialogRef">
+    <nb-card class="changePasswordDialogBox">
+        <nb-card-header>
+            <div class="row align-items-baseline" autocomplete="off">
+                <div class="col-md-11">
+                    {{ data }}
+                </div>
+                <div class="col-md-1">
+                    <button (click)="ref.close()" nbButton ghost status="danger">
+                        <nb-icon icon="close-outline"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="statusButtons d-flex justify-content-center" *ngFor="let data of items">
+                    <button nbButton status="secondary" class="text-capitalize border-0 flex-column d-flex"
+                        (click)="onVehicleStatusSelect(data.title)">
+                        <img src="assets/images/Sedan.png" class="serviceTypeImage">
+                        <span>
+                            {{data.title}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</ng-template>

@@ -1,0 +1,325 @@
+// Fonts to Import
+
+@font-face {
+  font-family: CabifyCircularWeb-Bold;
+  src: url(./../../../assets/fonts/CabifyCircularWeb-Bold.otf) format("opentype");
+}
+
+@font-face {
+  font-family: CabifyCircularWeb-Book;
+  src: url(./../../../assets/fonts/CabifyCircularWeb-Book.otf) format("opentype");
+}
+
+@font-face {
+  font-family: CabifyCircularWeb-Light;
+  src: url(./../../../assets/fonts/CabifyCircularWeb-Light.otf) format("opentype");
+}
+
+// themes - our custom or/and out of the box themes
+@import "themes";
+
+// framework component themes (styles tied to theme variables)
+@import "@nebular/theme/styles/globals";
+@import "@nebular/auth/styles/globals";
+
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/grid";
+
+// loading progress bar theme
+@import "./pace.theme";
+
+@import "./layout";
+@import "./overrides";
+// @import "~ng-pick-datetime/assets/style/picker.min.css";
+
+// install the framework and custom global styles
+@include nb-install() {
+  // framework global styles
+  @include nb-theme-global();
+  @include nb-auth-global();
+
+  @include ngx-layout();
+  // loading progress bar
+  @include ngx-pace-theme();
+
+  @include nb-overrides();
+}
+
+.fileImageForng2-table {
+  width: 100px;
+}
+
+.fileImageForForm {
+  border-radius: 50%;
+  margin-top: 25px;
+  margin-left: 18px;
+  height: 140px;
+  width: 140px;
+}
+
+.star {
+  color: red;
+}
+
+// nb-card-body .ng-touched.ng-select.ng-invalid .ng-select-container {
+//   border-color: red !important;
+// }
+
+// nb-card-body .ng-touched.ng-select .ng-select-container {
+
+//    font-family: 'Amarillo'!important;
+// }
+
+// nb-card-body .ng-touched.ng-select.ng-valid .ng-select-container {
+//   border-color: green !important;
+// }
+
+nb-card {
+  // max-height: 640px;
+  // background-color: #00d68f;
+  overflow-y: scroll;
+}
+
+.nb-card-height-change {
+  max-height: 950px;
+}
+
+// nb-card-header {
+//   position: sticky;
+//   top: 0;
+//   background-color: #fff;
+//   z-index: 1;
+// }
+
+// nb-card-body {
+//   overflow: visible !important;
+// }
+
+// nb-card-footer {
+//   position: sticky;
+//   bottom: 0;
+//   background-color: #fff;
+//   z-index: 1;
+// }
+
+.ng2-smart-table-styles {
+  overflow-x: scroll;
+}
+
+ng2-smart-table {
+  text-align: center;
+}
+
+ng2-smart-table-pager {
+  justify-content: center !important;
+}
+
+agm-map {
+  height: 500px;
+}
+
+.header-menu-button {
+  width: 165px;
+}
+
+.ng-select-container {
+  height: 40px !important;
+  background-color: #f7f9fc !important;
+  border-color: #e4e9f2 !important;
+}
+
+.ng-select {
+  font-weight: bold;
+}
+
+.dialogBoxTitle {
+  font-weight: 600;
+  line-height: 3;
+}
+
+.alert-danger {
+  color: red;
+  background-color: unset;
+  border-color: unset;
+}
+
+// nb-layout-column {
+//   padding: 1% 0% 0% 0% !important;
+// }
+
+.changePasswordDialogBox {
+  width: 50vw;
+}
+
+.documentUpdateDialogBox {
+  width: 30vw;
+}
+
+.documentExpiryDetailsDialogBox {
+  width: 30vw;
+}
+
+nb-card-body label {
+  font-size: 14px !important;
+}
+
+.menubutton {
+  text-align-last: right;
+}
+
+.promocode-input {
+  max-width: unset !important;
+}
+
+.ng-select .ng-arrow-wrapper .ng-arrow {
+  border-color: none !important;
+  border-style: none !important;
+  border-width: 0 !important;
+}
+
+.ng-select .ng-arrow-wrapper {
+  height: 23px;
+  width: 23px;
+  background-image: url('../../../assets/images/arrow-down.svg');
+  background-repeat: no-repeat;
+  margin-right: 8px;
+  transition-duration: .15s;
+  transition-property: transform;
+  transition-timing-function: ease-in;
+}
+
+.ng-select-opened .ng-arrow-wrapper {
+  transform: rotate(180deg);
+  transition-duration: .15s;
+  transition-property: transform;
+  transition-timing-function: ease-in;
+  background-image: url('../../../assets/images/arrow-down.svg');
+  background-repeat: no-repeat;
+
+}
+
+.ng-select .ng-clear-wrapper {
+  margin-top: 6px;
+}
+
+.nbtabset_side_title {
+  font-size: 15px;
+}
+
+a.tab-link {
+  align-items: baseline;
+}
+
+nb-accordion {
+  box-shadow: none;
+}
+
+nb-accordion-item-header {
+  background-color: #e6ebf2;
+}
+
+img.fileImageForng2-table {
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  padding: 2px;
+}
+
+img.fileImageForng2-table.pending {
+  border: 3px solid #ffaa00;
+}
+
+img.fileImageForng2-table.active {
+  border: 3px solid #00d68f;
+}
+
+img.fileImageForng2-table.inactive {
+  border: 3px solid #ff3d71;
+}
+
+.warning-color {
+  color: #ffaa00;
+}
+
+.success-color {
+  color: #00d68f;
+}
+
+.danger-color {
+  color: #ff3d71;
+}
+
+.primary-color {
+  color: #3366ff;
+}
+
+.passwordHide {
+  display: none;
+}
+
+.inner-addon {
+  position: relative;
+}
+
+.inner-addon .far,
+.inner-addon .fas {
+  position: absolute;
+  padding: 2% 2%;
+  z-index: 100;
+  cursor: pointer;
+  right: 0px;
+}
+
+.table-edit-icon {
+  font-size: 14px;
+  color: var(--menu-submenu-item-active-hover-text-color);
+}
+
+.table-email-icon {
+  font-size: 25px;
+  color: var(--menu-submenu-item-active-hover-text-color);
+}
+
+.buttonUnClickable {
+  pointer-events: none;
+}
+
+.margin-top {
+  margin-top: -20px;
+}
+
+.card-button {
+  // position: absolute;
+  width: 100%;
+}
+
+.text-end {
+  text-align: end;
+}
+nb-select.appearance-outline.status-basic .select-button{
+  background-color: unset;
+}
+.input-group-append .btn{
+  border: unset
+}
+nb-card {
+  overflow: visible;
+}
+
+nb-card-body {
+  overflow: visible;
+}
+.ng-dropdown-panel{
+  z-index: 1 !important;
+}
+.card-headers{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.layout {
+  min-width: unset !important;
+}

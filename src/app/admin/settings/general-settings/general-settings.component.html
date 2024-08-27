@@ -1,0 +1,169 @@
+<!-- <p>general-settings works!</p> -->
+
+<nb-card>
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="card-headers">
+        <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+          (click)="goBackBtn()" nbButton ghost status="danger">
+          <nb-icon icon="arrow-back-outline"></nb-icon>
+        </button>
+        <div class="">{{'SETTINGS.GENERAL_SETTINGS' | translate}}</div>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="generalSettingsForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-12 title">{{'SETTINGS.APPSETTINGS' | translate}}:</div>
+        <div class="col-md-6">
+          <label for="name" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.NAME' |
+            translate}}</label>
+          <input formControlName="name" type="text" nbInput fullWidth id="name"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.NAME' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="language" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.LANGUAGE' |
+            translate}}</label>
+          <input formControlName="language" type="text" nbInput fullWidth id="language"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.LANGUAGE' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="phoneCode" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.PHONECODE'
+            |
+            translate}}</label>
+          <input formControlName="phoneCode" type="text" nbInput fullWidth id="phoneCode"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.PHONECODE' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="currency" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.CURRENCY' |
+            translate}}</label>
+          <input formControlName="currency" type="text" nbInput fullWidth id="currency"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.CURRENCY' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="baseurl" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.BASEURL' |
+            translate}}</label>
+          <input formControlName="baseurl" type="text" nbInput fullWidth id="baseurl"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.BASEURL' | translate}}" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <label for="logoPath" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.LOGOIMAGE' |
+            translate}}
+          </label>
+          <input type="file" nbInput fullWidth id="logoPath" (change)="onChange($event.target.files,'logoPath')"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.LOGOIMAGE' | translate}}">
+        </div>
+        <div class="col-md-3">
+          <div class="form-group row">
+            <label for="logoPath" class="label col-sm-3 col-form-label">{{'SETTINGS.GENERAL_SETTING.IMAGEPREVIEW' |
+              translate}} </label>
+            <div class="col-sm-9">
+              <img [src]="generalSettingsForm.value.logoPath" class="fileImageForForm" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="faviconPath" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.FAVICONPATH' |
+            translate}}
+          </label>
+          <input type="file" nbInput fullWidth id="faviconPath" (change)="onChange($event.target.files,'faviconPath')"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.FAVICONPATH' | translate}}">
+        </div>
+        <div class="col-md-3">
+          <div class="form-group row">
+            <label for="faviconPath" class="label col-sm-3 col-form-label">{{'SETTINGS.GENERAL_SETTING.IMAGEPREVIEW' |
+              translate}} </label>
+            <div class="col-sm-9">
+              <img [src]="generalSettingsForm.value.faviconPath" class="fileImageForForm" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 title">{{'SETTINGS.MAPKEYS' | translate}}:</div>
+        <div class="col-md-6">
+          <label for="mapId" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.MAPID' |
+            translate}}</label>
+          <input formControlName="mapId" type="text" nbInput fullWidth id="mapId"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.MAPID' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="websiteKey" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.WEBSITEKEY' |
+            translate}}</label>
+          <input formControlName="websiteKey" type="text" nbInput fullWidth id="websiteKey"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.WEBSITEKEY' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="serverKey" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.SERVERKEY'
+            |
+            translate}}</label>
+          <input formControlName="serverKey" type="text" nbInput fullWidth id="serverKey"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.SERVERKEY' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="androidKey" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.ANDROIDKEY' |
+            translate}}</label>
+          <input formControlName="androidKey" type="text" nbInput fullWidth id="androidKey"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.ANDROIDKEY' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="iosKey" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.IOSKEY' |
+            translate}}</label>
+          <input formControlName="iosKey" type="text" nbInput fullWidth id="iosKey"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.IOSKEY' | translate}}" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 title">{{'SETTINGS.PRODUCT_LINKS' | translate}}:</div>
+
+        <div class="col-md-6">
+          <label for="androidCustomer" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.ANDROID_CUSTOMER' |
+            translate}}</label>
+          <input formControlName="androidCustomer" type="text" nbInput fullWidth id="androidCustomer"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.ANDROID_CUSTOMER' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="androidPartner" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.ANDROID_PARTNER'
+            |
+            translate}}</label>
+          <input formControlName="androidPartner" type="text" nbInput fullWidth id="androidPartner"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.ANDROID_PARTNER' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="iosCustomer" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.IOS_CUSTOMER' |
+            translate}}</label>
+          <input formControlName="iosCustomer" type="text" nbInput fullWidth id="iosCustomer"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.IOS_CUSTOMER' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="iosPartner" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.IOS_PARTNER' |
+            translate}}</label>
+          <input formControlName="iosPartner" type="text" nbInput fullWidth id="iosPartner"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.IOS_PARTNER' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="shareTrip" class="label col-form-label">{{'SETTINGS.GENERAL_SETTING.SHARETRIP'
+            |
+            translate}}</label>
+          <input formControlName="shareTrip" type="text" nbInput fullWidth id="shareTrip"
+            placeholder="{{'SETTINGS.GENERAL_SETTING.SHARETRIP' | translate}}" />
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="form-group row">
+      <div [ngClass]="'offset-sm-0 col-sm-2'">
+        <button fullWidth type="submit" nbButton status="success" (click)="editGeneralSettings()">
+          <span>
+            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+          </span>
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

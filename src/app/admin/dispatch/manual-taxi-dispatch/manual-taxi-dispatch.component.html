@@ -1,0 +1,652 @@
+<nb-card>
+  <nb-card-header>
+    <button
+      *ngIf="id"
+      nbTooltip="{{ 'COMMON.GoBack' | translate }}"
+      nbTooltipStatus="danger"
+      nbTooltipPlacement="bottom"
+      (click)="goBackBtn()"
+      nbButton
+      ghost
+      status="danger"
+    >
+      <nb-icon icon="arrow-back-outline"></nb-icon>
+    </button>
+    {{ "COMMON.DISPATCH" | translate }}
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="dispatchForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label class="label col-form-label"
+            >{{ "COMMON.PHONENO" | translate
+            }}<span class="{{ 'COMMON.STARCLASS' | translate }}">
+              {{ "COMMON.STAR" | translate }}</span
+            ></label
+          >
+          <div class="row">
+            <div class="col-lg-3">
+              <ng-select
+                class=""
+                fullWidth
+                formControlName="phoneCode"
+                id="phoneCode"
+                placeholder="{{ 'COMMON.SELECTPHONECODE' | translate }}"
+              >
+                <ng-option
+                  *ngFor="let option of phoneCodes"
+                  [value]="option.phonecode"
+                  >{{ option.phonecode }}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-lg-9">
+              <div class="input-group">
+                <input
+                  class="form-control promocode-input"
+                  formControlName="phone"
+                  nbInput
+                  placeholder="{{ 'COMMON.PHONENO' | translate }}"
+                  autocomplete="off"
+                  id="phone"
+                  style="border-radius: 0.25rem 0 0 0.25rem"
+                />
+                <div class="input-group-append">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    [disabled]="!phoneCode.valid || !phone.valid"
+                    (click)="doCheckRiderPhoneAlreadyExistsOrNot()"
+                  >
+                    <nb-icon icon="search-outline"></nb-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row px-3">
+            <div
+              *ngIf="
+                phoneCode.invalid && (phoneCode.dirty || phoneCode.touched)
+              "
+              class="alert-danger pr-3"
+            >
+              <div *ngIf="phoneCode.errors?.['required']">
+                {{ "ERRORS.PHONECODEREQUIRED" | translate }}
+              </div>
+            </div>
+            <div
+              *ngIf="phone.invalid && (phone.dirty || phone.touched)"
+              class="alert-danger col-md-6 p-0"
+            >
+              <div *ngIf="phone.errors?.['required']">
+                {{ "ERRORS.PHONENOREQUIRED" | translate }}
+              </div>
+              <div
+                *ngIf="phone.errors?.['minlength'] || phone.errors?.['maxlength']"
+              >
+                {{ "ERRORS.PHONENOVALIDATION" | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="name" class="label ol-form-label"
+            >{{ "COMMON.NAME" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="name"
+            type="text"
+            nbInput
+            fullWidth
+            id="name"
+            placeholder="{{ 'COMMON.NAME' | translate }}"
+          />
+          <div
+            *ngIf="name.invalid && (name.dirty || name.touched)"
+            class="alert-danger"
+          >
+            <div *ngIf="name.errors?.['required']">
+              {{ "ERRORS.NAMEREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="label col-form-label">{{
+            "COMMON.EMAIL" | translate
+          }}</label>
+          <input
+            readonly
+            formControlName="email"
+            type="text"
+            nbInput
+            fullWidth
+            id="email"
+            placeholder="{{ 'COMMON.EMAIL' | translate }}"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="types" class="label ol-form-label"
+            >{{ "COMMON.TRIPTYPE" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <ng-select
+            fullWidth
+            formControlName="types"
+            id="types"
+            placeholder="{{ 'COMMON.SELECTTRIPTYPE' | translate }}"
+          >
+            <ng-option *ngFor="let option of tripTypes" [value]="option.value"
+              >{{ option.label }}
+            </ng-option>
+          </ng-select>
+          <div
+            *ngIf="types.invalid && (types.dirty || types.touched)"
+            class="alert-danger"
+          >
+            <div *ngIf="types.errors?.['required']">
+              {{ "ERRORS.TRIPTYPEREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="customAutocomplete">
+          <label for="pickupLocation" class="label col-form-label"
+            >{{ "COMMON.PICKUP_LOCATION" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="pickupLocation"
+            nbInput
+            fullWidth
+            placeholder="{{ 'COMMON.PICKUP_LOCATION' | translate }}"
+            autocomplete="off"
+            id="searchBox1"
+          />
+          <!-- <input #searchBox formControlName="pickupLocation" nbInput fullWidth placeholder="{{'COMMON.PICKUP_LOCATION' |
+                            translate}}" autocomplete="off" (input)="listenPickupLocation($event)" /> -->
+          <div
+            *ngIf="
+              pickupLocation.invalid &&
+              (pickupLocation.dirty || pickupLocation.touched)
+            "
+            class="alert-danger"
+          >
+            <div *ngIf="pickupLocation.errors?.['required']">
+              {{ "ERRORS.PICKUP_LOCATION_REQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="!customAutocomplete">
+          <label for="pickupLocation" class="label col-form-label"
+            >{{ "COMMON.PICKUP_LOCATION" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <ng-select
+            [items]="pickupLocationBuffer"
+            [virtualScroll]="true"
+            [loading]="pickupLoading"
+            bindLabel="description"
+            bindValue="placeId"
+            placeholder="{{ 'COMMON.PICKUP_LOCATION' | translate }}"
+            [typeahead]="pickupInput$"
+            formControlName="pickupLocation"
+            (change)="setLocation($event, 'pickup')"
+            #select
+          >
+            <ng-template
+              ng-option-tmp
+              let-item="item"
+              let-index="index"
+              let-search="searchTerm"
+            >
+              <!-- <b>{{ index + 1 }} .  </b> -->
+              <span [ngOptionHighlight]="search">{{ item.description }}</span>
+            </ng-template>
+          </ng-select>
+          <div
+            *ngIf="
+              pickupLocation.invalid &&
+              (pickupLocation.dirty || pickupLocation.touched)
+            "
+            class="alert-danger"
+          >
+            <div *ngIf="pickupLocation.errors?.['required']">
+              {{ "ERRORS.PICKUP_LOCATION_REQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="customAutocomplete">
+          <!-- <div class="row"> -->
+          <label for="dropLocation" class="label col-form-label"
+            >{{ "COMMON.DROP_LOCATION" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="dropLocation"
+            class=""
+            fullWidth
+            nbInput
+            placeholder="{{ 'COMMON.DROP_LOCATION' | translate }}"
+            autocomplete="off"
+            id="searchBox2"
+          />
+          <div
+            *ngIf="
+              dropLocation.invalid &&
+              (dropLocation.dirty || dropLocation.touched)
+            "
+            class="alert-danger"
+          >
+            <div *ngIf="dropLocation.errors?.['required']">
+              {{ "ERRORS.DROP_LOCATION_REQUIRED" | translate }}
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+        <div class="col-md-6" *ngIf="!customAutocomplete">
+          <!-- <div class="row"> -->
+          <label for="dropLocation" class="label col-form-label"
+            >{{ "COMMON.DROP_LOCATION" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <ng-select
+            [items]="dropLocationBuffer"
+            [virtualScroll]="true"
+            [loading]="dropLoading"
+            bindLabel="description"
+            bindValue="placeId"
+            placeholder="{{ 'COMMON.DROP_LOCATION' | translate }}"
+            [typeahead]="dropInput$"
+            formControlName="dropLocation"
+            (change)="setLocation($event, 'drop')"
+            #select
+          >
+            <ng-template
+              ng-option-tmp
+              let-item="item"
+              let-index="index"
+              let-search="searchTerm"
+            >
+              <!-- <b>{{ index + 1 }} .  </b> -->
+              <span [ngOptionHighlight]="search">{{ item.description }}</span>
+            </ng-template>
+          </ng-select>
+          <div
+            *ngIf="
+              dropLocation.invalid &&
+              (dropLocation.dirty || dropLocation.touched)
+            "
+            class="alert-danger"
+          >
+            <div *ngIf="dropLocation.errors?.['required']">
+              {{ "ERRORS.DROP_LOCATION_REQUIRED" | translate }}
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+
+        <div class="col-md-6">
+          <label for="enter_promocode" class="label col-form-label">{{
+            "COMMON.ENTER_PROMOCODE" | translate
+          }}</label>
+          <input
+            formControlName="enter_promocode"
+            type="text"
+            nbInput
+            fullWidth
+            id="enter_promocode"
+            placeholder="{{ 'COMMON.ENTER_PROMOCODE' | translate }}"
+          />
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="!dispatchForm.valid"
+      (click)="getAvailableVehicles()"
+    >
+      {{ "COMMON.GET_AVAILABLE_VEHICLES" | translate }}
+    </button>
+  </nb-card-footer>
+</nb-card>
+<div class="row">
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>
+        <div class="col-md-6">{{ "COMMON.TRIP_SETTINGS" | translate }}</div>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="dispatchForm" autocomplete="off">
+          <div class="form-group row">
+            <div class="col-md-6">
+              <label for="vehicleId" class="label col-form-label"
+                >{{ "COMMON.SELECT_VEHICLE" | translate }}
+                <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+                  "COMMON.STAR" | translate
+                }}</span></label
+              >
+              <ng-select
+                #vehicleSelect
+                fullWidth
+                formControlName="vehicleId"
+                id="vehicleId"
+                placeholder="{{ 'COMMON.SELECT_VEHICLE' | translate }}"
+                (change)="setEstimation($event)"
+              >
+                <ng-option
+                  *ngFor="let option of selectVehicles"
+                  [value]="option"
+                >
+                  {{ option.vehicleName }}
+                </ng-option>
+              </ng-select>
+            </div>
+            <!-- <div class="col-md-6">
+              <label for="bookingType" class="label col-form-label">{{'COMMON.BOOKING_TYPE' |
+                translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR'
+                  |
+                  translate}}</span></label>
+              <ng-select fullWidth placeholder="{{'COMMON.BOOKING_TYPE' | translate}}" formControlName="bookingType" id="bookingType" >
+                <ng-option *ngFor="let option of bookingTypes" (selected)="bookType($event)" [value]="option.value">
+                  {{option.label}}
+                </ng-option>
+              </ng-select>
+            </div> -->
+
+            <div class="col-md-6">
+              <label for="bookingType" class="label col-form-label">
+                {{ "COMMON.BOOKING_TYPE" | translate }}
+                <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+                  "COMMON.STAR" | translate
+                }}</span>
+              </label>
+              <ng-select
+                fullWidth
+                placeholder="{{ 'COMMON.BOOKING_TYPE' | translate }}"
+                formControlName="bookingType"
+                id="bookingType"
+                (change)="onBookingTypeChange($event)"
+              >
+                <ng-option
+                  *ngFor="let option of bookingTypes"
+                  [value]="option.value"
+                  [disabled]="option.disabled"
+                >
+                  {{ option.label }}
+                </ng-option>
+              </ng-select>
+            </div>
+
+            <div
+              class="col-md-6"
+              *ngIf="dispatchForm.get('bookingType').value === 'rideLater'"
+            >
+              <label for="tripDate" class="label col-form-label">{{
+                "COMMON.TRIP_DATE" | translate
+              }}</label>
+              <input
+                type="date"
+                id="tripDate"
+                class="form-control"
+                formControlName="tripDate"
+                [min]="minDate"
+                [max]="maxDate"
+              />
+            </div>
+
+            <div
+              class="col-md-6"
+              *ngIf="dispatchForm.get('bookingType').value === 'rideLater'"
+            >
+              <label for="tripTime" class="label col-form-label">{{
+                "COMMON.TRIP_TIME" | translate
+              }}</label>
+              <ng-select
+                fullWidth
+                placeholder="{{ 'COMMON.TRIP_TIME' | translate }}"
+                formControlName="tripTime"
+                id="tripTime"
+              >
+                <ng-option *ngFor="let time of availableTimes" [value]="time">
+                  {{ time }}
+                </ng-option>
+              </ng-select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="assignType" class="label col-form-label"
+                >{{ "COMMON.DRIVER_ASSIGNMENT_TYPE" | translate }}
+                <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+                  "COMMON.STAR" | translate
+                }}</span></label
+              >
+              <ng-select
+                fullWidth
+                placeholder="{{ 'COMMON.DRIVER_ASSIGNMENT_TYPE' | translate }}"
+                formControlName="assignType"
+                id="assignType"
+              >
+                <ng-option
+                  *ngFor="let option of AssignmentTypes"
+                  [value]="option.value"
+                >
+                  {{ option.label }}
+                </ng-option>
+              </ng-select>
+            </div>
+
+            <div
+              class="col-md-6"
+              *ngIf="dispatchForm.get('assignType').value == 'manual-assign'"
+            >
+              <label for="assignType" class="label col-form-label"
+                >{{ "DRIVER.SELECT_DRIVER" | translate }}
+                <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+                  "COMMON.STAR" | translate
+                }}</span></label
+              >
+
+              <ng-select
+                [items]="driverBuffer"
+                [virtualScroll]="true"
+                [loading]="loading"
+                bindLabel="fullName"
+                bindValue="_id"
+                placeholder="{{ 'DRIVER.SELECT_DRIVER' | translate }}"
+                [typeahead]="input$"
+                (scrollToEnd)="fetchMore()"
+                formControlName="driver"
+                #select
+              >
+                <ng-template
+                  ng-option-tmp
+                  let-item="item"
+                  let-index="index"
+                  let-search="searchTerm"
+                >
+                  <!-- <b>{{ index + 1 }} .  </b> -->
+                  <span [ngOptionHighlight]="search"
+                    >{{ item.fname }} {{ item.lname }}</span
+                  >
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>
+        <div class="col-md-6">{{ "COMMON.FARE_ESTIMATION" | translate }}</div>
+      </nb-card-header>
+      <nb-card-body>
+        <table class="table table-borderless table-hover invoice-table">
+          <tbody>
+            <tr>
+              <td class="border-0">{{ "ESTIMATION.FARETYPE" | translate }}</td>
+              <td class="border-0">
+                {{ fareDetails.fareType_est | uppercase }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ "ESTIMATION.DISTANCE_FARE" | translate }}
+                {{ fareDetails.dist_est }} {{ defaultUnit }}
+              </td>
+              <td>{{ fareDetails.currency }} {{ fareDetails.distfare_est }}</td>
+            </tr>
+            <tr>
+              <td>{{ "ESTIMATION.BASE_FARE" | translate }}</td>
+              <td>{{ fareDetails.currency }} {{ fareDetails.base_est }}</td>
+            </tr>
+            <tr>
+              <td>{{ "ESTIMATION.BOOKING_FARE" | translate }}</td>
+              <td>{{ fareDetails.currency }} {{ fareDetails.booking_est }}</td>
+            </tr>
+            <tr>
+              <td>
+                {{ "ESTIMATION.WAITING_CHARGE" | translate }}
+                {{ fareDetails.currency }} {{ fareDetails.waitingRate }}/Min *
+                {{ fareDetails.waitingTime }} Min
+              </td>
+              <td>
+                {{ fareDetails.currency }} {{ fareDetails.waitingCharge_est }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ "ESTIMATION.TIME_FARE" | translate }}
+                {{ fareDetails.currency }} {{ fareDetails.timeRate }}/Min *
+                {{ fareDetails.time }}
+                Min
+              </td>
+              <td>{{ fareDetails.currency }} {{ fareDetails.timefare_est }}</td>
+            </tr>
+            <tr>
+              <td>{{ "ESTIMATION.MINIMUM_FARE" | translate }}</td>
+              <td>
+                {{ fareDetails.currency }} {{ fareDetails.minFareAdded_est }}
+              </td>
+            </tr>
+            <tr>
+              <td>{{ "ESTIMATION.TAX" | translate }}</td>
+              <td>{{ fareDetails.currency }} {{ fareDetails.tax_est }}</td>
+            </tr>
+            <tr>
+              <td>
+                {{ "ESTIMATION.SURGE_AMOUNT" | translate }}
+                {{ fareDetails.surgeReason }}
+              </td>
+              <td>{{ fareDetails.currency }} {{ fareDetails.surgeAmt_est }}</td>
+            </tr>
+            <tr>
+              <td>
+                {{ "ESTIMATION.DISCOUNT" | translate }}
+                {{ fareDetails.discountName }} -
+                {{ fareDetails.discountPercentage }}%
+              </td>
+              <td>
+                {{ fareDetails.currency }} {{ fareDetails.detect_est }} (-)
+              </td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" scope="row">
+                {{ "ESTIMATION.SUBTOTAL" | translate }}
+              </td>
+              <td class="font-weight-bold" scope="row">
+                {{ fareDetails.currency }} {{ fareDetails.cost_est }}
+              </td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold border-0" scope="row">
+                {{ "ESTIMATION.TIPS" | translate }}
+              </td>
+              <td class="font-weight-bold border-0" scope="row">
+                {{ fareDetails.currency }} {{ fareDetails.tips_est }}
+              </td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold border-0" scope="row">
+                {{ "ESTIMATION.ROUND_OFF" | translate }}
+              </td>
+              <td class="font-weight-bold border-0" scope="row">
+                {{ fareDetails.currency }} {{ fareDetails.roundOff_est }}
+              </td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold border-0" scope="row">
+                {{ "ESTIMATION.TOTAL" | translate }}
+              </td>
+              <td class="font-weight-bold border-0" scope="row">
+                {{ fareDetails.currency }} {{ fareDetails.actualcost_est }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="">
+          <button
+            class="btn btn-danger"
+            type="submit"
+            [disabled]=""
+            (click)="FarereSet()"
+          >
+            <nb-icon icon="sync-outline"></nb-icon>
+            {{ "COMMON.RESET" | translate }}
+          </button>
+          &nbsp;
+          <button class="btn btn-primary" type="submit" (click)="bookTrip()">
+            <nb-icon icon="sync-outline"></nb-icon>
+            {{ "COMMON.BOOK_TRIP" | translate }}
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+<ng-template class="dialogBox" #TripInvoiceDialog let-data let-ref="dialogRef">
+  <nb-card style="width: 350px">
+    <nb-card-header>
+      <div class="d-flex justify-content-between flex-wrap align-items-center">
+        <div>
+          {{ "COMMON.BOOKING_SUCCESS" | translate }}
+        </div>
+      </div>
+    </nb-card-header>
+    <nb-card-body>
+      <b
+        >{{ "COMMON.REFERENCE_NO" | translate }}:
+        <a class="text-dec" (click)="getTripInvoice()" target="_blank">{{
+          TripNo
+        }}</a></b
+      >
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+        type="button"
+        (click)="ref.close(); pageReSet()"
+        size="small"
+        class="btn btn-primary float-right"
+      >
+        {{ "COMMON.CLOSEBTN" | translate }}
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

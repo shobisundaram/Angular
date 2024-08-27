@@ -1,0 +1,119 @@
+<nb-card>
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="card-headers">
+        <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+          (click)="goBackBtn()" nbButton ghost status="danger">
+          <nb-icon icon="arrow-back-outline"></nb-icon>
+        </button>
+        <div class="" *ngIf="!adminGroupForm.get('id').value">{{'ADMINGROUP.ADDADMINGROUP' |
+          translate}}
+        </div>
+        <div class="" *ngIf="adminGroupForm.get('id').value">{{'ADMINGROUP.EDITADMINGROUP' |
+          translate}}
+        </div>
+      </div>
+      <div class="" *ngIf="adminGroupForm.get('id').value">
+        <button nbButton ghost status="primary" [nbContextMenu]="items">
+          <nb-icon icon="more-vertical"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="adminGroupForm" autocomplete="off">
+      <div class="form-group row">
+        <label for="group" class="label col-sm-3 col-form-label">{{'COMMON.GROUP' | translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+            translate}}</span></label>
+        <div class="col-sm-9">
+          <input formControlName="group" type="text" nbInput fullWidth id="group"
+            placeholder="{{'COMMON.GROUP' | translate}}" />
+          <div *ngIf="group.invalid && (group.dirty || group.touched)" class="alert-danger">
+            <div *ngIf="group.errors?.['required']">
+              {{'ERRORS.GROUPREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="description" class="label col-sm-3 col-form-label">{{'COMMON.DESCRIPTION' | translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+        <div class="col-sm-9">
+          <textarea rows="5" formControlName="description" type="text" nbInput fullWidth id="description"
+            placeholder="{{'COMMON.DESCRIPTION' | translate}}"></textarea>
+          <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert-danger">
+            <div *ngIf="description.errors?.['required']">
+              {{'ERRORS.DESCRIPTIONREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <label for="description">{{'COMMON.MENU_PERMISSION' | translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+        <div *ngFor="let parentmenu of permission; let parentMenuIndex = index">
+          <div>
+            <nb-list>
+              <nb-list-item style="border-top:unset;">
+                <div class="row w-100">
+                  <div class="col-lg-6 d-flex justify-content-between p-2">
+                    <label>
+                      {{parentmenu.menu}}
+                    </label>
+                    <nb-toggle style="display:unset;" status="primary" size="small"
+                      (checkedChange)="onParentMenuChange(parentMenuIndex, childMenuIndex,$event)"
+                      [checked]="parentmenu.status"></nb-toggle>
+                  </div>
+
+
+                  <ng-template [ngIf]="parentmenu.subMenu">
+
+                    <div class="col-lg-6 p-2">
+
+                      <div *ngFor="let childmenu of parentmenu.subMenuList; let childMenuIndex = index">
+                        <!-- <nb-list-item class="list-group-item row colp"> -->
+                        <div class=" d-flex justify-content-between align-items-center"
+                          style="display: flex;justify-content:center;">
+
+                          <label>{{ childmenu.menu }}</label>
+                          <nb-toggle status="primary"
+                            (checkedChange)="onChildMenuChange(parentMenuIndex, childMenuIndex, $event)"
+                            [checked]="childmenu.status" style="display: flex;justify-content:end;">
+                          </nb-toggle>
+
+
+                        </div>
+                        <!-- </nb-list-item> -->
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </nb-list-item>
+
+            </nb-list>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer style="border-top: unset;">
+    <div class="form-group row">
+      <div [ngClass]="adminGroupForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+        <button fullWidth type="submit" nbButton status="success" (click)="addOrEditAdminGroup()">
+          <span *ngIf="adminGroupForm.get('id').value">
+            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+          </span>
+          <span *ngIf="!adminGroupForm.get('id').value">
+            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+          </span>
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+  <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>

@@ -1,0 +1,1001 @@
+<ng-template [ngIf]="showDetails">
+    <nb-card>
+        <nb-card-header>
+            <div class="card-headers">
+                <div class="card-headers">
+                    <button *ngIf="showBackButton" nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger"
+                        nbTooltipPlacement="bottom" (click)="goBack()" nbButton ghost status="danger">
+                        <nb-icon icon="arrow-back-outline"></nb-icon>
+                    </button>
+                    <div># {{tripDetails.referenceNo}} | {{tripDateTime}}</div>
+                </div>
+                <div>
+                    <button *ngIf="['Processing'].includes(tripDetails.status)" class="buttonUnClickable" nbButton
+                        shape="round" size="small" status="primary">
+                        {{tripDetails.status}}
+                    </button>
+                    <button *ngIf="['Accepted', 'Arrived', 'Progress', 'Finished'].includes(tripDetails.status)"
+                        class="buttonUnClickable" nbButton shape="round" size="small" status="success">
+                        {{tripDetails.status}}
+                    </button>
+                    <button *ngIf="['Noresponse', 'Cancelled'].includes(tripDetails.status)" class="buttonUnClickable"
+                        nbButton shape="round" size="small" status="danger">
+                        {{tripDetails.status}}
+                    </button>
+                    <button *ngIf="tripDetails.status !== 'Finished' && tripDetails.status !== 'Processing'"
+                        (mouseover)="tripActions(tripDetails.status)" nbButton ghost status="primary"
+                        [nbContextMenu]="items">
+                        <nb-icon icon="more-vertical"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="row mb-3">
+                <div class="col-lg-8">
+                    <nb-card class="h-100 mb-0">
+                        <nb-card-body>
+                            <h5>{{'TRIPS.ROUTE' | translate}}</h5>
+                            <div>
+                                <div class="tripmap" *ngIf="tripDetails.status != 'Finished'">
+                                    <img src="assets/images/map.svg" height="300px" width="100%"
+                                    (error)="handleImageError($event)"  style="object-fit: fill;">
+                                </div>
+                                <div class="tripmap" *ngIf="tripDetails.status == 'Finished'">
+                                    <img src={{baseUrl}}{{tripDetails.routeImage}} height="300px" width="100%"
+                                   >
+                                </div>
+                            </div>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+                <div class="col-lg-4">
+                    <nb-card class="">
+                        <nb-card-body>
+                            <div class="media">
+                                <div>
+                                    <img src="assets/images/rider.png" class="media-image" alt="{{'TRIPS.CUSTOMER' | translate}}">
+                                </div>
+                                <div class="media-body">
+                                    <strong class="mt-0">{{'TRIPS.CUSTOMER' | translate}}</strong>
+                                    <p class="card-text">
+                                        {{tripDetails.customer.name ? tripDetails.customer.name : ""}} <br />
+                                        {{tripDetails.customerPhone ? tripDetails.customerPhone : ""}}
+                                    </p>
+                                </div>
+                            </div>
+                        </nb-card-body>
+                        <nb-card-body>
+                            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                <div>
+                                    <p class="text-muted mb-2">{{'TRIPS.SERVICETYPE' | translate}}</p>
+                                    <strong>{{tripDetails.serviceTypeName}}</strong>
+                                </div>
+                                <div class="text-sm-end mt-4 mt-sm-0">
+                                    <p class="text-muted mb-2">{{'TRIPS.BOOKFROM' | translate}}</p>
+                                    <strong>{{tripDetails.requestFrom}}</strong>
+
+                                </div>
+                            </div>
+                        </nb-card-body>
+                    </nb-card>
+                    <nb-card class="mb-0">
+                        <nb-card-body>
+                            <div class="media">
+                                <img src="assets/images/driver.png" class="mr-3 media-image" alt="customer">
+                                <div class="media-body">
+                                    <strong class="mt-0">{{'TRIPS.PARTNER' | translate}}</strong>
+                                    <p class="card-text">
+                                        {{tripDetails.partner.name ? tripDetails.partner.name : ""}} <br />
+                                        {{tripDetails.partnerPhone ? tripDetails.partnerPhone : ""}}
+                                    </p>
+                                </div>
+                            </div>
+                        </nb-card-body>
+                        <nb-card-body>
+                            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                <div>
+                                    <p class="text-muted mb-2">{{'TRIPS.SERVICETYPE' | translate}}</p>
+                                    <strong>{{tripDetails.serviceTypeName}}</strong>
+                                </div>
+                                <div class="text-sm-end mt-4 mt-sm-0">
+                                    <p class="text-muted mb-2">{{'TRIPS.VEHICELNO' | translate}}</p>
+                                    <strong>{{tripDetails.partner.vehicleNo}}</strong>
+                                </div>
+                            </div>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                    <nb-card class="h-100 mb-0">
+                        <nb-card-body>
+                            <h5>{{'TRIPS.ESTIMATION' | translate}}</h5>
+                            <div>
+                                <p>{{tripDetails.scheduleOn | date: 'dd/MM/yyyy h:mm a'}}</p>
+                            </div>
+
+                            <div class="d-flex align-items-center flex-wrap bb-1">
+                                <div class="location-sec">
+                                    <div class="dot-hr"></div>
+                                    <div class="dot-vr d-sm-block d-none"></div>
+                                    <div class="Pickup-info d-flex flex-wrap align-items-start mb-5">
+                                        <img src="assets/images/pick.svg" />
+                                        <div class="line-ht mx-2">
+                                            <p class="xs-paragraph mb-0" nbTooltip="{{ tripDetails.estimation.start }}"
+                                                nbTooltipPlacement="bottom">{{ tripDetails.estimation.start }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="Pickup-info d-flex flex-wrap align-items-start ">
+                                        <img src="assets/images/drop.svg" />
+                                        <div class="line-ht mx-2">
+                                            <p class="xs-paragraph" nbTooltip="{{ tripDetails.estimation.end }}"
+                                                nbTooltipPlacement="bottom">{{ tripDetails.estimation.end }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between flex-wrap py-3">
+                                <div>
+                                    <p class="text-muted mb-2">{{'TRIPS.TOTAL' | translate}}</p>
+                                    <strong>{{fareDetails.currency}} {{fareDetails.actualcost_est}}</strong>
+                                </div>
+                                <div>
+                                    <p class="text-muted mb-2">{{'TRIPS.DISTANCE' | translate}}</p>
+                                    <strong>{{fareDetails.dist_est}} {{defaultUnit}}</strong>
+                                </div>
+                                <div class="">
+                                    <p class="text-muted mb-2">{{'TRIPS.TIME' | translate}}</p>
+                                    <strong>{{fareDetails.est_Time}} min</strong>
+                                </div>
+                                <div class="">
+                                    <p class="text-muted mb-2">{{'TRIPS.OTP' | translate}}</p>
+                                    <strong>{{tripDetails.customer.requestPin}}</strong>
+                                </div>
+                            </div>
+                            <div>
+                                <a class="more" (click)="viewestimate()">{{'TRIPS.VIEWMORE' | translate}}</a>
+                            </div>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+                <div class="col-lg-6" *ngIf="this.tripDetails.status === 'Finished'">
+                    <nb-card class="h-100 mb-0">
+                        <nb-card-body>
+                            <h5>{{'TRIPS.TRAVEL' | translate}}</h5>
+                            <div class="">
+                                <div class="location-sec bb-1">
+                                    <div class="dot-hr"></div>
+                                    <div class="dot-vr d-sm-block d-none"></div>
+                                    <div class="Pickup-info d-flex flex-wrap align-items-start mb-5">
+                                        <img src="assets/images/pick.svg" />
+                                        <div class="line-ht mx-2">
+                                            <p class="xs-paragraph mb-0" nbTooltip="{{ tripDetails.invoice.start }}"
+                                                nbTooltipPlacement="bottom">{{ tripDetails.invoice.start }}</p>
+                                            <p class="mb-0 xs-paragraph fw-bold">{{tripDetails.partner.startTime | date: 'dd/MM/yyyy h:mm a'}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="Pickup-info d-flex flex-wrap align-items-start ">
+                                        <img src="assets/images/drop.svg" />
+                                        <div class="line-ht mx-2">
+                                            <p class="xs-paragraph mb-0" nbTooltip="{{ tripDetails.invoice.end }}"
+                                                nbTooltipPlacement="bottom">{{ tripDetails.invoice.end }}</p>
+                                            <p class="xs-paragraph fw-bold">{{tripDetails.partner.endTime | date: 'dd/MM/yyyy h:mm a'}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between flex-wrap py-3">
+                                    <div>
+                                        <p class="text-muted mb-2">{{'TRIPS.TOTAL' | translate}}</p>
+                                        <strong>
+                                            {{fareDetails.currency}} {{fareDetails.actualcost}}
+                                        </strong>
+                                    </div>
+                                    <div>
+                                        <p class="text-muted mb-2">{{'TRIPS.DISTANCE' | translate}}</p>
+                                        <strong>{{fareDetails.distance}} {{defaultUnit}}</strong>
+                                    </div>
+                                    <div class="">
+                                        <p class="text-muted mb-2">{{'TRIPS.TIME' | translate}}</p>
+                                        <strong>{{fareDetails.estTime}} min</strong>
+                                    </div>
+                                </div>
+                                <div>
+                                    <a class="more" (click)="viewInvoice()">{{'TRIPS.VIEWMORE' | translate}}</a>
+                                </div>
+                            </div>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+            </div>
+            <nb-card *ngIf="this.tripDetails.status === 'Finished'">
+                <nb-card-header>
+                    {{'TRIPS.FEEDBACK' | translate}}
+                </nb-card-header>
+                <nb-card-body>
+                <div *ngIf="tripDetails.partner.rating > 0">
+                    <h6>{{'TRIPS.BY' | translate}}: {{commentBypartner}}</h6>
+                    <p *ngIf="partnerrating">Rating: {{partnerrating}}</p>
+                    <p>Review: {{partnercomment}}</p>
+                </div>
+                <div *ngIf="tripDetails.customer.rating > 0">
+                    <h6>{{'TRIPS.BY' | translate}}: {{commentBycustomer}}</h6>
+                    <p *ngIf="customerrating">Rating: {{customerrating}}</p>
+                    <p>Review: {{customercomment}}</p>
+                </div>
+                </nb-card-body>
+            </nb-card>
+            <nb-card *ngIf="cancelReason">
+                <nb-card-header>
+                    {{'TRIPS.CANCELLATION' | translate}}
+                </nb-card-header>
+                <nb-card-body>
+                    <h6>{{'TRIPS.BY' | translate}}: {{canceledBy}}</h6>
+                    <p>{{'TRIPS.REASON' | translate}}: {{cancelReason}}</p>
+                </nb-card-body>
+            </nb-card>
+            <nb-card>
+                <nb-card-header>
+                    {{'TRIPS.REQUESTED_PARTNER' | translate}}
+                </nb-card-header>
+                <nb-card-body>
+                    <table class="table table-borderless table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th>{{'TRIPS.PARTNER_CODE' | translate}}</th>
+                                <th>{{'TRIPS.CURRENT_SERVICE' | translate}}</th>
+                                <th>{{'TRIPS.STATUS' | translate}}</th>
+                                <th>{{'TRIPS.DISTANCE' | translate}} *({{defaultUnit}})</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let drv of driverDetails" border="1">
+                                <td>{{drv.partnerUniCode}}</td>
+                                <td>{{drv.serviceTypeName}}</td>
+                                <td>{{drv.status}}</td>
+                                <td>{{(drv.distance / 1000).toFixed(3)}} KM</td>
+                            </tr>
+                            <tr *ngIf="driverDetails.length === 0">
+                                <td colspan="7">No data found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </nb-card-body>
+            </nb-card>
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ng-template class="dialogBox" #EstimateDialog let-data let-ref="dialogRef">
+    <nb-card>
+        <nb-card-header>
+            <div class="d-flex justify-content-between flex-wrap align-items-center">
+                <div>
+                    {{'TRIPS.ESTIMATION_SUMMARY' | translate}}
+                </div>
+                <div class="">
+                    <button (click)="ref.close()" nbButton ghost status="danger">
+                        <nb-icon icon="close-outline"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body *ngIf="showFareFor === 'DAILY' || this.showFareFor === 'daily'">
+            <!-- <nb-card-body> -->
+            <table class="table table-borderless table-hover invoice-table">
+                <thead>
+                    <th>{{'TRIPS.NO' | translate}}.</th>
+                    <th>{{'TRIPS.ITEM' | translate}}</th>
+                    <th>{{'TRIPS.ESTIMATION' | translate}}</th>
+                    <th>{{'TRIPS.TOTAL' | translate}}</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="order font-weight-bold border-0"></td>
+                        <td class="border-0">{{'ESTIMATION.FARETYPE' | translate}}</td>
+                        <td class="border-0">-</td>
+                        <td class="border-0">{{fareDetails.fareType_est | uppercase }}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.DISTANCE_FARE' | translate}}</td>
+                        <td>{{fareDetails.dist_est}} {{defaultUnit}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.distfare_est}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.BASE_FARE' | translate}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.base_est}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.base_est}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.BOOKING_FARE' | translate}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.booking_est}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.booking_est}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.WAITING_CHARGE' | translate}}</td>
+                        <!-- <td>{{fareDetails.currency}} {{fareDetails.waitingRate}}/Min *
+                            {{fareDetails.waitingTime}} Min</td> -->
+                            <td class="border-0">-</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.waitingCharge_est}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.TIME_FARE' | translate}}</td>
+                        <!-- <td>{{fareDetails.currency}} {{fareDetails.timeRate}}/Min * {{fareDetails.time}} Min
+                        </td> -->
+                        <td class="">{{fareDetails.est_Time}} Min</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.timefare_est}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.MINIMUM_FARE' | translate}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.minFareAdded_est}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.minFareAdded_est}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.TAX' | translate}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.tax_est}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.tax_est}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.SURGE_AMOUNT' | translate}}</td>
+                        <td>{{fareDetails.surgeReason}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.surgeAmt_est}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.DISCOUNT' | translate}}</td>
+                        <td>{{fareDetails.discountName}} - {{fareDetails.discountPercentage}}%</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.detect_est}} (-)</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-right font-weight-bold" colspan="3" scope="row">
+                            {{'ESTIMATION.SUBTOTAL' | translate}}
+                        </td>
+                        <td class="font-weight-bold" scope="row">
+                            {{fareDetails.currency}} {{fareDetails.cost_est}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right font-weight-bold border-0" colspan="3" scope="row">
+                            {{'ESTIMATION.TIPS' | translate}}
+                        </td>
+                        <td class="font-weight-bold border-0" scope="row">
+                            {{fareDetails.currency}} {{fareDetails.tips_est}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right font-weight-bold border-0" colspan="3" scope="row">
+                            {{'ESTIMATION.ROUND_OFF' | translate}}
+                        </td>
+                        <td class="font-weight-bold border-0" scope="row">
+                            {{fareDetails.currency}} {{fareDetails.roundOff_est}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right font-weight-bold border-0" colspan="3" scope="row">
+                            {{'ESTIMATION.TOTAL' | translate}}
+                        </td>
+                        <td class="font-weight-bold border-0" scope="row">
+                            {{fareDetails.currency}} {{fareDetails.actualcost_est}}
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <!-- </nb-card-body> -->
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ng-template class="dialogBox" #InvoiceDialog let-data let-ref="dialogRef">
+    <nb-card>
+        <nb-card-header>
+            <div class="d-flex justify-content-between flex-wrap align-items-center">
+                <div>
+                    {{'TRIPS.INVOICE_SUMMARY' | translate}}
+                </div>
+                <div class="">
+                    <button (click)="ref.close()" nbButton ghost status="danger">
+                        <nb-icon icon="close-outline"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body *ngIf="showFareFor === 'DAILY' || this.showFareFor === 'daily'">
+            <!-- <nb-card-body> -->
+            <table class="table table-borderless table-hover invoice-table">
+                <thead>
+                    <th>{{'TRIPS.NO' | translate}}.</th>
+                    <th>{{'TRIPS.ITEM' | translate}}</th>
+                    <th>{{'TRIPS.ESTIMATION' | translate}}</th>
+                    <th>{{'TRIPS.TOTAL' | translate}}</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="order font-weight-bold border-0"></td>
+                        <td class="border-0">{{'ESTIMATION.FARETYPE' | translate}}</td>
+                        <td class="border-0">-</td>
+                        <td class="border-0">{{fareDetails.fareType | uppercase }}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.DISTANCE_FARE' | translate}}</td>
+                        <td>{{fareDetails.distance}} {{defaultUnit}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.distfare}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.BASE_FARE' | translate}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.base}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.base}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.BOOKING_FARE' | translate}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.booking}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.booking}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.WAITING_CHARGE' | translate}}</td>
+                        <!-- <td>{{fareDetails.currency}} {{fareDetails.waitingRate}}/Min *
+                            {{fareDetails.waitingTime}} Min</td> -->
+                        <td class="border-0">-</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.waitingCharge}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.TIME_FARE' | translate}}</td>
+                        <!-- <td>{{fareDetails.currency}} {{fareDetails.timeRate}}/Min * {{fareDetails.time}} Min
+                        </td> -->
+                        <td class="">{{fareDetails.estTime}} Min</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.timefare}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.MINIMUM_FARE' | translate}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.minFareAdded}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.minFareAdded}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.TAX' | translate}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.tax}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.tax}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.SURGE_AMOUNT' | translate}}</td>
+                        <td>{{fareDetails.surgeReason}}</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.surgeAmt}}</td>
+                    </tr>
+                    <tr>
+                        <td class="order font-weight-bold"></td>
+                        <td>{{'ESTIMATION.DISCOUNT' | translate}}</td>
+                        <td>{{fareDetails.discountName}} - {{fareDetails.discountPercentage}}%</td>
+                        <td>{{fareDetails.currency}} {{fareDetails.detect}} (-)</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-right font-weight-bold" colspan="3" scope="row">
+                            {{'ESTIMATION.SUBTOTAL' | translate}}
+                        </td>
+                        <td class="font-weight-bold" scope="row">
+                            {{fareDetails.currency}} {{fareDetails.cost}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right font-weight-bold border-0" colspan="3" scope="row">
+                            {{'ESTIMATION.TIPS' | translate}}
+                        </td>
+                        <td class="font-weight-bold border-0" scope="row">
+                            {{fareDetails.currency}} {{fareDetails.tips}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right font-weight-bold border-0" colspan="3" scope="row">
+                            {{'ESTIMATION.ROUND_OFF' | translate}}
+                        </td>
+                        <td class="font-weight-bold border-0" scope="row">
+                            {{fareDetails.currency}} {{fareDetails.roundOff}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right font-weight-bold border-0" colspan="3" scope="row">
+                            {{'ESTIMATION.TOTAL' | translate}}
+                        </td>
+                        <td class="font-weight-bold border-0" scope="row">
+                            {{fareDetails.currency}} {{fareDetails.actualcost}}
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <!-- </nb-card-body> -->
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ng-template class="dialogBox" #cancelTripDialog let-data let-ref="dialogRef">
+    <nb-card>
+        <nb-card-header>
+            <div class="d-flex justify-content-between flex-wrap align-items-center">
+                <div>
+                    {{'TRIPS.CANCEL_TRIP' | translate}}
+                </div>
+                <div class="">
+                  <button (click)="ref.close()" nbButton ghost status="danger">
+                    <nb-icon icon="close-outline"></nb-icon>
+                  </button>
+                </div>
+              </div>
+        </nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="CancelTripForm" autocomplete="off">
+                <div class="form-group">
+                    <p><b>{{'TRIPS.AREYOU_CANCELTHETRIP' |
+                        translate}}</b></p>
+                    <label for="reason" class="label col-sm-3 col-form-label px-0">{{'TRIPS.REASON' |
+                        translate}}
+                        </label>
+                    <textarea rows="5" formControlName="reason" type="text" nbInput fullWidth id="reason"
+                    placeholder="{{'TRIPS.REASON' | translate}}"></textarea>
+                </div>
+            </form>
+        </nb-card-body>
+        <nb-card-footer>
+            <button (click)="canceledTrip()"  type="submit"
+            size="small" class="btn btn-primary">
+            {{'TRIPS.YES' | translate}}
+            </button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+
+<ng-template class="dialogBox" #ArrivelDialog let-data let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>
+          <div class="d-flex justify-content-between flex-wrap align-items-center">
+            <div>
+                {{'TRIPS.ARRIVED' | translate}}
+            </div>
+            <div class="">
+              <button (click)="ref.close()" nbButton ghost status="danger">
+                <nb-icon icon="close-outline"></nb-icon>
+              </button>
+            </div>
+          </div>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="ArrivedForm" autocomplete="off">
+          <div class="form-group">
+            <div>
+              <label for="ArrivelLocation" class="label col-form-label">{{'TRIPS.ARRIVED_LOCATION' | translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                  translate}}</span></label>
+                  <input id="ArrivelLocation" ngx-google-places-autocomplete  formControlName="ArrivelLocation" nbInput fullWidth placeholder="{{ 'COMMON.PICKUP_LOCATION' | translate }}"
+                  (onAddressChange)="OnhandleStartArrivelLocationChange($event)"  autocomplete="off" #searchBox1 />
+                  <div *ngIf="ArrivelLocation?.invalid && (ArrivelLocation?.dirty || ArrivelLocation?.touched)" class="alert-danger">
+                    <div *ngIf="ArrivelLocation.errors?.['required']">
+                      {{ 'ERRORS.ARRIVED_LOCATION_REQUIRED' | translate }}
+                    </div>
+                  </div>
+                  
+            </div>
+            <div>
+              <label for="ArrivelTime" class="label col-form-label">{{ 'COMMON.ARRIVEL_TIME' | translate }}</label>
+              <input nbInput fullWidth required placeholder="{{ 'COMMON.CLICK_TO_SELECT_TIME' | translate }}"
+              formControlName="ArrivelTime" name="ArrivelTime" 
+                [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" [min]="minDateTime">
+              <owl-date-time [pickerType]="'both'" [hour12Timer]="true" [min]="minDateTime" #dt2></owl-date-time>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button (click)="arrivedlocation()" [disabled]="!ArrivedForm.valid" type="submit"
+        size="small" class="btn btn-primary">
+        {{'TRIPS.ARRIVED' | translate}}
+        </button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+<ng-template class="dialogBox" #StartTripDialog let-data let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>
+          <div class="d-flex justify-content-between flex-wrap align-items-center">
+            <div>
+                {{'TRIPS.START_TRIP' | translate}}
+            </div>
+            <div class="">
+              <button (click)="ref.close()" nbButton ghost status="danger">
+                <nb-icon icon="close-outline"></nb-icon>
+              </button>
+            </div>
+          </div>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="StartTripForm" autocomplete="off">
+          <div class="form-group">
+            <div>
+              <label for="pickupLocation" class="label col-form-label">{{'COMMON.PICKUP_LOCATION' |
+                translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                  translate}}</span></label>
+                  <input id="pickupLocation" ngx-google-places-autocomplete  formControlName="pickupLocation" nbInput fullWidth placeholder="{{ 'COMMON.PICKUP_LOCATION' | translate }}"
+                  (onAddressChange)="handlePickupLocationChange($event)"  autocomplete="off" #searchBox1 />
+                  <div *ngIf="pickupLocation.invalid && (pickupLocation.dirty || pickupLocation.touched)" class="alert-danger">
+                    <div *ngIf="pickupLocation.errors?.['required']">
+                      {{ 'ERRORS.PICKUP_LOCATION_REQUIRED' | translate }}
+                    </div>
+                  </div>
+            </div>
+            <div>
+              <label for="startTime" class="label col-form-label">{{ 'COMMON.START_TIME' | translate }}</label>
+              <input nbInput fullWidth required placeholder="{{ 'COMMON.CLICK_TO_SELECT_TIME' | translate }}"
+              formControlName="startTime" name="startTime" 
+                [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" [min]="minDateTime">
+              <owl-date-time [pickerType]="'both'" [hour12Timer]="true" [min]="minDateTime" #dt2></owl-date-time>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button (click)="startATrip()" [disabled]="!StartTripForm.valid" type="submit"
+        size="small" class="btn btn-primary">
+        {{'TRIPS.START_TRIP' | translate}}
+        </button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+<ng-template class="dialogBox" #EndTripDialog let-data let-ref="dialogRef">
+    <nb-card>
+        <nb-card-header>
+            <div class="d-flex justify-content-between flex-wrap align-items-center">
+                <div>
+                    {{'TRIPS.END_TRIP' | translate}}
+                </div>
+                <div class="">
+                    <button (click)="ref.close()" nbButton ghost status="danger">
+                        <nb-icon icon="close-outline"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="EndTripForm" autocomplete="off">
+                <div class="form-group row">
+                    <div class="col-lg-6">
+                        <label for="pickupLocation" class="label col-form-label">{{ 'COMMON.PICKUP_LOCATION' | translate }} <span class="{{ 'COMMON.STARCLASS' | translate }}">{{ 'COMMON.STAR' | translate }}</span></label>
+                        <input id="pickupLocation" ngx-google-places-autocomplete  formControlName="pickupLocation" nbInput fullWidth placeholder="{{ 'COMMON.PICKUP_LOCATION' | translate }}"
+                        (onAddressChange)="handlePickupLocationChange($event)"  autocomplete="off" #searchBox1 />
+                        <div *ngIf="pickupLocation.invalid && (pickupLocation.dirty || pickupLocation.touched)" class="alert-danger">
+                          <div *ngIf="pickupLocation.errors?.['required']">
+                            {{ 'ERRORS.PICKUP_LOCATION_REQUIRED' | translate }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <label for="dropLocation" class="label col-form-label">{{ 'COMMON.DROP_LOCATION' | translate }} <span class="{{ 'COMMON.STARCLASS' | translate }}">{{ 'COMMON.STAR' | translate }}</span></label>
+                        <input id="dropLocation" ngx-google-places-autocomplete formControlName="dropLocation" nbInput fullWidth placeholder="{{ 'COMMON.DROP_LOCATION' | translate }}" 
+                        (onAddressChange)="handleDropLocationChange($event)" autocomplete="off" #searchBox2/>
+                        <div *ngIf="dropLocation.invalid && (dropLocation.dirty || dropLocation.touched)" class="alert-danger">
+                          <div *ngIf="dropLocation.errors?.['required']">
+                            {{ 'ERRORS.DROP_LOCATION_REQUIRED' | translate }}
+                          </div>
+                        </div>
+                      </div>
+                    <div class="col-lg-6">
+                        <label for="startTime" class="label col-form-label">{{ 'COMMON.START_TIME' | translate }}</label>
+                        <input nbInput fullWidth required placeholder="{{ 'COMMON.CLICK_TO_SELECT_TIME' | translate }}"
+                            formControlName="startTime" name="startTime" [owlDateTimeTrigger]="dt6" [owlDateTime]="dt6" style="color: rgb(0 0 0 / 76%);">
+                        <owl-date-time [pickerType]="'both'" [hour12Timer]="true" #dt6></owl-date-time>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="endTime" class="label col-form-label">{{ 'COMMON.END_TIME' | translate }}</label>
+                        <input nbInput fullWidth required placeholder="{{ 'COMMON.CLICK_TO_SELECT_TIME' | translate }}" formControlName="endTime"
+                            name="endTime" [min]="tripDetails.partner.startTime" [owlDateTimeTrigger]="dt5"
+                            [owlDateTime]="dt5">
+                        <owl-date-time [pickerType]="'both'" [hour12Timer]="true" #dt5></owl-date-time>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="distance" class="label col-form-label">{{ 'COMMON.TOTAL_TRIP_DISTANCE' | translate }} (
+                            {{defaultUnit}})</label>
+                        <input type="number" min="0" formControlName="distance" name="distance" nbInput fullWidth
+                            placeholder="{{ 'COMMON.TOTAL_TRIP_DISTANCE' | translate }} {{defaultUnit}}" nbInput fullWidth required />
+                    </div>
+                    <!-- <div class="col-lg-6">
+                        <label for="duration" class="label col-form-label">Total Trip Time (In Minutes)</label>
+                        <input type="number" min="0" formControlName="duration" name="duration"
+                            placeholder="Total Trip Time in Minutes" nbInput fullWidth required />
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="waitingSecond" class="label col-form-label">Total Trip Waiting Time (In
+                            Minutes)</label>
+                        <input type="number" min="0" formControlName="waitingSecond" name="waitingSecond"
+                            placeholder="Total Trip Waiting Time In Minutes" nbInput fullWidth required />
+                    </div> -->
+                </div>
+            </form>
+        </nb-card-body>
+        <nb-card-footer>
+            <button type="submit" class="btn btn-primary" nbButton size="small" status="info"
+                (click)="endATrip()">{{ 'COMMON.END_TRIP' | translate }}</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+
+<style>
+    .media-image {
+        height: 64px;
+        width: 64px;
+    }
+
+    .tripmap {
+        height: 300px;
+
+    }
+
+    .trip-loc td,
+    .trip-loc th {
+        border: none !important;
+    }
+
+    .fare-det {
+        border: 1px solid black;
+    }
+
+    .fare-det td {
+        border: none !important;
+    }
+
+    .totalFare:nth-child(1) {
+        width: 50%;
+        text-indent: 20%;
+        border: 1px solid black !important
+    }
+
+    .totalFare:nth-child(2) {
+        text-indent: 35%;
+        width: 50%;
+        border: 1px solid black !important
+    }
+
+    .fare-det td:nth-child(1) {
+        width: 50%;
+        text-indent: 20%;
+        border-right: 1px solid black !important
+    }
+
+    .fare-det td:nth-child(2) {
+        text-indent: 35%;
+        width: 50%
+    }
+
+    .invoice-table {
+        counter-reset: rowNumber;
+    }
+
+    .invoice-table tr {
+        counter-increment: rowNumber;
+    }
+
+    /* .invoice-table tr td:first-child::before {    */
+    .invoice-table tr td.order::before {
+        content: counter(rowNumber);
+        min-width: 1em;
+        margin-right: 0.5em;
+    }
+
+    /* .timeline {
+          width: 427px;
+          height: 154px;
+          padding-left: 25px;
+          padding-right: 25px;
+          left: 0px;
+          top: 0px;
+          position: absolute;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 20px;
+          display: inline-flex
+      }
+  
+      .timeline .duration {
+          width: 33.58px;
+          height: 154px;
+          text-align: center;
+          color: #787878;
+          font-size: 17px;
+          font-family: Cabify Circular;
+          font-weight: 450;
+          line-height: 20px;
+          word-wrap: break-word;
+      }
+  
+      .timeline .divider {
+          flex: 1 1 0;
+          align-self: stretch;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          display: inline-flex;
+      }
+  
+      .timeline .pointer-one {
+          width: 5px;
+          height: 5px;
+          left: 0px;
+          top: 15px;
+          position: absolute;
+          background: #909090;
+          border-radius: 15px;
+      }
+  
+      .timeline .pointer-two {
+          width: 5px;
+          height: 5px;
+          left: 0px;
+          top: 0px;
+          position: absolute;
+          background: #E5E7FA;
+          border-radius: 15px;
+      }
+  
+      .timeline .pointer-three {
+          width: 5px;
+          height: 5px;
+          left: 0px;
+          top: 30px;
+          position: absolute;
+          background: #3C3C3C;
+          border-radius: 15px;
+      }
+  
+      .timeline .marker-top {
+          width: 24px;
+          height: 24px;
+          padding-top: 5.06px;
+          padding-bottom: 3.07px;
+          padding-left: 3.06px;
+          padding-right: 5.09px;
+          left: 0px;
+          top: 0px;
+          position: absolute;
+          justify-content: center;
+          align-items: center;
+          display: inline-flex;
+      }
+  
+      .timeline .marker-bottom {
+          width: 24px;
+          height: 24px;
+          padding-top: 3px;
+          padding-bottom: 3px;
+          padding-left: 4.96px;
+          padding-right: 4.95px;
+          left: 0px;
+          top: 99px;
+          position: absolute;
+          justify-content: center;
+          align-items: center;
+          display: inline-flex
+      }
+  
+      .timeline .address-divider {
+          width: 263.59px;
+          height: 0px;
+          left: 0.35px;
+          top: 75.53px;
+          position: absolute;
+          opacity: 0.50;
+          border: 1px #ECEBED dotted;
+      }
+  
+      .timeline .address-one {
+          width: 258.25px;
+          height: 24px;
+          left: 0px;
+          top: 0px;
+          position: absolute;
+          color: #3C3C3C;
+          font-size: 17px;
+          font-family: Cabify Circular;
+          font-weight: 450;
+          line-height: 24px;
+          word-wrap: break-word;
+      }
+  
+      .timeline .address-two {
+          width: 278.11px;
+          height: 24px;
+          left: 1.52px;
+          top: 111px;
+          position: absolute;
+          color: #3C3C3C;
+          font-size: 17px;
+          font-family: Cabify Circular;
+          font-weight: 450;
+          line-height: 24px;
+          word-wrap: break-word;
+      }
+  
+      .timeline .distance {
+          width: 258.25px;
+          left: 0px;
+          top: 34px;
+          position: absolute;
+          color: #787878;
+          font-size: 15px;
+          font-family: Cabify Circular;
+          font-weight: 450;
+          line-height: 20px;
+          word-wrap: break-word;
+      } */
+
+    .timeline {
+        /* width: 427px; */
+        height: 150px;
+        display: flex;
+        align-self: stretch;
+        gap: 20px;
+    }
+
+    .timeline .duration {
+        text-align: center;
+        color: #787878;
+        font-size: 17px;
+        font-family: Cabify Circular;
+        line-height: 20px;
+        word-wrap: break-word;
+        display: flex;
+        align-items: center;
+    }
+
+    .timeline .pointer-one {
+        width: 5px;
+        height: 5px;
+        background: #909090;
+        border-radius: 15px;
+    }
+
+    .timeline .pointer-two {
+        width: 5px;
+        height: 5px;
+        background: #E5E7FA;
+        border-radius: 15px;
+    }
+
+    .timeline .pointer-three {
+        width: 5px;
+        height: 5px;
+        background: #3C3C3C;
+        border-radius: 15px;
+    }
+
+    .timeline .marker-top {
+        width: 15px;
+        height: 15px;
+    }
+
+    .timeline .marker-bottom {
+        width: 15px;
+        height: 15px;
+    }
+
+    .timeline .address-divider {
+        width: 263.59px;
+        height: 1px;
+        opacity: 0.50;
+        border: 1px #ECEBED dotted;
+    }
+</style>

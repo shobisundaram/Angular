@@ -1,0 +1,140 @@
+<!-- <p>add-drivertaxi works!</p> -->
+<div class="col-md-12">
+    <nb-card>
+        <nb-card-header>
+            <div class="row align-items-baseline">
+                <div class="col-md-.5">
+                    <button (click)="goBackBtn()" nbButton ghost status="danger">
+                        <nb-icon icon="arrow-back-outline"></nb-icon>
+                    </button>
+                </div>
+                <div class="col-md-11" *ngIf="!driverTaxiForm.get('id').value">{{'DRIVER.ADDDRIVERTAXI' | translate}}
+                </div>
+                <div class="col-md-11" *ngIf="driverTaxiForm.get('id').value">{{'DRIVER.EDITDRIVERTAXI' | translate}}
+                </div>
+                <div class="col-md-.5" *ngIf="driverTaxiForm.get('id').value">
+                    <button nbButton ghost status="primary" [nbContextMenu]="items">
+                        <nb-icon icon="more-vertical"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="driverTaxiForm" autocomplete="off">
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="title" class="label col-sm-3 col-form-label">{{'COMMON.NAME' |
+                            translate}}</label>
+                        <input formControlName="name" type="text" nbInput fullWidth id="name"
+                            placeholder="{{'COMMON.NAME' | translate}}" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="title" class="label col-sm-5 col-form-label">{{'VEHICLEADD.VEHICLENO/LICENCEPLATENO'
+                            | translate}}
+                            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <input formControlName="regno" type="text" nbInput fullWidth id="regno"
+                            placeholder="{{'VEHICLEADD.VEHICLENO/LICENCEPLATENO' | translate}}" />
+                        <div *ngIf="regno.invalid && (regno.dirty || regno.touched)" class="alert-danger">
+                            <div *ngIf="regno.errors?.['required']">
+                                {{'ERRORS.VEHICLENO/LICENCEPLATENO_REQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="title" class="label col-sm-3 col-form-label">{{'MAKE.MAKE_NAME' |
+                            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <ng-select fullWidth formControlName="make" id="make"
+                            placeholder="{{'MAKE.SELECT_MAKE_NAME' | translate}}" (change)="getModel($event)">
+                            <ng-option *ngFor="let option of makes" [value]="option._id">{{option.name}}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="make.invalid && (make.dirty || make.touched)" class="alert-danger">
+                            <div *ngIf="make.errors?.['required']">
+                                {{'ERRORS.MAKE_NAME_REQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="title" class="label col-sm-3 col-form-label">{{'MODEL.MODEL_NAME' | translate}}
+                            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <ng-select fullWidth formControlName="model" id="model"
+                            placeholder="{{'MODEL.SELECT_MODEL_NAME' | translate}}">
+                            <ng-option *ngFor="let option of models" [value]="option._id">{{option.name}}</ng-option>
+                        </ng-select>
+                        <div *ngIf="model.invalid && (model.dirty || model.touched)" class="alert-danger">
+                            <div *ngIf="model.errors?.['required']">
+                                {{'ERRORS.MODEL_NAME_REQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="title" class="label col-sm-5 col-form-label">{{'VEHICLEADD.VEHICLE/SERVICETYPE' |
+                            translate}}
+                            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <ng-select fullWidth formControlName="servicetype" id="servicetype"
+                            placeholder="{{'VEHICLEADD.SELECT_VEHICLE/SERVICETYPE' | translate}}">
+                            <ng-option *ngFor="let option of servicetypes" [value]="option._id">{{option.name}}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="servicetype.invalid && (servicetype.dirty || servicetype.touched)"
+                            class="alert-danger">
+                            <div *ngIf="servicetype.errors?.['required']">
+                                {{'ERRORS.VEHICLE/SERVICETYPE_REQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="title" class="label col-sm-5 col-form-label">{{'COMMON.COLOR'
+                            | translate}}
+                            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <input formControlName="color" type="text" nbInput fullWidth id="color"
+                            placeholder="{{'COMMON.COLOR' | translate}}" />
+                        <div *ngIf="color.invalid && (color.dirty || color.touched)" class="alert-danger">
+                            <div *ngIf="color.errors?.['required']">
+                                {{'ERRORS.COLOR_REQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="title" class="label col-sm-5 col-form-label">{{'COMMON.YEAR' |
+                            translate}}
+                            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <ng-select fullWidth formControlName="year" id="year"
+                            placeholder="{{'COMMON.YEAR' | translate}}">
+                            <ng-option *ngFor="let option of years" [value]="option">{{option}}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="year.invalid && (year.dirty || year.touched)" class="alert-danger">
+                            <div *ngIf="year.errors?.['required']">
+                                {{'ERRORS.YEARREQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- <pre>
+          {{ driverTaxiForm.value | json }}
+        </pre> -->
+        </nb-card-body>
+        <nb-card-footer>
+            <div class="form-group row">
+                <div [ngClass]="driverTaxiForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+                    <button fullWidth type="submit" nbButton status="success" (click)="addOrEditDriverTaxi()">
+                        <span *ngIf="driverTaxiForm.get('id').value">
+                            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                        </span>
+                        <span *ngIf="!driverTaxiForm.get('id').value">
+                            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer>
+    </nb-card>
+</div>

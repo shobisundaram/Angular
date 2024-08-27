@@ -1,0 +1,9 @@
+::ng-deep .ng-dropdown-panel {
+  position: fixed;
+  z-index: 9999;
+
+}
+
+::ng-deep nb-card {
+  overflow: visible;
+}

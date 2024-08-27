@@ -1,0 +1,609 @@
+<!-- <p>add-driver works!</p> -->
+
+<nb-card>
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="card-headers">
+        <button *ngIf="showBackButton" nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+          (click)="goBackBtn()" nbButton ghost status="danger">
+          <nb-icon icon="arrow-back-outline"></nb-icon>
+        </button>
+        <div *ngIf="!driverForm.get('id').value">{{'DRIVER.ADDDRIVER' | translate}}</div>
+        <div *ngIf="driverForm.get('id').value">{{'DRIVER.EDITDRIVER' | translate}} | {{
+          driverForm.get('driverCode').value }}
+          <span>
+            <nb-icon icon="alert-circle" class="warning-color" *ngIf="driverStatus === 'Pending'"></nb-icon>
+            <nb-icon icon="checkmark-circle-2" class="success-color" *ngIf="driverStatus === 'Active'">
+            </nb-icon>
+            <nb-icon icon="close-circle" class="danger-color" *ngIf="driverStatus === 'Inactive'"></nb-icon>
+          </span>
+        </div>
+      </div>
+      <div *ngIf="driverForm.get('id').value">
+        <button (mouseover)="driverActions(driverStatus)" nbButton ghost status="primary" [nbContextMenu]="items">
+          <nb-icon icon="more-vertical"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="driverForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="title" class="label col-form-label">{{'COMMON.FIRSTNAME' | translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <input formControlName="fname" type="text" nbInput fullWidth id="fname"
+            placeholder="{{'COMMON.FIRSTNAME' | translate}}" />
+          <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="alert-danger">
+            <div *ngIf="fname.errors?.['required']">
+              {{'ERRORS.FIRSTNAMEREQUIRED' | translate}}
+            </div>
+            <div *ngIf="fname.errors?.['pattern']">
+              {{'ERRORS.TEXTALONEALLOWED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <!-- <div class="form-group row"> -->
+          <label for="image" class="label col-form-label">{{'COMMON.IMAGE' | translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <input type="file" nbInput fullWidth id="image" (change)="onChange($event.target.files)"
+            placeholder="{{'COMMON.IMAGE' | translate}}">
+          <div *ngIf="image.invalid && (image.dirty || image.touched)" class="alert-danger">
+            <div *ngIf="image.errors?.['required']">
+              {{'ERRORS.IMAGEREQUIRED' | translate}}
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+        <div class="col-md-6">
+          <label for="lname" class="label col-form-label">{{'COMMON.LASTNAME' | translate}} <span
+              class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span>
+          </label>
+          <input formControlName="lname" type="text" nbInput fullWidth id="lname"
+            placeholder="{{'COMMON.LASTNAME' | translate}}" />
+          <div *ngIf="lname.invalid && (lname.dirty || lname.touched)" class="alert-danger">
+            <div *ngIf="lname.errors?.['required']">
+              {{'ERRORS.LASTNAMEREQUIRED' | translate}}
+            </div>
+            <div *ngIf="lname.errors?.['pattern']">
+              {{'ERRORS.TEXTALONEALLOWED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-md-6">
+              <!-- <div class="form-group row"> -->
+              <label for="image" class="label col-form-label">{{'COMMON.IMAGEPREVIEW' |
+                translate}} </label>
+              <div class="col-sm-9">
+                <img [src]="driverForm.value.image" class="fileImageForForm" />
+              </div>
+              <!-- </div> -->
+            </div>
+            <div class="col-md-6">
+              <label for="title" class="label col-form-label">{{'COMMON.GENDER' |
+                translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                  translate}}</span></label>
+              <nb-radio-group formControlName="gender" id="gender">
+                <nb-radio *ngFor="let option of genders" [disabled]="option.disabled" [value]="option.value">
+                  {{ option.label }}
+                </nb-radio>
+              </nb-radio-group>
+              <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="alert-danger">
+                <div *ngIf="gender.errors?.['required']">
+                  {{'ERRORS.GENDERREQUIRED' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label for="title" class="label col-form-label">{{'COMMON.PHONECODE' | translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <ng-select fullWidth formControlName="phoneCode" id="phoneCode"
+            placeholder="{{'COMMON.SELECTPHONECODE' | translate}}">
+            <ng-option *ngFor="let option of phoneCodes" [value]="option.phonecode">{{option.phonecode}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="phoneCode.invalid && (phoneCode.dirty || phoneCode.touched)" class="alert-danger">
+            <div *ngIf="phoneCode.errors?.['required']">
+              {{'ERRORS.PHONECODEREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="title" class="label col-form-label">{{'COMMON.PHONENO' | translate}} <span
+              class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+          <input formControlName="phone" type="text" nbInput fullWidth id="phone"
+            placeholder="{{'COMMON.PHONENO' | translate}}" />
+          <!-- (change)="phoneValidation()" -->
+          <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert-danger">
+            <div *ngIf="phone.errors?.['required']">
+              {{'ERRORS.PHONENOREQUIRED' | translate}}
+            </div>
+            <div *ngIf="phone.errors?.['minlength'] || phone.errors?.['maxlength'] || phone.errors?.['pattern']">
+              {{'ERRORS.PHONENOVALIDATION' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="title" class="label col-form-label">{{'COMMON.EMAIL' | translate}} <span
+              class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+          <input formControlName="email" type="text" nbInput fullWidth id="email"
+            placeholder="{{'COMMON.EMAIL' | translate}}" />
+          <!-- (change)="emailValidation($event.target.value)" -->
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert-danger">
+            <div *ngIf="email.errors?.['required']">
+              {{'ERRORS.EMAILREQUIRED' | translate}}
+            </div>
+            <div *ngIf="email.errors?.['email']">
+              {{'ERRORS.EMAILVALIDATION' | translate}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 inner-addon" *ngIf="!driverForm.get('id').value">
+          <label for="password" class="label col-form-label">{{'COMMON.PASSWORD' | translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+          <div class="input-group">
+
+            <input formControlName="password" [type]="showPassword ? 'text' : 'password'" nbInput fullWidth
+              id="password" placeholder="{{'COMMON.PASSWORD' | translate}}" />
+            <div>
+              <i alt="show" class="far fa-eye eye-show" (click)="showPassword = !showPassword"
+                [class.passwordHide]="showPassword"></i>
+              <i alt="hide" class="far fa-eye-slash eye-hide" (click)="showPassword = !showPassword"
+                [class.passwordHide]="!showPassword"></i>
+            </div>
+
+          </div>
+          <div *ngIf="driverForm.invalid && (password.dirty || password.touched)" class="alert-danger">
+            <div *ngIf="password.errors?.['required']">
+              {{'ERRORS.PASSWORDREQUIRED' | translate}}
+            </div>
+            <div *ngIf="driverForm.get('password').errors?.pattern">
+              {{'ERRORS.PASSWORDPATTERN' | translate}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="!driverForm.get('id').value">
+          <label for="confirmPassword" class="label col-form-label">{{'COMMON.CONFIRMPASSWORD' |
+            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <input formControlName="confirmPassword" type="password" nbInput fullWidth id="confirmPassword"
+            placeholder="{{'COMMON.CONFIRMPASSWORD' | translate}}"
+            [readonly]="driverForm.controls.password.status == 'VALID' ? false : true" />
+          <div
+            *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched) && (driverForm.controls.password.status == 'VALID')"
+            class="alert-danger">
+            <div *ngIf="confirmPassword.errors?.['required']">
+              {{'ERRORS.CONFIRMPASSWORDREQUIRED' | translate}}
+            </div>
+            <!-- *ngIf="passwordForm.controls['confirmPassword'].pristine || passwordForm.controls['confirmPassword'].errors?.['MatchPassword']" -->
+            <div *ngIf="driverForm.controls['confirmPassword'].errors?.['MatchPassword']">
+              {{'ERRORS.CONFIRMPASSWORDMISSMATCH' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="title" class="label col-form-label">{{'COMMON.CURRENCY' |
+            translate}}</label>
+          <ng-select fullWidth formControlName="currency" id="currency"
+            placeholder="{{'COMMON.SELECTCURRENCY' | translate}}">
+            <ng-option *ngFor="let option of currencys" [value]="option.value">{{option.label}}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6">
+          <label for="title" class="label col-form-label">{{'COMMON.LANGUAGE' |
+            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <ng-select fullWidth formControlName="language" id="language"
+            placeholder="{{'COMMON.SELECTLANGUAGE' | translate}}">
+            <ng-option *ngFor="let option of languages" [value]="option.value">{{option.label}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="language.invalid && (language.dirty || language.touched)" class="alert-danger">
+            <div *ngIf="language.errors?.['required']">
+              {{'ERRORS.LANGUAGEREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="title" class="label col-form-label">{{'COMMON.COUNTRY' |
+            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <ng-select fullWidth formControlName="country" id="country"
+            placeholder="{{'COMMON.SELECTCOUNTRY' | translate}}" (change)="getState($event)">
+            <ng-option *ngFor="let option of countrys" [value]="option._id">{{option.name}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="country.invalid && (country.dirty || country.touched)" class="alert-danger">
+            <div *ngIf="country.errors?.['required']">
+              {{'ERRORS.COUNTRYREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="title" class="label col-form-label">{{'COMMON.STATE' | translate}} <span
+              class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+          <ng-select fullWidth formControlName="state" id="state" placeholder="{{'COMMON.SELECTSTATE' | translate}}"
+            (change)="getCity($event)">
+            <ng-option *ngFor="let option of states" [value]="option._id">{{option.name}}</ng-option>
+          </ng-select>
+          <div *ngIf="state.invalid && (state.dirty || state.touched)" class="alert-danger">
+            <div *ngIf="state.errors?.['required']">
+              {{'ERRORS.STATEREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="title" class="label col-form-label">{{'COMMON.CITY' | translate}} <span
+              class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+          <ng-select fullWidth formControlName="city" id="city" placeholder="{{'COMMON.SELECTCITY' | translate}}">
+            <ng-option *ngFor="let option of cities" [value]="option._id">{{option.name}}</ng-option>
+          </ng-select>
+          <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert-danger">
+            <div *ngIf="city.errors?.['required']">
+              {{'ERRORS.CITYREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="serviceCity" class="label col-form-label">{{'COMMON.SERVICEAVAILABLECITY' |
+            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <ng-select fullWidth formControlName="serviceCity" id="serviceCity"
+            placeholder="{{'COMMON.SELECTSERVICEAVAILABLECITY' | translate}}">
+            <ng-option *ngFor="let option of serviceAvailableCities" [value]="option._id">
+              {{option.name}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="serviceCity.invalid && (serviceCity.dirty || serviceCity.touched)" class="alert-danger">
+            <div *ngIf="serviceCity.errors?.['required']">
+              {{'ERRORS.SERVICEAVAILABLECITYREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <!-- {{driverForm.get('phone').errors | json}} -->
+      </div>
+    </form>
+    <!-- <pre>
+          {{ driverForm.value | json }}
+        </pre> -->
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="form-group row">
+      <div [ngClass]="driverForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+        <button fullWidth type="submit" nbButton status="success" (click)="addOrEditDriver()">
+          <span *ngIf="driverForm.get('id').value">
+            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+          </span>
+          <span *ngIf="!driverForm.get('id').value">
+            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+          </span>
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<div *ngIf="driverForm.get('id').value">
+  <nb-card>
+    <nb-card-header>
+      <div class="col-md-12">{{'COMMON.DOCUMENTS' | translate}}</div>
+    </nb-card-header>
+    <nb-card-body>
+
+      <nb-accordion multi>
+        <nb-accordion-item *ngFor="let data of needDocuments">
+          <nb-accordion-item-header>
+            <div class="row w-100">
+              <div class="col-md-11">
+                {{data.name}}
+                <nb-icon icon="alert-circle" class="warning-color"
+                  *ngIf="data.status === 'pending' || data.status === 'needAction'">
+                </nb-icon>
+                <nb-icon icon="checkmark-circle-2" class="success-color" *ngIf="data.status === 'approved'"></nb-icon>
+                <nb-icon icon="close-circle" class="danger-color" *ngIf="data.status === 'rejected'">
+                </nb-icon>
+                <nb-icon *ngIf="data.expired" icon="alert-triangle-outline" nbTooltip="Expired" nbTooltipStatus="danger"
+                  nbTooltipPlacement="bottom" class="danger-color"></nb-icon>
+              </div>
+              <div class="col-md-1">
+                <button (click)="$event.stopPropagation()" (mouseover)="documentActions(data.status, data.isUploaded)"
+                  nbButton ghost status="primary" nbContextMenuTag="{{data.indexName}}" [nbContextMenu]="documentItems"
+                  nbContextMenuTrigger="hover">
+                  <nb-icon icon="more-vertical"></nb-icon>
+                </button>
+              </div>
+            </div>
+          </nb-accordion-item-header>
+          <nb-accordion-item-body *ngFor="let innerData of data.fields;let i = index">
+            <div class="row">
+              <div class="col-md-3">
+                <label class="label col-form-label nbtabset_side_title">{{ innerData.name }}</label>
+              </div>
+              <div class="col-md-4" *ngIf="innerData.type == 'image'">
+                <a href="{{ innerData.value }}" target="_blank" style="cursor: pointer; color: #3366ff"
+                  *ngIf="!innerData.value == '' || undefined">{{'COMMON.VIEW' | translate}}</a>
+                <a *ngIf="innerData.value == '' || undefined">---</a>
+              </div>
+              <div class="col-md-4" *ngIf="innerData.type == 'date'">
+                <a *ngIf="!innerData.value == '' || undefined">{{ innerData.value| date: 'dd/MM/yyyy' }}</a>
+                <a *ngIf="innerData.value == '' || undefined">---</a>
+              </div>
+              <div class="col-md-4" *ngIf="innerData.type == 'string'">
+                <a *ngIf="!innerData.value == '' || undefined">{{ innerData.value }}</a>
+                <a *ngIf="innerData.value == '' || undefined">---</a>
+              </div>
+            </div>
+          </nb-accordion-item-body>
+        </nb-accordion-item>
+      </nb-accordion>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<div *ngIf="driverForm.get('id').value">
+  <nb-card>
+    <nb-card-header>
+      <div class="row align-items-baseline">
+        <!-- <div class="col-md-.5">
+                    <button nbButton ghost status="danger">
+                        <nb-icon icon="arrow-back-outline"></nb-icon>
+                    </button>
+                </div> -->
+        <div class="col-md-11">{{'VEHICLEADD.DRIVERTAXIS' | translate}} : {{ driverForm.value.fname }}</div>
+        <div class="col-md-1 menubutton">
+          <button nbButton ghost status="primary" [nbContextMenu]="driverItems">
+            <nb-icon icon="more-vertical"></nb-icon>
+          </button>
+        </div>
+      </div>
+    </nb-card-header>
+    <nb-card-body>
+      <ng-container>
+        <!-- <table class="table table-bordered" style="text-align: center">
+                    <tr>
+                        <th>{{'VEHICLEADD.ACTION' | translate}}</th>
+                        <th>{{'VEHICLEADD.CARMAKE' | translate}}</th>
+                        <th>{{'VEHICLEADD.VEHICLE/SERVICETYPE' | translate}}</th>
+                        <th>{{'VEHICLEADD.STATUS' | translate}}</th>
+                    </tr>
+                    <pre>
+                        {{ driverForm.value | json}}
+                    </pre>
+                    <tr *ngFor="let taxi of driverForm.get('selectedTaxis').value; let i = index">
+                        <td>
+                            <a (click)="makeDetails(taxi, i)" style="cursor: pointer; color: red">
+                                {{'COMMON.EDIT' | translate}}
+                            </a>
+                        </td>
+                        <td>{{ taxi.makename }}</td>
+                        <td>{{ taxi.vehicletype }}</td>
+                        <td>{{ taxi.taxistatus }}</td>
+                    </tr>
+                    <tr *ngIf="driverForm.get('selectedTaxis').value.length === 0">
+                        <td colspan="4">{{ 'VEHICLEADD.NODATAFOUND' | translate}}</td>
+                    </tr>
+                </table> -->
+        <ng2-smart-table [settings]="settings" [source]="source" (edit)="onEdit($event.data)">
+        </ng2-smart-table>
+      </ng-container>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+  <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>
+
+<ng-template class="dialogBox" #ChangePasswordDialog let-data let-ref="dialogRef">
+  <nb-card class="changePasswordDialogBox">
+    <nb-card-header>
+      <div class="row align-items-baseline">
+        <div class="col-md-11">{{'COMMON.RESETPASSWORD' | translate}}</div>
+      </div>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="changePasswordForm" autocomplete="off">
+
+        <div class="form-group row">
+          <div class="col-md-12 inner-addon">
+            <div class="row">
+              <div class="col-md-3">
+                <label for="newPassword" class="label col-form-label">{{'COMMON.NEWPASSWORD' |
+                  translate}}
+                  <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                    translate}}</span></label>
+
+                <!-- <input class="col-md-9" formControlName="newPassword" type="password" nbInput fullWidth id="newPassword"
+                            placeholder="{{'COMMON.NEWPASSWORD' | translate}}" /> -->
+              </div>
+
+              <div class="col-md-9">
+                <div class="input-group">
+                  <input formControlName="newPassword" [type]="showPassword ? 'text' : 'password'" nbInput fullWidth
+                    id="newPassword" placeholder="{{'COMMON.NEWPASSWORD' | translate}}" />
+                  <div>
+                    <i alt="show" class="far fa-eye eye-show" (click)="showPassword = !showPassword"
+                      [class.passwordHide]="showPassword"></i>
+                    <i alt="hide" class="far fa-eye-slash eye-hide" (click)="showPassword = !showPassword"
+                      [class.passwordHide]="!showPassword"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)" class="alert-danger">
+                <div *ngIf="newPassword.errors?.['required']">
+                  {{'ERRORS.NEWPASSWORDREQUIRED' | translate}}
+                </div>
+                <!-- <div *ngIf="newPassword.errors?.['minlength']">
+                          {{'ERRORS.PASSWORDVALIDATION' | translate}}
+                        </div> -->
+                <div *ngIf="changePasswordForm.get('newPassword').errors?.pattern">
+                  {{'ERRORS.PASSWORDPATTERN' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-3">
+                <label for="confirmNewPassword" class="label col-form-label">{{'COMMON.CONFIRMPASSWORD'
+                  |
+                  translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                    translate}}</span></label>
+              </div>
+
+              <div class="col-md-9">
+                <input formControlName="confirmNewPassword" type="password" nbInput fullWidth id="confirmNewPassword"
+                  placeholder="{{'COMMON.CONFIRMPASSWORD' | translate}}"
+                  [readonly]="changePasswordForm.controls.newPassword.status == 'VALID' ? false : true" />
+              </div>
+
+              <div
+                *ngIf="confirmNewPassword.invalid && (confirmNewPassword.dirty || confirmNewPassword.touched) && (changePasswordForm.controls.newPassword.status == 'VALID')"
+                class="alert-danger">
+                <div *ngIf="confirmNewPassword.errors?.['required']">
+                  {{'ERRORS.CONFIRMPASSWORDREQUIRED' | translate}}
+                </div>
+                <!-- *ngIf="passwordForm.controls['confirmPassword'].pristine || passwordForm.controls['confirmPassword'].errors?.['MatchPassword']" -->
+                <div *ngIf="changePasswordForm.controls['confirmNewPassword'].errors?.['NewMatchPassword']">
+                  {{'ERRORS.CONFIRMPASSWORDMISSMATCH' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <div class="row">
+        <div [ngClass]="'offset-sm-8 col-sm-2'">
+          <button fullWidth type="submit" nbButton status="success" (click)="ChangePassword()">
+            <span>
+              <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+            </span>
+          </button>
+        </div>
+        <div [ngClass]="'offset-sm-0 col-sm-2'">
+          <button fullWidth type="submit" nbButton status="danger" (click)="ref.close()">
+            <span>
+              <nb-icon icon="close-outline"></nb-icon> {{'COMMON.CLOSEBTN' | translate}}
+            </span>
+          </button>
+        </div>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template class="dialogBox" #DocumentUpdateDialog let-data let-ref="dialogRef">
+  <nb-card class="documentUpdateDialogBox">
+    <nb-card-header>
+      <div class="row align-items-baseline">
+        <div class="col-md-10">{{data.name}}</div>
+        <div class="col-md-1">
+          <button (click)="ref.close()" nbButton ghost status="danger">
+            <nb-icon icon="close-outline"></nb-icon>
+          </button>
+        </div>
+      </div>
+    </nb-card-header>
+    <nb-card-body>
+      <form #driverDocumentUpdateForm="ngForm">
+        <div class="row" *ngFor="let sample of data.fields">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>{{sample.name}}</label>
+              <div *ngIf="sample.type == 'image'">
+                <input type="file" nbInput fullWidth id="sample.indexName" name="sample.indexName"
+                  (change)="onChangeForDriverDocumentUpload($event,sample.indexName,sample.type)"
+                  placeholder="{{'COMMON.IMAGE' | translate}}">
+              </div>
+              <div *ngIf="sample.type == 'date'">
+                <input nbInput fullWidth placeholder="Pick Date" [nbDatepicker]="dateTimePicker" id="sample.indexName"
+                  name="sample.indexName">
+                <nb-datepicker (dateChange)="onChangeForDriverDocumentUpload($event,sample.indexName,sample.type)"
+                  #dateTimePicker [min]="minDate"></nb-datepicker>
+                <!-- <input nbInput fullWidth placeholder="Pick Date" id="sample.indexName"
+                                    name="sample.indexName" [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1" />
+                                <owl-date-time
+                                    (dateChange)="onChangeForDriverDocumentUpload($event,sample.indexName,sample.type)"
+                                    [pickerType]="'timer'" #dt1></owl-date-time> -->
+              </div>
+              <div *ngIf="sample.type == 'string'">
+                <input type="text" nbInput fullWidth id="sample.indexName" name="sample.indexName"
+                  (change)="onChangeForDriverDocumentUpload($event.target.value,sample.indexName,sample.type)"
+                  placeholder="{{sample.name}}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="submit" nbButton status="success" class="float-right" (click)="driverDocumentUpdate()">
+            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+          </button>
+        </div>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template class="dialogBox" #DriverDocumentRejectDialog let-data let-ref="dialogRef">
+  <nb-card class="documentUpdateDialogBox">
+    <nb-card-header>
+      <div class="row align-items-baseline">
+        <div class="col-md-10">{{'DRIVER.DRIVERDOCUMENTDECLINE' | translate}}</div>
+        <div class="col-md-1">
+          <button (click)="ref.close()" nbButton ghost status="danger">
+            <nb-icon icon="close-outline"></nb-icon>
+          </button>
+        </div>
+      </div>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="driverDocumentRejectForm" autocomplete="off">
+        <div class="form-group row">
+          <div class="col-md-12">
+            <label for="reason" class="label col-sm-3 col-form-label">{{'DRIVER.REASON' |
+              translate}}
+              <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                translate}}</span></label>
+            <textarea rows="5" formControlName="reason" type="text" nbInput fullWidth id="reason"
+              placeholder="{{'DRIVER.REASON' | translate}}"></textarea>
+            <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="alert-danger">
+              <div *ngIf="reason.errors?.['required']">
+                {{'ERRORS.REASONREQUIRED' | translate}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="submit" nbButton status="success" class="float-right" (click)="driverDocumentRejectFunction()">
+            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+          </button>
+        </div>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

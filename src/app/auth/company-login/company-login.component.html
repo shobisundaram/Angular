@@ -1,0 +1,60 @@
+<div class="row">
+    <nb-layout-column class="col-lg-6">
+      <img src="assets/theme/account/login.svg" class="img-fluid" alt="" width="500" height="500">
+    </nb-layout-column>
+    <nb-layout-column class="col-lg-6">
+      <nb-alert *ngIf="loginStatus == 'success'" outline="success" role="alert">
+        <p class="alert-title"><b>Hooray!</b></p>
+        <ul class="alert-message-list">
+          <li class="alert-message">{{ loginStatusMessage }}</li>
+        </ul>
+      </nb-alert>
+  
+      <nb-alert *ngIf="loginStatus == 'error'" outline="danger" role="alert">
+        <p class="alert-title"><b>Oh snap!</b></p>
+        <ul class="alert-message-list">
+          <li class="alert-message">{{ loginStatusMessage }}</li>
+        </ul>
+      </nb-alert>
+  
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <h3 class="tx-color-01 mg-b-5">Log In</h3>
+        <p class="tx-color-03 tx-16 mg-b-40">Welcome back! Please login to continue.</p>
+        <!-- <nb-alert>
+          <p class="alert-title"><b>Demo Credentials!</b></p>
+          <ul class="alert-message-list">
+            <li class="alert-message">Email : <strong>{{demoEmail}}</strong></li>
+            <li class="alert-message">Password : <strong>{{demoPassword}}</strong></li>
+          </ul>
+        </nb-alert> -->
+        <div class="form-control-group">
+          <label>Email address</label>
+          <input nbInput fullWidth name="email" id="input-email" class="form-control" pattern=".+@.+\..+"
+            placeholder="Email address" fieldSize="large" type="email" autofocus formControlName="email"
+            autocomplete="false" />
+          <ng-container *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.touched">
+            <p class="caption status-danger" *ngIf="loginForm.controls.email.errors?.required">
+              Email is required!
+            </p>
+            <p class="caption status-danger" *ngIf="loginForm.controls.email.errors?.pattern">
+              Email should be the real one!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-control-group">
+          <div class="d-flex justify-content-between mg-b-5">
+            <label class="mg-b-0-f">Password</label>
+            <a routerLink="forget-password" class="tx-13">Forgot password?</a>
+          </div>
+          <input nbInput fullWidth name="password" class="form-control" type="password" id="input-password"
+            placeholder="Password" fieldSize="large" formControlName="password" autocomplete="false" />
+          <ng-container *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">
+            <p class="caption status-danger" *ngIf="loginForm.controls.password.errors?.required">
+              Password is required!
+            </p>
+          </ng-container>
+        </div>
+        <button nbButton fullWidth status="primary" size="large" [disabled]="loginForm.invalid">Sign In</button>
+      </form>
+    </nb-layout-column>
+  </div>

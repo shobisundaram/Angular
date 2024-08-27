@@ -1,0 +1,179 @@
+<!-- <p>view-driver-subscription works!</p> -->
+<ng-template [ngIf]="initial == 0">
+    <nb-card>
+        <nb-card-header>
+            <div class="card-headers">
+                <div class="">
+                    {{'PACKAGELIST.PARTNER_PURCHASED_SUBSCRIPTION_TABLE' | translate}}
+                </div>
+                <div class="">
+                    <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary"
+                        nbTooltipPlacement="bottom" (click)="initialTableDataRender()" nbButton ghost status="primary">
+                        <nb-icon icon="sync-outline"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <ng2-smart-table [settings]="settings" [source]="source" (create)="onAdd($event, 1, 'allDriver')"
+                (edit)="onEdit($event.data, 1, 'particularDriver')" (userRowSelect)="onRowSelect($event)"
+                *ngIf="source ">
+            </ng2-smart-table>
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ng-template [ngIf]="initial == 1">
+    <nb-card>
+        <nb-card-header>
+            <div class="card-headers">
+                <div class="card-headers">
+                    <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger"
+                        nbTooltipPlacement="bottom" (click)="initialValueChange(0)" nbButton ghost status="danger">
+                        <nb-icon icon="arrow-back-outline"></nb-icon>
+                    </button>
+                    <div class="" *ngIf="packageFor === 'allDriver'">{{'PACKAGELIST.ACTIVE_PACKAGE' | translate}}
+                    </div>
+                    <div class="" *ngIf="packageFor === 'particularDriver'">{{'PACKAGELIST.ACTIVE_PACKAGE' |
+                        translate}} | {{partnerCode}}</div>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="driverSubscriptionForm" autocomplete="off">
+                <div class="form-group row" *ngIf="packageFor === 'allDriver'">
+                    <label for="title" class="label col-sm-3 col-form-label">{{'PACKAGELIST.CHOOSE_PARTNER' |
+                        translate}}<span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ng-select fullWidth formControlName="partnerId" id="partnerId"
+                            placeholder="{{'DRIVER.DRIVER' | translate}}">
+                            <ng-option *ngFor="let option of partners" [value]="option._id">{{option.uniCode}},
+                                {{option.fname}}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="partnerId.invalid && (partnerId.dirty || partnerId.touched)" class="alert-danger">
+                            <div *ngIf="partnerId.errors?.['required']">
+                                {{'ERRORS.DRIVERREQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="packageFor === 'particularDriver'">
+                    <label for="title" class="label col-sm-3 col-form-label">{{'PACKAGELIST.CHOOSE_PARTNER' |
+                        translate}}<span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ng-select fullWidth formControlName="partnerId" id="partnerId"
+                            placeholder="{{'DRIVER.DRIVER' | translate}}">
+                            <ng-option *ngFor="let option of partners" [value]="option._id">{{option.uniCode}},
+                                {{option.fname}}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="partnerId.invalid && (partnerId.dirty || partnerId.touched)" class="alert-danger">
+                            <div *ngIf="partnerId.errors?.['required']">
+                                {{'ERRORS.DRIVERREQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="driverSubscriptionForm.get('partnerId').value">
+                    <label for="title" class="label col-sm-3 col-form-label">{{'PACKAGELIST.CHOOSEPACKAGETYPE' |
+                        translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ng-select fullWidth formControlName="packageType" id="packageType"
+                            placeholder="{{'PACKAGELIST.CHOOSEPACKAGETYPE' | translate}}" (change)="getPackageDate()">
+                            <ng-option *ngFor="let option of packageTypeDropDownData" [value]="option">{{option |
+                                titlecase}}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="packageType.invalid && (packageType.dirty || packageType.touched)"
+                            class="alert-danger">
+                            <div *ngIf="packageType.errors?.['required']">
+                                {{'ERRORS.PACKAGETYPEREQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="driverSubscriptionForm.get('packageType').value">
+                    <label for="title" class="label col-sm-3 col-form-label">{{'PACKAGELIST.CHOOSEPACKAGE' |
+                        translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ng-select fullWidth formControlName="package" id="package"
+                            placeholder="{{'PACKAGELIST.CHOOSEPACKAGE' | translate}}">
+                            <ng-option *ngFor="let option of packageDropDownData" [value]="option._id">
+                                {{option.name}}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="package.invalid && (package.dirty || package.touched)" class="alert-danger">
+                            <div *ngIf="package.errors?.['required']">
+                                {{'ERRORS.PACKAGEREQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="driverSubscriptionForm.get('packageType').value">
+                    <label for="purchaseDate" class="label col-sm-3 col-form-label">{{'COMMON.PURCHASE_DATE' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <div class="col-sm-9">
+                        <input formControlName="purchaseDate" type="" nbInput fullWidth id="purchaseDate"
+                            placeholder="{{'COMMON.CLICK_TO_SELECT_DATE' | translate}}" [nbDatepicker]="dt2" required
+                            readonly>
+                        <nb-datepicker #dt2></nb-datepicker>
+                        <div *ngIf="purchaseDate.invalid && (purchaseDate.dirty || purchaseDate.touched)"
+                            class="alert-danger">
+                            <div *ngIf="purchaseDate.errors?.['required']">
+                                {{'ERRORS.PURCHASE_DATE_REQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </nb-card-body>
+        <nb-card-footer>
+            <div class="form-group row">
+                <div class="offset-sm-0 col-sm-2">
+                    <button fullWidth type="submit" nbButton status="success" (click)="addDriverSubscription()">
+                        <span>
+                            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+
+<ng-template [ngIf]="initial == 2">
+    <nb-card>
+        <nb-card-header>
+            <div class="card-headers">
+                <div class="card-headers">
+                    <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger"
+                        nbTooltipPlacement="bottom" (click)="initialValueChange(0)" nbButton ghost status="danger">
+                        <nb-icon icon="arrow-back-outline"></nb-icon>
+                    </button>
+                    <div class="">
+                        {{'PACKAGELIST.SUBSCRIBEDPACKAGES' | translate}} | {{subscribedDriverData.uniCode}} |
+                        {{subscribedDriverData.fname}} {{subscribedDriverData.lname}} | {{subscribedDriverData.phone}}
+                    </div>
+                </div>
+                <div class="">
+                    <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary"
+                        nbTooltipPlacement="bottom" (click)="initialTableDataRender1()" nbButton ghost status="primary">
+                        <nb-icon icon="sync-outline"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <ng2-smart-table [settings]="settings1" [source]="source1" *ngIf="source1">
+            </ng2-smart-table>
+        </nb-card-body>
+    </nb-card>
+</ng-template>

@@ -1,0 +1,133 @@
+<div class="row">
+    <div class="col-lg-9">
+        <nb-card>
+            <nb-card-header>
+                <div class="row align-items-baseline">
+                    <div class="col-md-.5">
+                        <button (click)="goBackBtn()" nbButton ghost status="danger">
+                            <nb-icon icon="arrow-back-outline"></nb-icon>
+                        </button>
+                    </div>
+                    <div class="col-md-11">{{'DRIVERCREDITS.ADDDRIVERCREDDIT' | translate}}</div>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <form [formGroup]="partnerCreditForm" autocomplete="off">
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="transactionId" class="label col-form-label">{{'DRIVERCREDITS.TRANSACTIONID' |
+                                translate}}
+                                <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                    translate}}</span></label>
+                            <div class="input-group mb-3">
+                                <input nbInput type="text" formControlName="transactionId" name="transactionId"
+                                    placeholder="{{'DRIVERCREDITS.TRANSACTIONID' | translate}}"
+                                    class="form-control promocode-input" required id="transactionId" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button"
+                                        (click)="autoTransactionId()">{{'DRIVERCREDITS.GENERATE_TRANSACTIONID' |
+                                        translate}}</button>
+                                </div>
+                            </div>
+                            <div *ngIf="transactionId.invalid && (transactionId.dirty || transactionId.touched)"
+                                class="alert-danger">
+                                <div *ngIf="transactionId.errors?.['required']">
+                                    {{'ERRORS.TRANSACTIONID_REQUIRED' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="partner" class="label col-form-label">{{'DRIVER.SELECT_DRIVER' |
+                                translate}}<span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                    translate}}</span></label>
+                            <ng-select fullWidth formControlName="partner" id="partner"
+                                placeholder="{{'DRIVER.SELECT_DRIVER' | translate}}">
+                                <ng-option *ngFor="let option of partners" [value]="option._id">{{option.uniCode}} |
+                                    {{option.fname}}
+                                </ng-option>
+                            </ng-select>
+                            <div *ngIf="partner.invalid && (partner.dirty || partner.touched)" class="alert-danger">
+                                <div *ngIf="partner.errors?.['required']">
+                                    {{'ERRORS.DRIVERREQUIRED' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="amount" class="label col-form-label">{{'DRIVERCREDITS.AMOUNT' | translate}}
+                                <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                    translate}}</span></label>
+                            <input formControlName="amount" type="number" nbInput fullWidth id="amount"
+                                placeholder="{{'DRIVERCREDITS.AMOUNT' | translate}}" />
+                            <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="alert-danger">
+                                <div *ngIf="amount.errors?.['required']">
+                                    {{'ERRORS.AMOUNT_REQUIRED' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="title" class="label col-form-label">{{'DRIVERCREDITS.PAYMENTTYPE' | translate}}
+                                <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                    translate}}</span></label>
+                            <ng-select fullWidth formControlName="paymentType" id="paymentType"
+                                placeholder="{{'DRIVERCREDITS.SELECTPAYMENTTYPE' | translate}}">
+                                <ng-option *ngFor="let option of paymentTypeDropDownData" [value]="option">{{option |
+                                    titlecase}}
+                                </ng-option>
+                            </ng-select>
+                            <div *ngIf="paymentType.invalid && (paymentType.dirty || paymentType.touched)"
+                                class="alert-danger">
+                                <div *ngIf="paymentType.errors?.['required']">
+                                    {{'ERRORS.PAYMENTTYPE_REQUIRED' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="description" class="label col-form-label">{{'COMMON.DESCRIPTION' |
+                                translate}}
+                                <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                    translate}}</span></label>
+                            <textarea rows="5" formControlName="description" type="text" nbInput fullWidth
+                                id="description" placeholder="{{'COMMON.DESCRIPTION' | translate}}"></textarea>
+                            <div *ngIf="description.invalid && (description.dirty || description.touched)"
+                                class="alert-danger">
+                                <div *ngIf="description.errors?.['required']">
+                                    {{'ERRORS.DESCRIPTIONREQUIRED' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="paymentDate" class="label col-form-label">{{'DRIVERCREDITS.PAYMENTDATE' |
+                                translate}}<span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                    translate}}</span></label>
+                            <input formControlName="paymentDate" type="" nbInput fullWidth id="paymentDate"
+                                placeholder="{{'COMMON.CLICK_TO_SELECT_DATE' | translate}}" [nbDatepicker]="dt1"
+                                required readonly>
+                            <nb-datepicker #dt1></nb-datepicker>
+                            <div *ngIf="paymentDate.invalid && (paymentDate.dirty || paymentDate.touched)"
+                                class="alert-danger">
+                                <div *ngIf="paymentDate.errors?.['required']">
+                                    {{'ERRORS.PAYMENTDATE_REQUIRED' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- {{driverForm.get('phone').errors | json}} -->
+                </form>
+            </nb-card-body>
+            <nb-card-footer>
+                <div class="form-group row">
+                    <div [ngClass]="partnerCreditForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+                        <button fullWidth type="submit" nbButton status="success" (click)="addOrEditPartnerCredit()">
+                            <span *ngIf="partnerCreditForm.get('id').value">
+                                <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                            </span>
+                            <span *ngIf="!partnerCreditForm.get('id').value">
+                                <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </nb-card-footer>
+        </nb-card>
+    </div>
+</div>

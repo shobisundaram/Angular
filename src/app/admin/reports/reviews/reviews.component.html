@@ -1,0 +1,32 @@
+<nb-card>
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="">
+        {{'COMMON.REVIEWS' | translate}}
+      </div>
+      <div class="card-headers">
+        <div class="width-200">
+          <ng-select (change)="changeUserType($event)" placeholder="user Type" [clearable]="false" [searchable]="false" [(ngModel)]="selecteduserType">
+            <ng-option *ngFor="let option of userType" [value]="option.value">{{option.label}}
+            </ng-option>
+          </ng-select>
+        </div>
+        &nbsp;&nbsp;
+        <div class="width-200">
+          <ng-select (change)="changereportType($event)" placeholder="report Type" [clearable]="false" [searchable]="false" [(ngModel)]="selectedreportType">
+            <ng-option *ngFor="let option of reportType" [value]="option.value">{{option.label}}
+            </ng-option>
+          </ng-select>
+        </div>
+        <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary" nbTooltipPlacement="bottom"
+          (click)="refreshData()" nbButton ghost status="primary">
+          <nb-icon icon="sync-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

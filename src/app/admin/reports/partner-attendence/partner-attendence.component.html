@@ -1,0 +1,21 @@
+<!-- <p>partner-attendence works!</p> -->
+
+<nb-card>
+    <nb-card-header>
+        <div class="row align-items-baseline">
+            <div class="col-md-11">
+                {{'PARTNER_ATTENDENCE.PARTNER_ATTENDENCE_TABLE' | translate}}
+            </div>
+            <div class="col-md-1">
+                <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary"
+                    nbTooltipPlacement="bottom" (click)="initialTableDataRender()" nbButton ghost status="primary">
+                    <nb-icon icon="sync-outline"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="source">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

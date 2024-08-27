@@ -1,0 +1,12 @@
+.popup{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.icon{
+    color:var(--text-primary-color);
+    font-size: 60px;
+}
+.popup p{
+    font-size: 22px;
+}

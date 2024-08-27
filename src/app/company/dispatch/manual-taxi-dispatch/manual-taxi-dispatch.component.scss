@@ -1,0 +1,19 @@
+.ng-select1 {
+  width: 26%;
+}
+
+.show {
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.hide {
+  border-radius: 0.25rem 0.25rem 0 0;
+}
+tbody > tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.text-dec{
+  color: var(--link-text-color) !important;
+  text-decoration: underline !important;
+  cursor: pointer;
+}

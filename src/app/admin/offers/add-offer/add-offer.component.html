@@ -1,0 +1,188 @@
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="card-headers">
+                <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+                    (click)="goBackBtn()" nbButton ghost status="danger">
+                    <nb-icon icon="arrow-back-outline"></nb-icon>
+                </button>
+                <div class="" *ngIf="!offersForm.get('id').value">{{'OFFERS.ADDOFFER' | translate}}
+                </div>
+                <div class="" *ngIf="offersForm.get('id').value">{{'OFFERS.EDITOFFER' | translate}}
+                </div>
+            </div>
+            <div class="" *ngIf="offersForm.get('id').value">
+                <button nbButton ghost status="primary" [nbContextMenu]="items">
+                    <nb-icon icon="more-vertical"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+
+    <nb-card-body>
+        <form [formGroup]="offersForm" autocomplete="off">
+            <div class="form-group row">
+                <label for="service_available_city"
+                    class="label col-sm-3 col-form-label">{{'COMMON.SERVICEAVAILABLECITY'
+                    |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <div class="col-sm-9">
+                    <ng-select fullWidth formControlName="service_available_city" id="service_available_city"
+                        placeholder="{{'COMMON.SELECTSERVICEAVAILABLECITY' | translate}}" multiple="true">
+                        <ng-option *ngFor="let option of serviceAvailableCities" [value]="option._id">
+                            {{option.name}}
+                        </ng-option>
+                    </ng-select>
+                    <div *ngIf="service_available_city.invalid && (service_available_city.dirty || service_available_city.touched)"
+                        class="alert-danger">
+                        <div *ngIf="service_available_city.errors?.['required']">
+                            {{'ERRORS.SERVICEAVAILABLECITYREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="start" class="label col-sm-3 col-form-label">{{'COMMON.START_DATE' |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <div class="col-sm-9">
+                    <input formControlName="start" type="" nbInput fullWidth id="start"
+                        placeholder="{{'COMMON.CLICK_TO_SELECT_DATE' | translate}}"
+                        (ngModelChange)="logStartDate($event)" [nbDatepicker]="dt1" required readonly>
+                    <nb-datepicker #dt1></nb-datepicker>
+                    <div *ngIf="start.invalid && (start.dirty || start.touched)" class="alert-danger">
+                        <div *ngIf="start.errors?.['required']">
+                            {{'ERRORS.START_DATE_REQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="start.errors">
+                            {{'ERRORS.MINIMUMDATE' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="end" class="label col-sm-3 col-form-label">{{'COMMON.END_DATE'
+                    |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <div class="col-sm-9">
+                    <input formControlName="end" type="" nbInput fullWidth id="end"
+                        placeholder="{{'COMMON.CLICK_TO_SELECT_DATE' | translate}}" [nbDatepicker]="dt2" required
+                        readonly>
+                    <nb-datepicker #dt2></nb-datepicker>
+                    <div *ngIf="end.invalid && (end.dirty || end.touched)" class="alert-danger">
+                        <div *ngIf="end.errors?.['required']">
+                            {{'ERRORS.END_DATE_REQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="end.errors">
+                            {{'ERRORS.ENDMINIMUMDATE' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="title" class="label col-sm-3 col-form-label">{{'COMMON.TITLE' | translate}}
+                    <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <div class="col-sm-9">
+                    <input formControlName="title" type="text" nbInput fullWidth id="title"
+                        placeholder="{{'COMMON.TITLE' | translate}}" />
+                    <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert-danger">
+                        <div *ngIf="title.errors?.['required']">
+                            {{'ERRORS.TITLEREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="description" class="label col-sm-3 col-form-label">{{'COMMON.DESCRIPTION' | translate}}
+                    <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                <div class="col-sm-9">
+                    <textarea rows="5" formControlName="description" type="text" nbInput fullWidth id="description"
+                        placeholder="{{'COMMON.DESCRIPTION' | translate}}"></textarea>
+                    <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert-danger">
+                        <div *ngIf="description.errors?.['required']">
+                            {{'ERRORS.DESCRIPTIONREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="image" class="label col-sm-3 col-form-label">{{'OFFERS.OFFER_IMAGE' | translate}} <span
+                        class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                <div class="col-sm-4">
+                    <input type="file" nbInput fullWidth id="image" (change)="onChange($event.target.files)"
+                        placeholder="{{'OFFERS.OFFER_IMAGE' | translate}}">
+                    <div *ngIf="image.invalid && (image.dirty || image.touched)" class="alert-danger">
+                        <div *ngIf="image.errors?.['required']">
+                            {{'ERRORS.OFFER_IMAGE_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label for="image" class="label col-sm-3 col-form-label">{{'COMMON.IMAGEPREVIEW' |
+                        translate}} </label>
+                </div>
+                <div class="col-sm-3">
+                    <img [src]="offersForm.value.image" class="fileImageForForm" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="is_coupon" class="label col-sm-3 col-form-label">{{'OFFERS.IS_COUPON' |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <nb-radio-group formControlName="is_coupon" id="is_coupon">
+                    <nb-radio *ngFor="let option of zero_or_one" [disabled]="option.disabled" [value]="option.value">
+                        {{ option.label }}
+                    </nb-radio>
+                </nb-radio-group>
+                <div *ngIf="is_coupon.invalid && (is_coupon.dirty || is_coupon.touched)" class="alert-danger">
+                    <div *ngIf="is_coupon.errors?.['required']">
+                        {{'ERRORS.IS_COUPON_REQUIRED' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="offersForm.value.is_coupon === 1">
+                <label for="coupon" class="label col-sm-3 col-form-label">{{'OFFERS.COUPON'
+                    |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <div class="col-sm-9">
+                    <ng-select fullWidth formControlName="coupon" id="coupon"
+                        placeholder="{{'OFFERS.SELECTCOUPON' | translate}}">
+                        <ng-option *ngFor="let option of coupons" [value]="option._id">
+                            {{option.code}}
+                        </ng-option>
+                    </ng-select>
+                    <div *ngIf="coupon.invalid && (coupon.dirty || coupon.touched)" class="alert-danger">
+                        <div *ngIf="coupon.errors?.['required']">
+                            {{'ERRORS.COUPONREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- <pre>
+          {{ offersForm.value | json }}
+        </pre> -->
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="form-group row">
+            <div [ngClass]="offersForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+                <button fullWidth type="submit" nbButton status="success" (click)="addOrEditOffer()">
+                    <span *ngIf="offersForm.get('id').value">
+                        <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                    </span>
+                    <span *ngIf="!offersForm.get('id').value">
+                        <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+    <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>

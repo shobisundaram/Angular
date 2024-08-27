@@ -1,0 +1,109 @@
+<!-- <p>email-configuration works!</p> -->
+
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="card-headers">
+                <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+                    (click)="goBackBtn()" nbButton ghost status="danger">
+                    <nb-icon icon="arrow-back-outline"></nb-icon>
+                </button>
+            </div>
+            <div class="">{{'SETTINGS.EMAIL_GATEWAY' | translate}}</div>
+        </div>
+    </nb-card-header>
+</nb-card>
+
+<div class="row">
+    <div class="col-md-6 margin-top" *ngFor="let data of needEmailgateways">
+        <nb-card class="nb-card">
+            <nb-card-header>
+                <div class="row align-items-baseline">
+                    <div class="col-md-9">
+                        {{data.name}}
+                    </div>
+                    <div class="col-md-2">
+                        <button *ngIf="data.isActive === true" class="buttonUnClickable" nbButton shape="round"
+                            size="small" status="success">
+                            {{'SETTINGS.ACTIVE' | translate}}
+                        </button>
+                        <button *ngIf="data.isActive === false" class="buttonUnClickable" nbButton shape="round"
+                            size="small" status="danger">
+                            {{'SETTINGS.INACTIVE' | translate}}
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button (click)="$event.stopPropagation()" (mouseover)="emailActions(data.isActive)" nbButton
+                            ghost status="primary" nbContextMenuTag="{{data.indexName}}" [nbContextMenu]="emailItems"
+                            nbContextMenuTrigger="hover">
+                            <nb-icon icon="more-vertical"></nb-icon>
+                        </button>
+                    </div>
+                </div>
+            </nb-card-header>
+        </nb-card>
+    </div>
+</div>
+
+<ng-template class="dialogBox" #EmailUpdateDialog let-data let-ref="dialogRef">
+    <nb-card class="documentUpdateDialogBox">
+        <nb-card-header>
+            <div class="row align-items-baseline">
+                <div class="col-md-10">{{data.name}}</div>
+                <div class="col-md-1">
+                    <button (click)="ref.close()" nbButton ghost status="danger">
+                        <nb-icon icon="close-outline"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <form #emailConfigUpdateForm="ngForm">
+                <div class="row" *ngFor="let sample of data.fields">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>{{sample.name}}</label>
+                            <div *ngIf="sample.type == 'image'">
+                                <input type="file" nbInput fullWidth id="sample.indexName" name="sample.indexName"
+                                    (change)="onChangeForEmailConfig($event,sample.indexName,sample.type)"
+                                    placeholder="{{'COMMON.IMAGE' | translate}}">
+                            </div>
+                            <div *ngIf="sample.type == 'date'">
+                                <input nbInput fullWidth placeholder="Pick Date" [nbDatepicker]="dateTimePicker"
+                                    id="sample.indexName" name="sample.indexName">
+                                <nb-datepicker
+                                    (dateChange)="onChangeForEmailConfig($event,sample.indexName,sample.type)"
+                                    #dateTimePicker [min]="minDate"></nb-datepicker>
+                            </div>
+                            <div *ngIf="sample.type == 'string'">
+                                <input type="text" nbInput fullWidth id="{{sample.indexName}}"
+                                    name="{{sample.indexName}}" [(ngModel)]="sample.value"
+                                    (change)="onChangeForEmailConfig($event.target.value,sample.indexName,sample.type)"
+                                    placeholder="{{sample.value}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </nb-card-body>
+        <nb-card-footer>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" nbButton status="success" class="float-right" (click)="emailConfigUpdate()">
+                        <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+
+<ng-template class="dialogBox" #ActivationDialog let-data let-ref="dialogRef">
+    <nb-card>
+        <nb-card-body>
+            <div class="dialogBoxTitle">
+                <nb-icon icon="alert-circle-outline"></nb-icon> {{ data.data }}
+            </div>
+        </nb-card-body>
+    </nb-card>
+</ng-template>

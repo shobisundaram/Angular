@@ -1,0 +1,30 @@
+<!-- <p>all-trips works!</p> -->
+<!-- <ng-template [ngIf]="initial === 0"> -->
+<nb-card>
+    <nb-card-header>
+        <div class="row align-items-baseline">
+            <div class="col-md-11">
+                {{'TRIPS.TRIPSTABLE' | translate}}
+            </div>
+            <button nbTooltip="{{'COMMON.DOWMLOAD_REPORT' | translate}}" nbTooltipStatus="primary"
+                nbTooltipPlacement="bottom" (click)="downloadExcel()" nbButton ghost status="primary">
+                <nb-icon icon="cloud-download-outline"></nb-icon>
+            </button>
+            <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary"
+                nbTooltipPlacement="bottom" (click)="initialTableDataRender()" nbButton ghost status="primary">
+                <nb-icon icon="sync-outline"></nb-icon>
+            </button>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="source" (custom)="route($event)" *ngIf="source"
+            (edit)="onEdit($event.data)">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>
+<!-- </ng-template> -->
+
+<!-- <ng-template [ngIf]=" initial===1">
+    <ngx-invoice-details (backbtn)="goBack()" [fields]="getFields()">
+    </ngx-invoice-details>
+</ng-template> -->

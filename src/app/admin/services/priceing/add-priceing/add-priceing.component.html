@@ -1,0 +1,642 @@
+<nb-card>
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="card-headers">
+        <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+          (click)="goBackBtn()" nbButton ghost status="danger">
+          <nb-icon icon="arrow-back-outline"></nb-icon>
+        </button>
+        <div class="" *ngIf="!fareDetailsForm.get('id').value">{{'PRICING.ADDPRICING' | translate}}
+        </div>
+        <div class="" *ngIf="fareDetailsForm.get('id').value">{{'PRICING.EDITPRICING' | translate}}
+        </div>
+      </div>
+      <div class="" *ngIf="fareDetailsForm.get('id').value">
+        <button nbButton ghost status="primary" [nbContextMenu]="items">
+          <nb-icon icon="more-vertical"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="fareDetailsForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="servicetype" class="label col-form-label">{{'SERVICES.SERVICETYPE' |
+            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <ng-select fullWidth formControlName="servicetype" id="servicetype"
+            placeholder="{{'SERVICES.SERVICETYPE' | translate}}">
+            <ng-option *ngFor="let option of servicetypes" [value]="option._id">{{option.name}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="servicetype.invalid && (servicetype.dirty || servicetype.touched)" class="alert-danger">
+            <div *ngIf="servicetype.errors?.['required']">
+              {{'ERRORS.SERVICETYPEREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="serviceAvailableCities" class="label col-form-label">{{'COMMON.SERVICEAVAILABLECITY' |
+            translate}}<span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <ng-select fullWidth formControlName="serviceAvailableCities" id="serviceAvailableCities" multiple="true"
+            placeholder="{{'COMMON.SELECTSERVICEAVAILABLECITY' | translate}}">
+            <ng-option *ngFor="let option of serviceAvailableCitie" [value]="option._id">
+              {{option.name}}
+            </ng-option>
+          </ng-select>
+          <div
+            *ngIf="serviceAvailableCities.invalid && (serviceAvailableCities.dirty || serviceAvailableCities.touched)"
+            class="alert-danger">
+            <div *ngIf="serviceAvailableCities.errors?.['required']">
+              {{'ERRORS.SERVICEAVAILABLECITYREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="currency" class="label col-form-label">{{'COMMON.CURRENCYNAME' |
+            translate}}<span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <ng-select fullWidth formControlName="currency" id="currency"
+            placeholder="{{'COMMON.SELECTCURRENCY' | translate}}">
+            <ng-option *ngFor="let option of currencys" [value]="option._id">
+              {{option.name}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="currency.invalid && (currency.dirty || currency.touched)" class="alert-danger">
+            <div *ngIf="currency.errors?.['required']">
+              {{'ERRORS.CURRENCYREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="base_fee" class="label col-form-label">{{'PRICING.FARE_DETAILS.BASE_FEE' |
+            translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <input formControlName="base_fee" type="number" nbInput fullWidth id="base_fee"
+            placeholder="{{'PRICING.FARE_DETAILS.BASE_FEE' | translate}}" />
+          <div *ngIf="base_fee.invalid && (base_fee.dirty || base_fee.touched)" class="alert-danger">
+            <div *ngIf="base_fee.errors?.['required']">
+              {{'ERRORS.BASE_FEE_REQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="booking_fee" class="label col-form-label">{{'PRICING.FARE_DETAILS.BOOKING_FEE' |
+            translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <input formControlName="booking_fee" type="number" nbInput fullWidth id="booking_fee"
+            placeholder="{{'PRICING.FARE_DETAILS.BOOKING_FEE' | translate}}" />
+          <div *ngIf="booking_fee.invalid && (booking_fee.dirty || booking_fee.touched)" class="alert-danger">
+            <div *ngIf="booking_fee.errors?.['required']">
+              {{'ERRORS.BOOKING_FEE_REQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="minimum_fee" class="label col-form-label">{{'PRICING.FARE_DETAILS.MINIMUM_FEE' |
+            translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <input formControlName="minimum_fee" type="number" nbInput fullWidth id="minimum_fee"
+            placeholder="{{'PRICING.FARE_DETAILS.MINIMUM_FEE' | translate}}" />
+          <div *ngIf="minimum_fee.invalid && (minimum_fee.dirty || minimum_fee.touched)" class="alert-danger">
+            <div *ngIf="minimum_fee.errors?.['required']">
+              {{'ERRORS.MINIMUM_FEE_REQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="fareType" class="label col-form-label">{{'COMMON.FARETYPE' |
+            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <ng-select fullWidth formControlName="fareType" id="fareType"
+            placeholder="{{'COMMON.SELECTFARETYPE' | translate}}">
+            <ng-option *ngFor="let option of fareType0" [value]="option.value">{{option.label}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="fareType.invalid && (fareType.dirty || fareType.touched)" class="alert-danger">
+            <div *ngIf="fareType.errors?.['required']">
+              {{'ERRORS.FARETYPEREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="fareValue" class="label col-form-label">{{'PRICING.FARE_DETAILS.FARE_VALUE' |
+            translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <input formControlName="fareValue" type="number" nbInput fullWidth id="fareValue"
+            placeholder="{{'PRICING.FARE_DETAILS.FARE_VALUE' | translate}}" />
+          <div *ngIf="fareValue.invalid && (fareValue.dirty || fareValue.touched)" class="alert-danger">
+            <div *ngIf="fareValue.errors?.['required']">
+              {{'ERRORS.FARE_VALUE_REQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="time_min_rate_for_running"
+            class="label col-form-label">{{'PRICING.FARE_DETAILS.TIME_MIN_RATE_FOR_RUNNING' |
+            translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <input formControlName="time_min_rate_for_running" type="number" nbInput fullWidth
+            id="time_min_rate_for_running"
+            placeholder="{{'PRICING.FARE_DETAILS.TIME_MIN_RATE_FOR_RUNNING' | translate}}" />
+          <div
+            *ngIf="time_min_rate_for_running.invalid && (time_min_rate_for_running.dirty || time_min_rate_for_running.touched)"
+            class="alert-danger">
+            <div *ngIf="time_min_rate_for_running.errors?.['required']">
+              {{'ERRORS.TIME_MIN_RATE_FOR_RUNNING_REQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="commission" class="label col-form-label">{{'PRICING.FARE_DETAILS.COMMISSION' |
+            translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <input formControlName="commission" type="number" nbInput fullWidth id="commission"
+            placeholder="{{'PRICING.FARE_DETAILS.COMMISSION_PLACEHOLDER' | translate}}" />
+          <div *ngIf="commission.invalid && (commission.dirty || commission.touched)" class="alert-danger">
+            <div *ngIf="commission.errors?.['required']">
+              {{'ERRORS.COMMISSION_REQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- <pre>
+          {{ fareDetailsForm.value | json }}
+        </pre> -->
+  </nb-card-body>
+  <!-- <nb-card-footer *ngIf="fareDetailsForm.get('id').value">
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <button fullWidth type="submit" nbButton status="success" (click)="addOrEditService()">
+                        <span>
+                            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer> -->
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="row align-items-baseline">
+      <div class="col-md-12">{{'PRICING.DRIVER_CONVEYANCE.DRIVER_CONVEYANCE' | translate}}
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="driverConveyanceForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="is_conveyance_charge_needed"
+            class="label col-form-label">{{'PRICING.DRIVER_CONVEYANCE.IS_CONVEYANCE_CHARGE_NEEDED' |
+            translate}}</label>
+          <ng-select fullWidth formControlName="is_conveyance_charge_needed" id="is_conveyance_charge_needed"
+            placeholder="{{'PRICING.DRIVER_CONVEYANCE.IS_CONVEYANCE_CHARGE_NEEDED_PLACEHOLDER' | translate}}">
+            <ng-option *ngFor="let option of yesorno" [value]="option.value">
+              {{option.label}}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6">
+          <label for="conveyance_charge" class="label col-form-label">{{'PRICING.DRIVER_CONVEYANCE.CONVEYANCE_CHARGE' |
+            translate}}</label>
+          <input formControlName="conveyance_charge" type="number" nbInput fullWidth id="conveyance_charge"
+            placeholder="{{'PRICING.DRIVER_CONVEYANCE.CONVEYANCE_CHARGE' | translate}}" />
+        </div>
+      </div>
+    </form>
+    <!-- <pre>
+          {{ driverConveyanceForm.value | json }}
+        </pre> -->
+  </nb-card-body>
+  <!-- <nb-card-footer *ngIf="fareDetailsForm.get('id').value">
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <button fullWidth type="submit" nbButton status="success" (click)="addOrEditService()">
+                        <span>
+                            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer> -->
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="row align-items-baseline">
+      <div class="col-md-12">{{'PRICING.TAX_DETAILS.TAX_DETAILS' | translate}}
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="taxDetailsForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="is_tax_applicable" class="label col-form-label">{{'PRICING.TAX_DETAILS.IS_TAX_APPLICABLE' |
+            translate}}</label>
+          <ng-select fullWidth formControlName="is_tax_applicable" id="is_tax_applicable"
+            placeholder="{{'PRICING.TAX_DETAILS.IS_TAX_APPLICABLE' | translate}}">
+
+            <ng-option *ngFor="let option of yesorno" [value]="option.value">
+              {{option.label}}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6">
+          <label for="tax" class="label col-form-label">{{'PRICING.TAX_DETAILS.TAX' |
+            translate}}</label>
+          <input formControlName="tax" type="number" nbInput fullWidth id="tax"
+            placeholder="{{'PRICING.TAX_DETAILS.TAX_PLACEHOLDER' | translate}}" />
+        </div>
+      </div>
+    </form>
+    <!-- <pre>
+          {{ taxDetailsForm.value | json }}
+        </pre> -->
+  </nb-card-body>
+  <!-- <nb-card-footer *ngIf="fareDetailsForm.get('id').value">
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <button fullWidth type="submit" nbButton status="success" (click)="addOrEditService()">
+                        <span>
+                            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer> -->
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="row align-items-baseline">
+      <div class="col-md-12">{{'PRICING.CANCELLATION_DETAILS.CANCELLATION_DETAILS' | translate}}
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="cancellationDetailsForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="cancellation_charge_for_rider"
+            class="label col-form-label">{{'PRICING.CANCELLATION_DETAILS.CANCELLATION_CHARGE_FOR_RIDER'
+            |
+            translate}}</label>
+          <input formControlName="cancellation_charge_for_rider" type="number" nbInput fullWidth
+            id="cancellation_charge_for_rider"
+            placeholder="{{'PRICING.CANCELLATION_DETAILS.CANCELLATION_CHARGE_FOR_RIDER' | translate}}" />
+        </div>
+        <div class="col-md-6">
+          <label for="cancellation_charge_for_driver"
+            class="label col-form-label">{{'PRICING.CANCELLATION_DETAILS.CANCELLATION_CHARGE_FOR_DRIVER'
+            |
+            translate}}</label>
+          <input formControlName="cancellation_charge_for_driver" type="number" nbInput fullWidth
+            id="cancellation_charge_for_driver"
+            placeholder="{{'PRICING.CANCELLATION_DETAILS.CANCELLATION_CHARGE_FOR_DRIVER' | translate}}" />
+        </div>
+      </div>
+    </form>
+    <!-- <pre>
+          {{ cancellationDetailsForm.value | json }}
+        </pre> -->
+  </nb-card-body>
+  <!-- <nb-card-footer *ngIf="fareDetailsForm.get('id').value">
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <button fullWidth type="submit" nbButton status="success" (click)="addOrEditService()">
+                        <span>
+                            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer> -->
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="row align-items-baseline">
+      <div class="col-md-12">{{'PRICING.PEAK_HOUR_DETAILS.PEAK_HOUR_DETAILS' | translate}}
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-card>
+      <nb-card-header>
+        <div class="row align-items-baseline">
+          <div class="col-md-12">{{'PRICING.PEAK_HOUR_DETAILS.PEAK_HOUR_1' | translate}}
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="peakHourDetailsForm" autocomplete="off">
+          <div class="form-group row">
+            <div class="col-md-6">
+              <label for="peak_hour_1_start_time" class="label col-form-label">{{'PRICING.PEAK_HOUR_DETAILS.START_TIME'
+                |
+                translate}}</label>
+              <input formControlName="peak_hour_1_start_time" type="" nbInput fullWidth id="peak_hour_1_start_time"
+                placeholder="{{'PRICING.PEAK_HOUR_DETAILS.START_TIME' | translate}}" [nbTimepicker]="dt1" required>
+              <nb-timepicker #dt1></nb-timepicker>
+            </div>
+            <div class="col-md-6">
+              <label for="peak_hour_1_end_time" class="label col-form-label">{{'PRICING.PEAK_HOUR_DETAILS.END_TIME'
+                |
+                translate}}</label>
+              <input formControlName="peak_hour_1_end_time" type="" nbInput fullWidth id="peak_hour_1_end_time"
+                placeholder="{{'PRICING.PEAK_HOUR_DETAILS.END_TIME' | translate}}" [nbTimepicker]="dt2" required>
+              <nb-timepicker #dt2></nb-timepicker>
+            </div>
+            <div class="col-md-6">
+              <label for="peak_hour_1_fareType" class="label col-form-label">{{'COMMON.FARETYPE' |
+                translate}}</label>
+              <ng-select fullWidth formControlName="peak_hour_1_fareType" id="peak_hour_1_fareType"
+                placeholder="{{'COMMON.SELECTFARETYPE' | translate}}">
+                <ng-option *ngFor="let option of fareType1" [value]="option.value">{{option.label}}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-md-6">
+              <label for="peak_hour_1_increase_total_fare"
+                class="label col-form-label">{{'PRICING.PEAK_HOUR_DETAILS.INCREASE_IN_TOTAL_FARE'
+                |
+                translate}}</label>
+              <input formControlName="peak_hour_1_increase_total_fare" type="number" nbInput fullWidth
+                id="peak_hour_1_increase_total_fare"
+                placeholder="{{'PRICING.PEAK_HOUR_DETAILS.INCREASE_IN_TOTAL_FARE_PLACEHOLDER' | translate}}" />
+            </div>
+            <div class="col-md-6">
+              <label for="peak_hour_1_active_status" class="label col-form-label">{{'COMMON.ACTIVE_STATUS'
+                |
+                translate}}</label>
+              <ng-select fullWidth formControlName="peak_hour_1_active_status" id="peak_hour_1_active_status"
+                placeholder="{{'COMMON.SELECT_ACTIVE_STATUS' | translate}}">
+                <ng-option *ngFor="let option of status" [value]="option.value">{{option.label}}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card>
+      <nb-card-header>
+        <div class="row align-items-baseline">
+          <div class="col-md-12">{{'PRICING.PEAK_HOUR_DETAILS.PEAK_HOUR_2' | translate}}
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="peakHourDetailsForm" autocomplete="off">
+          <div class="form-group row">
+            <div class="col-md-6">
+              <label for="peak_hour_2_start_time" class="label col-form-label">{{'PRICING.PEAK_HOUR_DETAILS.START_TIME'
+                |
+                translate}}</label>
+              <input formControlName="peak_hour_2_start_time" type="" nbInput fullWidth id="peak_hour_2_start_time"
+                placeholder="{{'PRICING.PEAK_HOUR_DETAILS.START_TIME' | translate}}" [nbTimepicker]="dt3" required>
+              <nb-timepicker #dt3></nb-timepicker>
+            </div>
+            <div class="col-md-6">
+              <label for="peak_hour_2_end_time" class="label col-form-label">{{'PRICING.PEAK_HOUR_DETAILS.END_TIME'
+                |
+                translate}}</label>
+              <input formControlName="peak_hour_2_end_time" type="" nbInput fullWidth id="peak_hour_2_end_time"
+                placeholder="{{'PRICING.PEAK_HOUR_DETAILS.END_TIME' | translate}}" [nbTimepicker]="dt4" required>
+              <nb-timepicker #dt4></nb-timepicker>
+            </div>
+            <div class="col-md-6">
+              <label for="peak_hour_2_fareType" class="label col-form-label">{{'COMMON.FARETYPE' |
+                translate}}</label>
+              <ng-select fullWidth formControlName="peak_hour_2_fareType" id="peak_hour_2_fareType"
+                placeholder="{{'COMMON.SELECTFARETYPE' | translate}}">
+                <ng-option *ngFor="let option of fareType1" [value]="option.value">{{option.label}}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-md-6">
+              <label for="peak_hour_2_increase_total_fare"
+                class="label col-form-label">{{'PRICING.PEAK_HOUR_DETAILS.INCREASE_IN_TOTAL_FARE'
+                |
+                translate}}</label>
+              <input formControlName="peak_hour_2_increase_total_fare" type="number" nbInput fullWidth
+                id="peak_hour_2_increase_total_fare"
+                placeholder="{{'PRICING.PEAK_HOUR_DETAILS.INCREASE_IN_TOTAL_FARE_PLACEHOLDER' | translate}}" />
+            </div>
+            <div class="col-md-6">
+              <label for="peak_hour_2_active_status" class="label col-form-label">{{'COMMON.ACTIVE_STATUS'
+                |
+                translate}}</label>
+              <ng-select fullWidth formControlName="peak_hour_2_active_status" id="peak_hour_2_active_status"
+                placeholder="{{'COMMON.SELECT_ACTIVE_STATUS' | translate}}">
+                <ng-option *ngFor="let option of status" [value]="option.value">{{option.label}}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+    <!-- <pre>
+          {{ peakHourDetailsForm.value | json }}
+        </pre> -->
+  </nb-card-body>
+  <!-- <nb-card-footer *ngIf="fareDetailsForm.get('id').value">
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <button fullWidth type="submit" nbButton status="success" (click)="addOrEditService()">
+                        <span>
+                            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer> -->
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="row align-items-baseline">
+      <div class="col-md-12">{{'PRICING.NIGHT_HOUR_DETAILS.NIGHT_HOUR_DETAILS' | translate}}
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-card>
+      <nb-card-header>
+        <div class="row align-items-baseline">
+          <div class="col-md-12">{{'PRICING.NIGHT_HOUR_DETAILS.NIGHT_HOUR_1' | translate}}
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="nightHourDetailsForm" autocomplete="off">
+          <div class="form-group row">
+            <div class="col-md-6">
+              <label for="night_hour_start_time" class="label col-form-label">{{'PRICING.NIGHT_HOUR_DETAILS.START_TIME'
+                |
+                translate}}</label>
+              <input formControlName="night_hour_start_time" type="" nbInput fullWidth id="night_hour_start_time"
+                placeholder="{{'PRICING.NIGHT_HOUR_DETAILS.START_TIME' | translate}}" [nbTimepicker]="dt5" required>
+              <nb-timepicker #dt5></nb-timepicker>
+            </div>
+
+            <div class="col-md-6">
+              <label for="night_hour_end_time" class="label col-form-label">{{'PRICING.NIGHT_HOUR_DETAILS.END_TIME'
+                |
+                translate}}</label>
+              <input formControlName="night_hour_end_time" type="" nbInput fullWidth id="night_hour_end_time"
+                placeholder="{{'PRICING.NIGHT_HOUR_DETAILS.END_TIME' | translate}}" [nbTimepicker]="dt6" required>
+              <nb-timepicker #dt6></nb-timepicker>
+            </div>
+            <div class="col-md-6">
+              <label for="night_hour_fareType" class="label col-form-label">{{'COMMON.FARETYPE' |
+                translate}}</label>
+              <ng-select fullWidth formControlName="night_hour_fareType" id="night_hour_fareType"
+                placeholder="{{'COMMON.SELECTFARETYPE' | translate}}">
+                <ng-option *ngFor="let option of fareType1" [value]="option.value">{{option.label}}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-md-6">
+              <label for="night_hour_increase_total_fare"
+                class="label col-form-label">{{'PRICING.NIGHT_HOUR_DETAILS.INCREASE_IN_TOTAL_FARE'
+                |
+                translate}}</label>
+              <input formControlName="night_hour_increase_total_fare" type="number" nbInput fullWidth
+                id="night_hour_increase_total_fare"
+                placeholder="{{'PRICING.NIGHT_HOUR_DETAILS.INCREASE_IN_TOTAL_FARE_PLACEHOLDER' | translate}}" />
+            </div>
+            <div class="col-md-6">
+              <label for="night_hour_active_status" class="label col-form-label">{{'COMMON.ACTIVE_STATUS'
+                |
+                translate}}</label>
+              <ng-select fullWidth formControlName="night_hour_active_status" id="night_hour_active_status"
+                placeholder="{{'COMMON.SELECT_ACTIVE_STATUS' | translate}}">
+                <ng-option *ngFor="let option of status" [value]="option.value">{{option.label}}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+    <!-- <pre>
+          {{ peakHourDetailsForm.value | json }}
+        </pre> -->
+  </nb-card-body>
+  <!-- <nb-card-footer *ngIf="fareDetailsForm.get('id').value">
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <button fullWidth type="submit" nbButton status="success" (click)="addOrEditService()">
+                        <span>
+                            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer> -->
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="row align-items-baseline">
+      <div class="col-md-12">{{'PRICING.WAITING_TIME_DETAILS.WAITING_TIME_DETAILS' | translate}}
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="waitingTimeDetailsForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="is_waiting_time_charge_applicable"
+            class="label col-form-label">{{'PRICING.WAITING_TIME_DETAILS.IS_WAITING_TIME_CHARGE_APPLICABLE'
+            |
+            translate}}</label>
+          <ng-select fullWidth formControlName="is_waiting_time_charge_applicable"
+            id="is_waiting_time_charge_applicable"
+            placeholder="{{'PRICING.WAITING_TIME_DETAILS.IS_WAITING_TIME_CHARGE_APPLICABLE' | translate}}">
+            <ng-option *ngFor="let option of yesorno" [value]="option.value">
+              {{option.label}}
+            </ng-option>
+          </ng-select>
+        </div>
+        <!-- <div class="col-md-6">
+                        <label for="is_waiting_charge_before_trip_start_applicable"
+                            class="label col-form-label">{{'PRICING.WAITING_TIME_DETAILS.IS_WAITING_CHARGE_BEFORE_TRIP_START_APPLICABLE'
+                            |
+                            translate}}</label>
+                        <ng-select fullWidth formControlName="is_waiting_charge_before_trip_start_applicable"
+                            id="is_waiting_charge_before_trip_start_applicable"
+                            placeholder="{{'PRICING.WAITING_TIME_DETAILS.IS_WAITING_CHARGE_BEFORE_TRIP_START_APPLICABLE' | translate}}">
+                            <ng-option *ngFor="let option of yesorno" [value]="option.value">
+                                {{option.label}}
+                            </ng-option>
+                        </ng-select>
+                    </div> -->
+        <div class="col-md-6">
+          <label for="how_much_time" class="label col-form-label">{{'PRICING.WAITING_TIME_DETAILS.HOW_MUCH_TIME' |
+            translate}}</label>
+          <input formControlName="how_much_time" type="number" nbInput fullWidth id="how_much_time" placeholder="" />
+        </div>
+        <!-- <div class="col-md-6">
+                        <label for="minimum_waiting_time_before_trip_start"
+                            class="label col-form-label">{{'PRICING.WAITING_TIME_DETAILS.MINIMUM_WAITING_TIME_BEFORE_TRIP_START'
+                            |
+                            translate}}</label>
+                        <input formControlName="minimum_waiting_time_before_trip_start" type="number" nbInput fullWidth
+                            id="minimum_waiting_time_before_trip_start" placeholder="" />
+                    </div> -->
+        <div class="col-md-6">
+          <label for="how_much_charge" class="label col-form-label">{{'PRICING.WAITING_TIME_DETAILS.HOW_MUCH_CHARGE' |
+            translate}}</label>
+          <input formControlName="how_much_charge" type="number" nbInput fullWidth id="how_much_charge"
+            placeholder="" />
+        </div>
+        <!-- <div class="col-md-6">
+                        <label for="waiting_rate"
+                            class="label col-form-label">{{'PRICING.WAITING_TIME_DETAILS.WAITING_RATE' |
+                            translate}}</label>
+                        <input formControlName="waiting_rate" type="number" nbInput fullWidth id="waiting_rate"
+                            placeholder="" />
+                    </div> -->
+      </div>
+    </form>
+    <!-- <pre>
+          {{ waitingTimeDetailsForm.value | json }}
+        </pre> -->
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="form-group row">
+      <div [ngClass]="fareDetailsForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+        <button fullWidth type="submit" nbButton status="success" (click)="addOrEditService()">
+          <span *ngIf="fareDetailsForm.get('id').value">
+            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+          </span>
+          <span *ngIf="!fareDetailsForm.get('id').value">
+            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+          </span>
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+  <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>

@@ -1,0 +1,23 @@
+<!-- <p>delete-dialog works!</p> -->
+<nb-card>
+    <nb-card-body>
+        <div class="dialogBoxTitle">
+            <nb-icon icon="trash-2"></nb-icon> {{ PData.title }}
+        </div>
+        <div>
+            <nb-icon icon="alert-circle-outline"></nb-icon> {{ PData.data }}
+        </div>
+        <div class="row">
+            <div class="offset-sm-0 col-sm-9">
+                <button nbButton ghost status="success" (click)="onClick('delete')">
+                    <nb-icon icon="checkmark-outline"></nb-icon>
+                </button>
+            </div>
+            <div class="offset-sm-0 col-sm-2">
+                <button nbButton ghost status="danger" (click)="onClick('close')">
+                    <nb-icon icon="close-outline"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>

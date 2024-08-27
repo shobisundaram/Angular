@@ -1,0 +1,23 @@
+<!-- <p>trip-payment works!</p> -->
+
+<nb-card>
+  <nb-card-header>
+    <div class="row align-items-baseline">
+      <div class="col-md-11">
+        {{'TRIP_PAYMENTS.TRIP_PAYMENTS_TABLE' | translate}}
+      </div>
+      <button nbTooltip="{{'COMMON.DOWMLOAD_REPORT' | translate}}" nbTooltipStatus="primary" nbTooltipPlacement="bottom"
+        (click)="downloadExcel()" nbButton ghost status="primary">
+        <nb-icon icon="cloud-download-outline"></nb-icon>
+      </button>
+      <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary" nbTooltipPlacement="bottom"
+        (click)="initialTableDataRender()" nbButton ghost status="primary">
+        <nb-icon icon="sync-outline"></nb-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

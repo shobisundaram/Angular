@@ -1,0 +1,27 @@
+.custom-button-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    margin: 10px;
+
+  }
+  .custom-button-overlay button{
+    height: 40px;
+    width: 40px;
+    background: none rgb(255, 255, 255) !important;
+  }
+
+  ::ng-deep .gmnoprint{
+    margin: 10px !important;
+  }
+  ::ng-deep .gmnoprint button{
+    height: 40px;
+    width: 40px;
+    padding: 10px !important;
+    background: none rgb(255, 255, 255) !important;
+  }
+  .clear_btn {
+    height: 29px;
+    width: 30px;
+  }

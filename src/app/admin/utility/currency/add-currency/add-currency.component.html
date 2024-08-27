@@ -1,0 +1,104 @@
+<nb-card style="overflow-y: unset;">
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="card-headers">
+        <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+          (click)="goBackBtn()" nbButton ghost status="danger">
+          <nb-icon icon="arrow-back-outline"></nb-icon>
+        </button>
+        <div class="" *ngIf="!currencyForm.get('id').value">{{'CURRENCY.ADDCURRENCY' | translate}}</div>
+        <div class="" *ngIf="currencyForm.get('id').value">{{'CURRENCY.EDITCURRENCY' | translate}}</div>
+      </div>
+      <div class="" *ngIf="currencyForm.get('id').value">
+        <button nbButton ghost status="primary" [nbContextMenu]="items">
+          <nb-icon icon="more-vertical"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form [formGroup]="currencyForm" autocomplete="off">
+      <div class="form-group row">
+        <label for="countryname" class="label col-sm-3 col-form-label">{{'COMMON.COUNTRY' |
+          translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+            translate}}</span></label>
+        <div class="col-sm-9">
+          <ng-select fullWidth formControlName="countryname" id="countryname" (clear)="enableState = false"
+            placeholder="{{'COMMON.SELECTCOUNTRY' | translate}}" (change)="onSelectCountry($event)">
+            <ng-option *ngFor="let option of allCountries" [value]="option._id">{{option.name}}
+            </ng-option>
+          </ng-select>
+
+          <div *ngIf="countryname.invalid && (countryname.dirty || countryname.touched)" class="alert-danger">
+            <div *ngIf="countryname.errors?.['required']">
+              {{'ERRORS.COUNTRYREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <section *ngIf="currencyForm.get('countryname').valid">
+        <div class="form-group row">
+          <label for="currencyName" class="label col-sm-3 col-form-label">{{'COMMON.CURRENCY' | translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <div class="col-sm-9">
+            <input formControlName="currencyName" type="text" nbInput fullWidth id="currencyName"
+              placeholder="{{'COMMON.SELECTCURRENCY' | translate}}" />
+            <div *ngIf="currencyName.invalid && (currencyName.dirty || currencyName.touched)" class="alert-danger">
+              <div *ngIf="currencyName.errors?.['required']">
+                {{'ERRORS.CURRENCYREQUIRED' | translate}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="symbol" class="label col-sm-3 col-form-label">{{'CURRENCY.CURRENCYSYMBOL' | translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <div class="col-sm-9">
+            <input formControlName="symbol" type="text" nbInput fullWidth id="symbol"
+              placeholder="{{'CURRENCY.CURRENCYSYMBOL' | translate}}" />
+            <div *ngIf="symbol.invalid && (symbol.dirty || symbol.touched)" class="alert-danger">
+              <div *ngIf="symbol.errors?.['required']">
+                {{'ERRORS.CURRENCYSYMBOLREQUIRED' | translate}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="currencyCode" class="label col-sm-3 col-form-label">{{'COMMON.CURRENCYCODE' | translate}}
+            <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+              translate}}</span></label>
+          <div class="col-sm-9">
+            <input formControlName="currencyCode" type="text" nbInput fullWidth id="currencyCode"
+              placeholder="{{'COMMON.CURRENCYCODE' | translate}}" />
+            <div *ngIf="currencyCode.invalid && (currencyCode.dirty || currencyCode.touched)" class="alert-danger">
+              <div *ngIf="currencyCode.errors?.['required']">
+                {{'ERRORS.CURRENCYCODEREQUIRED' | translate}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="form-group row">
+      <div [ngClass]="currencyForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+        <button fullWidth type="submit" nbButton status="success" (click)="addOrEditCurrency()">
+          <span *ngIf="currencyForm.get('id').value">
+            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+          </span>
+          <span *ngIf="!currencyForm.get('id').value">
+            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+          </span>
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+  <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>

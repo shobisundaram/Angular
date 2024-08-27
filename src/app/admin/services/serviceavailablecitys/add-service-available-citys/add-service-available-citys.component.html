@@ -1,0 +1,244 @@
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="card-headers">
+                <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+                    (click)="goBackBtn()" nbButton ghost status="danger">
+                    <nb-icon icon="arrow-back-outline"></nb-icon>
+                </button>
+                <div class="" *ngIf="!serviceAvailableCityForm.get('id').value">
+                    {{'SERVICEAVAILABLECITY.ADDSERVICEAVAILABLECITY' | translate}}
+                </div>
+                <div class="" *ngIf="serviceAvailableCityForm.get('id').value">
+                    {{'SERVICEAVAILABLECITY.EDITSERVICEAVAILABLECITY' | translate}}
+                </div>
+            </div>
+            <div class="" *ngIf="serviceAvailableCityForm.get('id').value">
+                <button nbButton ghost status="primary" [nbContextMenu]="items">
+                    <nb-icon icon="more-vertical"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+
+    <nb-card-body>
+        <form [formGroup]="serviceAvailableCityForm" autocomplete="off">
+            <div class="form-group">
+                <label for="name" class="label col-form-label">{{'COMMON.NAME' |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <input formControlName="name" type="text" nbInput fullWidth id="name"
+                    placeholder="{{'COMMON.NAME' | translate}}" />
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert-danger">
+                    <div *ngIf="name.errors?.['required']">
+                        {{'ERRORS.NAMEREQUIRED' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="label col-form-label">{{'COMMON.COUNTRY' | translate}}
+                    <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                <ng-select fullWidth formControlName="country" id="country"
+                    placeholder="{{'COMMON.SELECTCOUNTRY' | translate}}" (change)="getState($event)">
+                    <ng-option *ngFor="let option of countrys" [value]="option._id">{{option.name}}
+                    </ng-option>
+                </ng-select>
+                <div *ngIf="country.invalid && (country.dirty || country.touched)" class="alert-danger">
+                    <div *ngIf="country.errors?.['required']">
+                        {{'ERRORS.COUNTRYREQUIRED' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="serviceAvailableCityForm.get('country').valid">
+                <label for="title" class="label col-form-label">{{'COMMON.STATE' | translate}}
+                    <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                <ng-select fullWidth formControlName="state" id="state"
+                    placeholder="{{'COMMON.SELECTSTATE' | translate}}" (change)="getCity($event)">
+                    <ng-option *ngFor="let option of states" [value]="option._id">{{option.name}}
+                    </ng-option>
+                </ng-select>
+                <div *ngIf="state.invalid && (state.dirty || state.touched)" class="alert-danger">
+                    <div *ngIf="state.errors?.['required']">
+                        {{'ERRORS.STATEREQUIRED' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group"
+                *ngIf="serviceAvailableCityForm.get('state').valid && serviceAvailableCityForm.get('country').valid">
+                <label for="city" class="label col-form-label">{{'COMMON.CITY' | translate}} <span
+                        class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                <ng-select fullWidth formControlName="city" id="city" placeholder="{{'COMMON.SELECTCITY' | translate}}"
+                    (change)="afterCitySelection($event)">
+                    <ng-option *ngFor="let option of cities" [value]="option._id">{{option.name}}</ng-option>
+                </ng-select>
+                <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert-danger">
+                    <div *ngIf="city.errors?.['required']">
+                        {{'ERRORS.CITYREQUIRED' | translate}}
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group" *ngIf="serviceAvailableCityForm.get('city').valid">
+                    <label for="dailyReqRadius" class="label col-form-label">{{'SERVICEAVAILABLECITY.DAILYREQUESTRADIUS'
+                        |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="dailyReqRadius" type="number" nbInput fullWidth id="dailyReqRadius"
+                        placeholder="{{'SERVICEAVAILABLECITY.DAILYREQUESTRADIUS' | translate}}" />
+                    <div *ngIf="dailyReqRadius.invalid && (dailyReqRadius.dirty || dailyReqRadius.touched)"
+                        class="alert-danger">
+                        <div *ngIf="dailyReqRadius.errors?.['required']">
+                            {{'ERRORS.DAILYREQUESTRADIUSREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="serviceAvailableCityForm.get('city').valid">
+                    <label for="rentalReqRadius"
+                        class="label col-form-label">{{'SERVICEAVAILABLECITY.RENTALREQUESTRADIUS' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="rentalReqRadius" type="number" nbInput fullWidth id="rentalReqRadius"
+                        placeholder="{{'SERVICEAVAILABLECITY.RENTALREQUESTRADIUS' | translate}}" />
+                    <div *ngIf="rentalReqRadius.invalid && (rentalReqRadius.dirty || rentalReqRadius.touched)"
+                        class="alert-danger">
+                        <div *ngIf="rentalReqRadius.errors?.['required']">
+                            {{'ERRORS.RENTALREQUESTRADIUSREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="serviceAvailableCityForm.get('city').valid">
+                    <label for="outstationReqRadius"
+                        class="label col-form-label">{{'SERVICEAVAILABLECITY.OUTSTATIONREQUESTRADIUS' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="outstationReqRadius" type="number" nbInput fullWidth
+                        id="outstationReqRadius"
+                        placeholder="{{'SERVICEAVAILABLECITY.OUTSTATIONREQUESTRADIUS' | translate}}" />
+                    <div *ngIf="outstationReqRadius.invalid && (outstationReqRadius.dirty || outstationReqRadius.touched)"
+                        class="alert-danger">
+                        <div *ngIf="outstationReqRadius.errors?.['required']">
+                            {{'ERRORS.OUTSTATIONREQUESTRADIUSREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div> -->
+            <!-- <div class="form-group" *ngIf="serviceAvailableCityForm.get('city').valid">
+                <label for="cityCenterLat" class="label col-form-label">{{'SERVICEAVAILABLECITY.CITYCENTERLATITUDE'
+                    |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <input formControlName="cityCenterLat" type="number" nbInput fullWidth id="cityCenterLat"
+                    placeholder="{{'SERVICEAVAILABLECITY.CITYCENTERLATITUDE' | translate}}" />
+                <div *ngIf="cityCenterLat.invalid && (cityCenterLat.dirty || cityCenterLat.touched)"
+                    class="alert-danger">
+                    <div *ngIf="cityCenterLat.errors?.['required']">
+                        {{'ERRORS.CITYCENTERLATITUDEREQUIRED' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="serviceAvailableCityForm.get('city').valid">
+                <label for="cityCenterLon" class="label col-form-label">{{'SERVICEAVAILABLECITY.CITYCENTERLONGITUDE'
+                    |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <input formControlName="cityCenterLon" type="number" nbInput fullWidth id="cityCenterLon"
+                    placeholder="{{'SERVICEAVAILABLECITY.CITYCENTERLONGITUDE' | translate}}" />
+                <div *ngIf="cityCenterLon.invalid && (cityCenterLon.dirty || cityCenterLon.touched)"
+                    class="alert-danger">
+                    <div *ngIf="cityCenterLon.errors?.['required']">
+                        {{'ERRORS.CITYCENTERLONGITUDEREQUIRED' | translate}}
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="form-group" *ngIf="serviceAvailableCityForm.get('city').valid">
+                    <label for="approxCityBooundary"
+                        class="label col-form-label">{{'SERVICEAVAILABLECITY.APPROXCITYBOUNDARYKMFROMCENTER' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="approxCityBooundary" type="number" nbInput fullWidth
+                        id="approxCityBooundary"
+                        placeholder="{{'SERVICEAVAILABLECITY.APPROXCITYBOUNDARYKMFROMCENTER' | translate}}" />
+                    <div *ngIf="approxCityBooundary.invalid && (approxCityBooundary.dirty || approxCityBooundary.touched)"
+                        class="alert-danger">
+                        <div *ngIf="approxCityBooundary.errors?.['required']">
+                            {{'ERRORS.APPROXCITYBOUNDARYKMFROMCENTERREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div> -->
+            <div class="form-group" *ngIf="serviceAvailableCityForm.get('city').valid">
+                <label for="partnerPrefixCode" class="label col-form-label">{{'SERVICEAVAILABLECITY.PARTNERPREFIXCODE'
+                    |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <input formControlName="partnerPrefixCode" type="text" nbInput fullWidth id="partnerPrefixCode"
+                    placeholder="{{'SERVICEAVAILABLECITY.PARTNERPREFIXCODE' | translate}}" />
+                <div *ngIf="partnerPrefixCode.invalid && (partnerPrefixCode.dirty || partnerPrefixCode.touched)"
+                    class="alert-danger">
+                    <div *ngIf="partnerPrefixCode.errors?.['required']">
+                        {{'ERRORS.PARTNERPREFIXCODEREQUIRED' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="serviceAvailableCityForm.get('city').valid">
+                <label for="customerPrefixCode" class="label col-form-label">{{'SERVICEAVAILABLECITY.CUSTOMERPREFIXCODE'
+                    |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <input formControlName="customerPrefixCode" type="text" nbInput fullWidth id="customerPrefixCode"
+                    placeholder="{{'SERVICEAVAILABLECITY.CUSTOMERPREFIXCODE' | translate}}" />
+                <div *ngIf="customerPrefixCode.invalid && (customerPrefixCode.dirty || customerPrefixCode.touched)"
+                    class="alert-danger">
+                    <div *ngIf="customerPrefixCode.errors?.['required']">
+                        {{'ERRORS.CUSTOMERPREFIXCODEREQUIRED' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="serviceAvailableCityForm.get('city').valid">
+                <label for="tripPrefixCode" class="label col-form-label">{{'SERVICEAVAILABLECITY.TRIPPREFIXCODE' |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <input formControlName="tripPrefixCode" type="text" nbInput fullWidth id="tripPrefixCode"
+                    placeholder="{{'SERVICEAVAILABLECITY.TRIPPREFIXCODE' | translate}}" />
+                <div *ngIf="tripPrefixCode.invalid && (tripPrefixCode.dirty || tripPrefixCode.touched)"
+                    class="alert-danger">
+                    <div *ngIf="tripPrefixCode.errors?.['required']">
+                        {{'ERRORS.TRIPPREFIXCODEREQUIRED' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="serviceAvailableCityForm.get('city').valid">
+                <nb-toggle formControlName="status" labelPosition="start" status="primary" [(checked)]="checked">
+                    {{'COMMON.STATUS' | translate}}</nb-toggle>
+            </div>
+            <div style="width: 100%; height: 500px; position: relative;">
+                <div id="trackerMap" style="height: 500px;">
+                </div>
+                <div #customButtonOverlay class="custom-button-overlay">
+                    <button *ngIf="pointList.length > 0" fullWidth type="submit" nbButton
+                        (click)="deleteSelectedShape()" size="small" class="clear_btn">
+                        <nb-icon icon="close-circle-outline"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!-- <pre>
+          {{ serviceAvailableCityForm.value | json }}
+        </pre> -->
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="form-group row">
+            <div [ngClass]="serviceAvailableCityForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+                <button fullWidth type="submit" nbButton status="success" (click)="addOrEditServiceAvailableCity()">
+                    <span *ngIf="serviceAvailableCityForm.get('id').value">
+                        <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                    </span>
+                    <span *ngIf="!serviceAvailableCityForm.get('id').value">
+                        <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+    <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>

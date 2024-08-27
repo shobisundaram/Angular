@@ -1,0 +1,21 @@
+<!-- <p>site-statistics works!</p> -->
+<div class="row">
+    <div class="col-md-12">
+        <!-- <nb-card> -->
+            <!-- <nb-card-header> -->
+                <!-- Total Generated Fare -->
+            <!-- </nb-card-header> -->
+            <!-- <nb-card-body> -->
+                <ngx-first-chart [type]="period" (periodChange)="setPeriodAndGetChartData($event)"></ngx-first-chart>
+            <!-- </nb-card-body> -->
+        <!-- </nb-card> -->
+    </div>
+
+    <div class="col-md-6">
+        <ngx-second-chart [periodtype]="pieChartPeriod" (periodChanges)="setPieChartPeriodAndGetChartData($event)"></ngx-second-chart>
+    </div>
+
+    <div class="col-md-6">
+        <ngx-third-chart></ngx-third-chart>
+    </div>
+</div>

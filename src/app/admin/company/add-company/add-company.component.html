@@ -1,0 +1,291 @@
+<!-- <p>add-company works!</p> -->
+
+<nb-card>
+    <nb-card-header>
+        <div class="row align-items-baseline">
+            <div class="col-md-.5">
+                <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+                    (click)="goBackBtn()" nbButton ghost status="danger">
+                    <nb-icon icon="arrow-back-outline"></nb-icon>
+                </button>
+            </div>
+            <div class="col-md-11" *ngIf="!companyForm.get('id').value">{{'COMPANY.ADDCOMPANY' | translate}}</div>
+            <div class="col-md-11" *ngIf="companyForm.get('id').value">{{'COMPANY.EDITCOMPANY' | translate}}</div>
+            <div class="col-md-.5" *ngIf="companyForm.get('id').value">
+                <button nbButton ghost status="primary" [nbContextMenu]="items">
+                    <nb-icon icon="more-vertical"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="companyForm" autocomplete="off">
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="fname" class="label col-form-label">{{'COMMON.FIRSTNAME' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="fname" type="text" nbInput fullWidth id="fname"
+                        placeholder="{{'COMMON.FIRSTNAME' | translate}}" />
+                    <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="alert-danger">
+                        <div *ngIf="fname.errors?.['required']">
+                            {{'ERRORS.FIRSTNAMEREQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="fname.errors?.['pattern']">
+                            {{'ERRORS.TEXTALONEALLOWED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="image" class="label col-form-label">{{'COMMON.IMAGE' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input type="file" nbInput fullWidth id="image" (change)="onChange($event.target.files)"
+                        placeholder="{{'COMMON.IMAGE' | translate}}">
+                    <div *ngIf="image.invalid && (image.dirty || image.touched)" class="alert-danger">
+                        <div *ngIf="image.errors?.['required']">
+                            {{'ERRORS.IMAGEREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="lname" class="label col-form-label">{{'COMMON.LASTNAME' | translate}} <span
+                            class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span>
+                    </label>
+                    <input formControlName="lname" type="text" nbInput fullWidth id="lname"
+                        placeholder="{{'COMMON.LASTNAME' | translate}}" />
+                    <div *ngIf="lname.invalid && (lname.dirty || lname.touched)" class="alert-danger">
+                        <div *ngIf="lname.errors?.['required']">
+                            {{'ERRORS.LASTNAMEREQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="lname.errors?.['pattern']">
+                            {{'ERRORS.TEXTALONEALLOWED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="image" class="label col-form-label">{{'COMMON.IMAGEPREVIEW' |
+                        translate}} </label>
+                    <div class="col-sm-9">
+                        <img [src]="companyForm.value.image" class="fileImageForForm" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="phoneCode" class="label col-form-label">{{'COMMON.PHONECODE' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <ng-select fullWidth formControlName="phoneCode" id="phoneCode"
+                        placeholder="{{'COMMON.SELECTPHONECODE' | translate}}">
+                        <ng-option *ngFor="let option of phoneCodes" [value]="option.phonecode">{{option.phonecode}}
+                        </ng-option>
+                    </ng-select>
+                    <div *ngIf="phoneCode.invalid && (phoneCode.dirty || phoneCode.touched)" class="alert-danger">
+                        <div *ngIf="phoneCode.errors?.['required']">
+                            {{'ERRORS.PHONECODEREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="phone" class="label col-form-label">{{'COMMON.PHONENO' | translate}} <span
+                            class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                    <input formControlName="phone" type="text" nbInput fullWidth id="phone"
+                        placeholder="{{'COMMON.PHONENO' | translate}}" />
+                    <!-- (change)="phoneValidation()" -->
+                    <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert-danger">
+                        <div *ngIf="phone.errors?.['required']">
+                            {{'ERRORS.PHONENOREQUIRED' | translate}}
+                        </div>
+                        <div
+                            *ngIf="phone.errors?.['minlength'] || phone.errors?.['maxlength'] || phone.errors?.['pattern']">
+                            {{'ERRORS.PHONENOVALIDATION' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="label col-form-label">{{'COMMON.EMAIL' | translate}} <span
+                            class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                    <input formControlName="email" type="text" nbInput fullWidth id="email"
+                        placeholder="{{'COMMON.EMAIL' | translate}}" />
+                    <!-- (change)="emailValidation($event.target.value)" -->
+                    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert-danger">
+                        <div *ngIf="email.errors?.['required']">
+                            {{'ERRORS.EMAILREQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="email.errors?.['email']">
+                            {{'ERRORS.EMAILVALIDATION' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 inner-addon" *ngIf="!companyForm.get('id').value">
+                    <label for="password" class="label col-form-label">{{'COMMON.PASSWORD' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                    <div class="input-group">
+
+                        <input formControlName="password" [type]="showPassword ? 'text' : 'password'" nbInput fullWidth
+                            id="password" placeholder="{{'COMMON.PASSWORD' | translate}}" />
+                        <div>
+                            <i alt="show" class="far fa-eye eye-show" (click)="showPassword = !showPassword"
+                                [class.passwordHide]="showPassword"></i>
+                            <i alt="hide" class="far fa-eye-slash eye-hide" (click)="showPassword = !showPassword"
+                                [class.passwordHide]="!showPassword"></i>
+                        </div>
+
+                    </div>
+                    <div *ngIf="companyForm.invalid && (password.dirty || password.touched)" class="alert-danger">
+                        <div *ngIf="password.errors?.['required']">
+                            {{'ERRORS.PASSWORDREQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="companyForm.get('password').errors?.pattern">
+                            {{'ERRORS.PASSWORDPATTERN' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" *ngIf="!companyForm.get('id').value">
+                    <label for="confirmPassword" class="label col-form-label">{{'COMMON.CONFIRMPASSWORD' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="confirmPassword" type="password" nbInput fullWidth id="confirmPassword"
+                        placeholder="{{'COMMON.CONFIRMPASSWORD' | translate}}"
+                        [readonly]="companyForm.controls.password.status == 'VALID' ? false : true" />
+                    <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched) && (companyForm.controls.password.status == 'VALID')"
+                        class="alert-danger">
+                        <div *ngIf="confirmPassword.errors?.['required']">
+                            {{'ERRORS.CONFIRMPASSWORDREQUIRED' | translate}}
+                        </div>
+                        <!-- *ngIf="passwordForm.controls['confirmPassword'].pristine || passwordForm.controls['confirmPassword'].errors?.['MatchPassword']" -->
+                        <div *ngIf="companyForm.controls['confirmPassword'].errors?.['MatchPassword']">
+                            {{'ERRORS.CONFIRMPASSWORDMISSMATCH' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- <pre>
+          {{ companyForm.value | json }}
+        </pre> -->
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="form-group row">
+            <div [ngClass]="companyForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+                <button fullWidth type="submit" nbButton status="success" (click)="addOrEditCompany()">
+                    <span *ngIf="companyForm.get('id').value">
+                        <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                    </span>
+                    <span *ngIf="!companyForm.get('id').value">
+                        <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+    <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>
+
+<ng-template class="dialogBox" #ChangePasswordDialog let-data let-ref="dialogRef">
+    <nb-card class="changePasswordDialogBox">
+        <nb-card-header>
+            <div class="row align-items-baseline">
+                <div class="col-md-11">{{'COMMON.RESETPASSWORD' | translate}}</div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="changePasswordForm" autocomplete="off">
+                <div class="form-group row">
+                    <div class="col-md-12 inner-addon">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="newPassword" class="label col-form-label">{{'COMMON.NEWPASSWORD' |
+                                    translate}}
+                                    <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                        translate}}</span></label>
+
+                                <!-- <input class="col-md-9" formControlName="newPassword" type="password" nbInput fullWidth id="newPassword"
+                            placeholder="{{'COMMON.NEWPASSWORD' | translate}}" /> -->
+                            </div>
+
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input formControlName="newPassword" [type]="showPassword ? 'text' : 'password'"
+                                        nbInput fullWidth id="newPassword"
+                                        placeholder="{{'COMMON.NEWPASSWORD' | translate}}" />
+                                    <div>
+                                        <i alt="show" class="far fa-eye eye-show" (click)="showPassword = !showPassword"
+                                            [class.passwordHide]="showPassword"></i>
+                                        <i alt="hide" class="far fa-eye-slash eye-hide"
+                                            (click)="showPassword = !showPassword"
+                                            [class.passwordHide]="!showPassword"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)"
+                                class="alert-danger">
+                                <div *ngIf="newPassword.errors?.['required']">
+                                    {{'ERRORS.NEWPASSWORDREQUIRED' | translate}}
+                                </div>
+                                <!-- <div *ngIf="newPassword.errors?.['minlength']">
+                          {{'ERRORS.PASSWORDVALIDATION' | translate}}
+                        </div> -->
+                                <div *ngIf="changePasswordForm.get('newPassword').errors?.pattern">
+                                    {{'ERRORS.PASSWORDPATTERN' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="confirmNewPassword" class="label col-form-label">{{'COMMON.CONFIRMPASSWORD'
+                                    |
+                                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                        translate}}</span></label>
+                            </div>
+
+                            <div class="col-md-9">
+                                <input formControlName="confirmNewPassword" type="password" nbInput fullWidth
+                                    id="confirmNewPassword" placeholder="{{'COMMON.CONFIRMPASSWORD' | translate}}"
+                                    [readonly]="changePasswordForm.controls.newPassword.status == 'VALID' ? false : true" />
+                            </div>
+
+                            <div *ngIf="confirmNewPassword.invalid && (confirmNewPassword.dirty || confirmNewPassword.touched) && (changePasswordForm.controls.newPassword.status == 'VALID')"
+                                class="alert-danger">
+                                <div *ngIf="confirmNewPassword.errors?.['required']">
+                                    {{'ERRORS.CONFIRMPASSWORDREQUIRED' | translate}}
+                                </div>
+                                <!-- *ngIf="passwordForm.controls['confirmPassword'].pristine || passwordForm.controls['confirmPassword'].errors?.['MatchPassword']" -->
+                                <div
+                                    *ngIf="changePasswordForm.controls['confirmNewPassword'].errors?.['NewMatchPassword']">
+                                    {{'ERRORS.CONFIRMPASSWORDMISSMATCH' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </nb-card-body>
+        <nb-card-footer>
+            <div class="row">
+                <div [ngClass]="'offset-sm-8 col-sm-2'">
+                    <button fullWidth type="submit" nbButton status="success" (click)="ChangePassword()">
+                        <span>
+                            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+                <div [ngClass]="'offset-sm-0 col-sm-2'">
+                    <button fullWidth type="submit" nbButton status="danger" (click)="ref.close()">
+                        <span>
+                            <nb-icon icon="close-outline"></nb-icon> {{'COMMON.CLOSEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

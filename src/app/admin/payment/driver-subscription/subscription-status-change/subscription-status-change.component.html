@@ -1,0 +1,37 @@
+<!-- <p>subscription-status-change works!</p> -->
+<!-- <ng-container>
+    <div class="row justify-content-center" *ngIf="checkActiveOption">
+        <button nbTooltip="Activate" nbTooltipStatus="primary" nbTooltipPlacement="bottom"
+            (click)="activeDeactivateCall('Activated')" nbButton ghost status="primary">
+            <nb-icon icon="file-add-outline"></nb-icon>
+        </button>
+    </div>
+    <div class="row justify-content-center" *ngIf="checkDeactiveOption">
+        <button nbTooltip="Deactivate" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+            (click)="activeDeactivateCall('Deactivated')" nbButton ghost status="danger">
+            <nb-icon icon="file-remove-outline"></nb-icon>
+        </button>
+    </div>
+    <div class="row justify-content-center" *ngIf="notAvailableOption">
+        <span>Deactivated</span>
+    </div>
+</ng-container> -->
+<ng-container>
+    <div class="d-flex justify-content-around align-items-center">
+        <div class="row justify-content-center" *ngIf="checkActiveOption">
+            <button nbTooltip="Activate" nbTooltipStatus="primary" nbTooltipPlacement="bottom"
+                (click)="activeDeactivateCall('ACTIVE')" nbButton ghost status="primary">
+                <nb-icon icon="file-add-outline"></nb-icon>
+            </button>
+        </div>
+        <div class="row justify-content-center" *ngIf="checkDeactiveOption">
+            <button nbTooltip="Deactivate" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+                (click)="activeDeactivateCall('INACTIVE')" nbButton ghost status="danger">
+                <nb-icon icon="file-remove-outline"></nb-icon>
+            </button>
+        </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="notAvailableOption">
+        <span>---</span>
+    </div>
+</ng-container>

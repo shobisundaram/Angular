@@ -1,0 +1,25 @@
+.file_upload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.file_upload p{
+    word-break: break-word;
+}
+.label {
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: underline;
+    margin: 5px;
+    background: var(--button-color);
+    color: var(--button-text);
+    display: inline-block;
+}
+label.label input[type="file"]{
+	position: absolute;
+	top: -1000px;
+}
+nb-icon{
+    font-size: 80px !important;
+}

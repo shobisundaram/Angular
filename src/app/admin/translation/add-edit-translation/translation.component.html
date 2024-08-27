@@ -1,0 +1,49 @@
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="card-headers">
+              <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+                (click)="goBackBtn()" nbButton ghost status="danger">
+                <nb-icon icon="arrow-back-outline"></nb-icon>
+              </button>
+              <div class="" *ngIf="!translationForm.get('id').value">{{'TRANSLATION.AddTRANSLATION' | translate}}</div>
+              <div class="" *ngIf="translationForm.get('id').value">{{'TRANSLATION.EDITTRANSLATION' | translate}}</div>
+            </div>
+            <!-- <div class="col-md-.5" *ngIf="translationForm.get('id').value">
+              <button nbButton ghost status="primary" [nbContextMenu]="items">
+                <nb-icon icon="more-vertical"></nb-icon>
+              </button>
+            </div> -->
+          </div>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="translationForm">
+        <ng-container *ngFor="let group of groupData">
+          <div class="form-group">
+            <label [for]="group.transcribe.describe" class="label col-form-label">{{ group.name }} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+            <input  #myInput [formControlName]="group.transcribe.describe" type="text" nbInput fullWidth [id]="group.transcribe.describe"/>
+            <div *ngIf="myInput.formControl && myInput.formControl.invalid && myInput.formControl.touched" class="alert-danger">
+              <div *ngIf="myInput.formControl.hasError('required')">
+                {{'ERRORS.ISREQUIRED' | translate}}
+              </div>
+          </div>
+          </div>
+        </ng-container>
+      </form>
+
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="form-group row">
+          <div [ngClass]="translationForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+            <button fullWidth type="submit" nbButton status="success" (click)="addOrEditTranslation()">
+              <span *ngIf="translationForm.get('id').value">
+                <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+              </span>
+              <span *ngIf="!translationForm.get('id').value">
+                <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+              </span>
+            </button>
+          </div>
+        </div>
+      </nb-card-footer>
+</nb-card>

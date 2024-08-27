@@ -1,0 +1,308 @@
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="card-headers">
+                <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+                    (click)="goBackBtn()" nbButton ghost status="danger">
+                    <nb-icon icon="arrow-back-outline"></nb-icon>
+                </button>
+                <div class="" *ngIf="!couponCodeForm.get('id').value">{{'COUPONS.ADDCOUPON' | translate}}
+                </div>
+                <div class="" *ngIf="couponCodeForm.get('id').value">{{'COUPONS.EDITCOUPON' | translate}}
+                </div>
+            </div>
+            <div class="" *ngIf="couponCodeForm.get('id').value">
+                <button nbButton ghost status="primary" [nbContextMenu]="items">
+                    <nb-icon icon="more-vertical"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+
+    <nb-card-body>
+        <form [formGroup]="couponCodeForm" autocomplete="off">
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="generateCode" class="label col-form-label">{{'COMMON.COUPONCODE' | translate}} <span
+                            class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <div class="input-group mb-3">
+                        <input nbInput type="text" formControlName="generateCode" name="generateCode"
+                            placeholder="{{'COMMON.COUPONCODE' | translate}}" class="form-control promocode-input"
+                            required id="generateCode" />
+                        <div class="input-group-append" *ngIf="!couponCodeForm.get('id').value">
+                            <button class="btn btn-primary" type="button"
+                                (click)="autoGenerateCode()">{{'COMMON.GENERATE_COUPON_CODE' | translate}}</button>
+                        </div>
+                    </div>
+                    <div *ngIf="generateCode.invalid && (generateCode.dirty || generateCode.touched)"
+                        class="alert-danger">
+                        <div *ngIf="generateCode.errors?.['required']">
+                            {{'ERRORS.COUPONCODE_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div [ngClass]="couponCodeForm.get('offer_type').value === null ? 'col-md-6' : 'col-md-3'">
+                    <label for="offer_type" class="label col-form-label">{{'COUPONS.OFFER_TYPE' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <ng-select fullWidth formControlName="offer_type" id="offer_type"
+                        placeholder="{{'COUPONS.SELECT_OFFER_TYPE' | translate}}">
+                        <ng-option *ngFor="let option of offerTypes" [value]="option.value">{{option.label}}
+                        </ng-option>
+                    </ng-select>
+                    <div *ngIf="offer_type.invalid && (offer_type.dirty || offer_type.touched)" class="alert-danger">
+                        <div *ngIf="offer_type.errors?.['required']">
+                            {{'ERRORS.OFFER_TYPE_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" *ngIf="couponCodeForm.get('offer_type').value">
+                    <label for="offer_type_value" class="label col-form-label"
+                        *ngIf="couponCodeForm.get('offer_type').value == 'Flatrate'">{{'COUPONS.FLAT_RATE' |
+                        translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <label for="offer_type_value" class="label col-form-label"
+                        *ngIf="couponCodeForm.get('offer_type').value == 'Percentage'">{{'COUPONS.PERCENTAGE' |
+                        translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="offer_type_value" type="number" nbInput fullWidth id="offer_type_value"
+                        placeholder="{{'COUPONS.FLAT_RATE' | translate}}" />
+                    <div *ngIf="offer_type_value.invalid && (offer_type_value.dirty || offer_type_value.touched)"
+                        class="alert-danger">
+                        <div *ngIf="offer_type_value.errors?.['required']">
+                            {{'ERRORS.REQUIRED_FIELD' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-3" *ngIf="couponCodeForm.get('offer_type').value == 'Percentage'">
+                    <label for="percentage" class="label col-form-label">{{'COUPONS.PERCENTAGE' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="percentage" type="number" nbInput fullWidth id="percentage"
+                        placeholder="{{'COUPONS.PERCENTAGE' | translate}}" />
+                    <div *ngIf="percentage.invalid && (percentage.dirty || percentage.touched)" class="alert-danger">
+                        <div *ngIf="percentage.errors?.['required']">
+                            {{'ERRORS.PERCENTAGE_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-md-6">
+                    <label for="start_date" class="label col-form-label">{{'COMMON.START_DATE' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="start_date" type="" nbInput fullWidth id="start_date"
+                        placeholder="{{'COMMON.CLICK_TO_SELECT_DATE' | translate}}"
+                        (ngModelChange)="logStartDate($event)" [nbDatepicker]="dt1" required readonly>
+                    <nb-datepicker #dt1></nb-datepicker>
+                    <div *ngIf="start_date.invalid && (start_date.dirty || start_date.touched)" class="alert-danger">
+                        <div *ngIf="start_date.errors?.['required']">
+                            {{'ERRORS.START_DATE_REQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="start_date.errors">
+                            {{'ERRORS.MINIMUMDATE' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="end_date" class="label col-form-label">{{'COMMON.END_DATE'
+                        |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="end_date" type="" nbInput fullWidth id="end_date"
+                        placeholder="{{'COMMON.CLICK_TO_SELECT_DATE' | translate}}" [nbDatepicker]="dt2" required
+                        readonly>
+                    <nb-datepicker #dt2></nb-datepicker>
+                    <div *ngIf="end_date.invalid && (end_date.dirty || end_date.touched)" class="alert-danger">
+                        <div *ngIf="end_date.errors?.['required']">
+                            {{'ERRORS.END_DATE_REQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="end_date.errors">
+                            {{'ERRORS.ENDMINIMUMDATE' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="start_time" class="label col-form-label">{{'COMMON.START_TIME'
+                        |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="start_time" type="" nbInput fullWidth id="start_time"
+                        placeholder="{{'COMMON.START_TIME' | translate}}" (ngModelChange)="logStartTime($event)"
+                        [nbTimepicker]="dt3" required>
+                    <nb-timepicker #dt3></nb-timepicker>
+
+                    <div *ngIf="start_time.invalid && (start_time.dirty || start_time.touched)" class="alert-danger">
+                        <div *ngIf="start_time.errors?.['required']">
+                            {{'ERRORS.START_TIME_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="end_time" class="label col-form-label">{{'COMMON.END_TIME'
+                        |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="end_time" type="" nbInput fullWidth id="end_time"
+                        placeholder="{{'COMMON.END_TIME' | translate}}" [nbTimepicker]="dt4" required>
+                    <nb-timepicker #dt4></nb-timepicker>
+                    <div *ngIf="end_time.invalid && (end_time.dirty || end_time.touched)" class="alert-danger">
+                        <div *ngIf="end_time.errors?.['required']">
+                            {{'ERRORS.END_TIME_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="limit" class="label col-form-label">{{'COMMON.LIMIT' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="limit" type="number" nbInput fullWidth id="limit"
+                        placeholder="{{'COMMON.LIMIT' | translate}}" />
+                    <div *ngIf="limit.invalid && (limit.dirty || limit.touched)" class="alert-danger">
+                        <div *ngIf="limit.errors?.['required']">
+                            {{'ERRORS.LIMIT_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="user_limit" class="label col-form-label">{{'COMMON.USER_LIMIT' |
+                        translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="user_limit" type="number" nbInput fullWidth id="user_limit"
+                        placeholder="{{'COMMON.USER_LIMIT' | translate}}" />
+                    <div *ngIf="user_limit.invalid && (user_limit.dirty || user_limit.touched)" class="alert-danger">
+                        <div *ngIf="user_limit.errors?.['required']">
+                            {{'ERRORS.USER_LIMIT_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="offer_value" class="label col-form-label">{{'COUPONS.OFFER_VALUE' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="offer_value" type="number" nbInput fullWidth id="offer_value"
+                        placeholder="{{'COUPONS.OFFER_VALUE' | translate}}" />
+                    <div *ngIf="offer_value.invalid && (offer_value.dirty || offer_value.touched)" class="alert-danger">
+                        <div *ngIf="offer_value.errors?.['required']">
+                            {{'ERRORS.OFFER_VALUE_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="offer_limit" class="label col-form-label">{{'COUPONS.OFFER_LIMIT' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <input formControlName="offer_limit" type="number" nbInput fullWidth id="offer_limit"
+                        placeholder="{{'COUPONS.OFFER_LIMIT' | translate}}" />
+                    <div *ngIf="offer_limit.invalid && (offer_limit.dirty || offer_limit.touched)" class="alert-danger">
+                        <div *ngIf="offer_limit.errors?.['required']">
+                            {{'ERRORS.OFFER_LIMIT_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="service_available_city" class="label col-form-label">{{'COMMON.SERVICEAVAILABLECITY'
+                        |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <ng-select fullWidth formControlName="service_available_city" id="service_available_city"
+                        placeholder="{{'COMMON.SELECTSERVICEAVAILABLECITY' | translate}}" multiple="true">
+                        <ng-option *ngFor="let option of serviceAvailableCities" [value]="option._id">
+                            {{option.name}}
+                        </ng-option>
+                    </ng-select>
+                    <div *ngIf="service_available_city.invalid && (service_available_city.dirty || service_available_city.touched)"
+                        class="alert-danger">
+                        <div *ngIf="service_available_city.errors?.['required']">
+                            {{'ERRORS.SERVICEAVAILABLECITYREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="trip_type" class="label col-form-label">{{'COMMON.TRIPTYPE' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <ng-select fullWidth formControlName="trip_type" id="trip_type"
+                        placeholder="{{'COMMON.SELECTTRIPTYPE' | translate}}" multiple="true">
+                        <ng-option *ngFor="let option of tripTypes" [value]="option.value">{{option.label}}
+                        </ng-option>
+                    </ng-select>
+                    <div *ngIf="trip_type.invalid && (trip_type.dirty || trip_type.touched)" class="alert-danger">
+                        <div *ngIf="trip_type.errors?.['required']">
+                            {{'ERRORS.TRIPTYPEREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="status" class="label col-form-label">{{'COMMON.STATUS' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <ng-select fullWidth formControlName="status" id="status"
+                        placeholder="{{'COMMON.STATUS' | translate}}">
+                        <ng-option *ngFor="let option of statu" [value]="option.value">{{option.label}}
+                        </ng-option>
+                    </ng-select>
+                    <div *ngIf="status.invalid && (status.dirty || status.touched)" class="alert-danger">
+                        <div *ngIf="status.errors?.['required']">
+                            {{'ERRORS.STATUS_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-6">
+                    <label for="category" class="label col-form-label">{{'COMMON.CATEGORY' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <ng-select fullWidth formControlName="category" id="category"
+                        placeholder="{{'COMMON.SELECT_CATEGORY' | translate}}">
+                        <ng-option *ngFor="let option of categorys" [value]="option.value">{{option.label}}
+                        </ng-option>
+                    </ng-select>
+                    <div *ngIf="category.invalid && (category.dirty || category.touched)" class="alert-danger">
+                        <div *ngIf="category.errors?.['required']">
+                            {{'ERRORS.CATEGORY_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-md-6">
+                    <label for="apply_type" class="label col-form-label">{{'COMMON.APPLY_TYPE' |
+                        translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <ng-select fullWidth formControlName="apply_type" id="apply_type"
+                        placeholder="{{'COMMON.SELECT_APPLY_TYPE' | translate}}">
+                        <ng-option *ngFor="let option of apply_types" [value]="option.value">{{option.label}}
+                        </ng-option>
+                    </ng-select>
+                    <div *ngIf="apply_type.invalid && (apply_type.dirty || apply_type.touched)" class="alert-danger">
+                        <div *ngIf="apply_type.errors?.['required']">
+                            {{'ERRORS.APPLY_TYPE_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- <pre>
+          {{ couponCodeForm.value | json }}
+        </pre> -->
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="form-group row">
+            <div [ngClass]="couponCodeForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+                <button fullWidth type="submit" nbButton status="success" (click)="addOrEditCouponCode()">
+                    <span *ngIf="couponCodeForm.get('id').value">
+                        <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                    </span>
+                    <span *ngIf="!couponCodeForm.get('id').value">
+                        <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+    <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>

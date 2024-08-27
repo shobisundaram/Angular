@@ -1,0 +1,168 @@
+<ng-template [ngIf]="initial == 0">
+    <nb-card>
+        <nb-card-header>
+            <div class="card-headers">
+                <div class="">
+                    {{'SETTLEMENT.SETTLEMENTTABLE' | translate}}
+                </div>
+                <div class="card-headers">
+                    <div class="width-200">
+                        <ng-select (change)="changeUserType($event)" placeholder="user Type" [clearable]="false" [searchable]="false" [(ngModel)]="selecteduserType">
+                        <ng-option *ngFor="let option of userType" [value]="option.value">{{option.label}}
+                        </ng-option>
+                        </ng-select>
+                    </div>
+                    <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary"
+                        nbTooltipPlacement="bottom" (click)="initialTableDataRender()" nbButton ghost status="primary">
+                        <nb-icon icon="sync-outline"></nb-icon>
+                    </button>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <ng2-smart-table [settings]="settings" [source]="source" (create)="onAdd($event,1,'allDriver')"
+                (edit)="onEdit($event.data,1,'particularDriver')" (userRowSelect)="onRowSelect($event)">
+            </ng2-smart-table>
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+<ng-template [ngIf]="initial == 1">
+    <nb-card>
+        <nb-card-header>
+            <div class="card-headers">
+                <div class="card-headers">
+                    <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger"
+                        nbTooltipPlacement="bottom" (click)="initialValueChange(0)" nbButton ghost status="danger">
+                        <nb-icon icon="arrow-back-outline"></nb-icon>
+                    </button>
+                    <div class="" *ngIf="packageFor === 'allDriver'"> {{'SETTLEMENT.ADDPAYMENT' | translate}}
+                    </div>
+                    <div class="" *ngIf="packageFor === 'particularDriver'"> {{'SETTLEMENT.ADDPAYMENT' | translate}} |
+                        {{partnerCode}}</div>
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="driverSettlementForm" autocomplete="off">
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="trxId" class="label col-form-label">{{'SETTLEMENT.REFERENCEID' |
+                            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <!-- <input formControlName="trxId" type="text" nbInput fullWidth id="trxId"
+                            placeholder="{{'SETTLEMENT.REFERENCEID' | translate}}" /> -->
+                        <div class="input-group mb-3">
+                            <input nbInput type="text" formControlName="generateCode" name="generateCode"
+                                placeholder="{{'SETTLEMENT.REFERENCEID' | translate}}"
+                                class="form-control promocode-input" required id="generateCode" />
+                            <div class="input-group-append" *ngIf="!driverSettlementForm.get('id').value">
+                                <button class="btn btn-primary" type="button"
+                                    (click)="autoGenerateCode()">{{'SETTLEMENT.GENERATE_REFERENCE_CODE' |
+                                    translate}}</button>
+                            </div>
+                        </div>
+                        <div *ngIf="generateCode.invalid && (generateCode.dirty || generateCode.touched)"
+                            class="alert-danger">
+                            <div *ngIf="generateCode.errors?.['required']">
+                                {{'ERRORS.COUPONCODE_REQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="name" class="label col-form-label">{{'SETTLEMENT.PARTNERNAME' |
+                            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <input formControlName="name" type="text" nbInput fullWidth id="name"
+                            placeholder="{{'SETTLEMENT.PARTNERNAME' | translate}}" />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="amount" class="label col-form-label">{{'SETTLEMENT.AMOUNT' |
+                            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <input formControlName="amount" type="text" nbInput fullWidth id="amount"
+                            placeholder="{{'SETTLEMENT.AMOUNT' | translate}}" />
+                        <!-- <div *ngIf="driverSettlementForm.get('amount').invalid && (driverSettlementForm.get('amount').dirty || driverSettlementForm.get('name').touched)" class="alert-danger">
+                                    <div *ngIf="driverSettlementForm.get('amount').errors?.required">
+                                        {{'SETTLEMENT.AMOUNT' | translate}}{{'ERRORS.IDREQUIRED' | translate}}
+                                    </div>
+                                </div> -->
+                    </div>
+                    <div class="col-md-6">
+                        <label for="name" class="label col-form-label">{{'SETTLEMENT.PAYMENTTYPE' |
+                            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <ng-select fullWidth formControlName="paymentType" id="paymentType"
+                            placeholder="{{'SETTLEMENT.PAYMENTTYPE' | translate}}">
+                            <ng-option *ngFor="let option of paymentTypeDropDownData" [value]="option">{{option |
+                                titlecase}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="name" class="label col-form-label">{{'SETTLEMENT.DESCRIPTION' |
+                            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <textarea formControlName="description" type="text" nbInput fullWidth id="description"
+                            placeholder="{{'SETTLEMENT.DESCRIPTION' | translate}}"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="name" class="label col-form-label">{{'SETTLEMENT.PAYMENTDATE' |
+                            translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                                translate}}</span></label>
+                        <input formControlName="paymentDate" type="" nbInput fullWidth id="paymentDate"
+                            placeholder="{{'COMMON.CLICK_TO_SELECT_DATE' | translate}}" [owlDateTimeTrigger]="dt2"
+                            [owlDateTime]="dt2" [min]="startMinDate" />
+                        <owl-date-time #dt2 [pickerType]="'calendar'"></owl-date-time>
+                        <!-- <div *ngIf="paymentDate.invalid && (paymentDate.dirty || paymentDate.touched)"
+                                class="alert-danger">
+                                <div *ngIf="paymentDate.errors?.['required']">
+                                    {{'SETTLEMENT.PAYMENTDATE' | translate}}{{'ERRORS.IDREQUIRED' | translate}}
+                                </div>
+                            </div> -->
+                    </div>
+                </div>
+            </form>
+        </nb-card-body>
+        <nb-card-footer>
+            <div class="form-group row">
+                <div [ngClass]="driverSettlementForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+                    <button fullWidth type="submit" nbButton status="success" (click)="addTransaction()">
+                        <span>
+                            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+<ng-template [ngIf]="initial == 2">
+    <nb-card>
+        <nb-card-header>
+            <div class="card-headers">
+                <div class="card-headers">
+                    <div class="">
+                        <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger"
+                            nbTooltipPlacement="bottom" (click)="initialValueChange(0)" nbButton ghost status="danger">
+                            <nb-icon icon="arrow-back-outline"></nb-icon>
+                        </button>
+                    </div>
+                    <div class="">
+                        {{ 'SETTLEMENT.VIEWTRANSACTION' | translate}} | {{partnerTransactionDetails.uniCode}} |
+                        {{partnerTransactionDetails.fname}} {{partnerTransactionDetails.lname}}
+                    </div>
+                </div>
+                <!-- <div class="col-md-.5">
+                    <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary"
+                        nbTooltipPlacement="bottom" (click)="initialTableDataRender1()" nbButton ghost status="primary">
+                        <nb-icon icon="sync-outline"></nb-icon>
+                    </button>
+                </div> -->
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <ng2-smart-table [settings]="settings1" [source]="source1" *ngIf="source1">
+            </ng2-smart-table>
+        </nb-card-body>
+    </nb-card>
+</ng-template>

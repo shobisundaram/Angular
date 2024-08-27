@@ -1,0 +1,92 @@
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="card-headers">
+                <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+                    (click)="goBackBtn()" nbButton ghost status="danger">
+                    <nb-icon icon="arrow-back-outline"></nb-icon>
+                </button>
+                <div class="" *ngIf="!modelForm.get('id').value">{{'MODEL.ADD_MODEL' | translate}}</div>
+                <div class="" *ngIf="modelForm.get('id').value">{{'MODEL.EDIT_MODEL' | translate}}</div>
+            </div>
+            <div class="" *ngIf="modelForm.get('id').value">
+                <button nbButton ghost status="primary" [nbContextMenu]="items">
+                    <nb-icon icon="more-vertical"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="modelForm" autocomplete="off">
+            <div class="form-group row">
+                <label for="makename" class="label col-sm-3 col-form-label">{{'MAKE.MAKE_NAME' |
+                    translate}} <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                        translate}}</span></label>
+                <div class="col-sm-9">
+                    <ng-select fullWidth formControlName="makename" id="makename" (clear)="enableModel = false"
+                        placeholder="{{'MAKE.MAKE_NAME' | translate}}" (change)="onSelectMake($event)">
+                        <ng-option *ngFor="let option of allMakes" [value]="option._id">{{option.name}}
+                        </ng-option>
+                    </ng-select>
+
+                    <div *ngIf="makename.invalid && (makename.dirty || makename.touched)" class="alert-danger">
+                        <div *ngIf="makename.errors?.['required']">
+                            {{'ERRORS.MAKE_NAME_REQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section *ngIf="modelForm.get('makename').valid">
+                <div class="form-group row">
+                    <label for="modelname" class="label col-sm-3 col-form-label">{{'MODEL.MODEL_NAME' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <div class="col-sm-9">
+                        <input formControlName="modelname" type="text" nbInput fullWidth id="modelname"
+                            placeholder="{{'MODEL.MODEL_NAME' | translate}}" />
+                        <div *ngIf="modelname.invalid && (modelname.dirty || modelname.touched)" class="alert-danger">
+                            <div *ngIf="modelname.errors?.['required']">
+                                {{'ERRORS.MODEL_NAME_REQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="modelyear" class="label col-sm-3 col-form-label">{{'MODEL.MODEL_YEAR' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+                            translate}}</span></label>
+                    <div class="col-sm-9">
+                        <input formControlName="modelyear" type="text" nbInput fullWidth id="modelyear"
+                            placeholder="{{'MODEL.MODEL_YEAR' | translate}}" />
+                        <div *ngIf="modelyear.invalid && (modelyear.dirty || modelyear.touched)" class="alert-danger">
+                            <div *ngIf="modelyear.errors?.['required']">
+                                {{'ERRORS.MODEL_YEAR_REQUIRED' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+        <!-- <pre>
+          {{ modelForm.value | json }}
+        </pre> -->
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="form-group row">
+            <div [ngClass]="modelForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+                <button fullWidth type="submit" nbButton status="success" (click)="addOrEditModel()">
+                    <span *ngIf="modelForm.get('id').value">
+                        <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                    </span>
+                    <span *ngIf="!modelForm.get('id').value">
+                        <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+    <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>

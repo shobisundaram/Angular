@@ -1,0 +1,184 @@
+<nb-card>
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="card-headers">
+        <button
+          nbTooltip="{{ 'COMMON.GoBack' | translate }}"
+          nbTooltipStatus="danger"
+          nbTooltipPlacement="bottom"
+          (click)="goBackBtn()"
+          nbButton
+          ghost
+          status="danger"
+        >
+          <nb-icon icon="arrow-back-outline"></nb-icon>
+        </button>
+        <div class="" *ngIf="!outstationPackageForm.get('_id').value">
+          {{ "SERVICES.ADDSERVICE" | translate }}
+        </div>
+        <div class="" *ngIf="outstationPackageForm.get('_id').value">
+          {{ "SERVICES.EDITSERVICE" | translate }}
+        </div>
+      </div>
+      <div class="" *ngIf="outstationPackageForm.get('_id').value">
+        <button nbButton ghost status="primary" [nbContextMenu]="items">
+          <nb-icon icon="more-vertical"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form [formGroup]="outstationPackageForm" autocomplete="off">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label for="name" class="label col-form-label"
+            >{{ "OUTSTATION.NAME" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="packageName"
+            type="text"
+            nbInput
+            fullWidth
+            id="packageName"
+            placeholder="{{ 'OUTSTATION.NAME' | translate }}"
+          />
+          <div
+            *ngIf="
+              packageName.invalid && (packageName.dirty || packageName.touched)
+            "
+            class="alert-danger"
+          >
+            <div *ngIf="packageName.errors?.['required']">
+              {{ "ERRORS.PACKAGENAME" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="hours" class="label col-form-label"
+            >{{ "OUTSTATION.HOURS" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="hours"
+            type="number"
+            nbInput
+            fullWidth
+            id="hours"
+            placeholder="{{ 'OUTSTATION.HOURS' | translate }}"
+          />
+          <div
+            *ngIf="hours.invalid && (hours.dirty || hours.touched)"
+            class="alert-danger"
+          >
+            <div *ngIf="hours.errors?.['required']">
+              {{ "ERRORS.HOURS" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="distance" class="label col-form-label"
+            >{{ "OUTSTATION.DISTANCE" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <input
+            formControlName="distance"
+            type="number"
+            nbInput
+            fullWidth
+            id="distance"
+            placeholder="{{ 'OUTSTATION.DISTANCE' | translate }}"
+          />
+          <div
+            *ngIf="distance.invalid && (distance.dirty || distance.touched)"
+            class="alert-danger"
+          >
+            <div *ngIf="distance.errors?.['required']">
+              {{ "ERRORS.DISTANCE" | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="distance" class="label col-form-label"
+            >{{ "OUTSTATION.SERVICEAREA" | translate }}
+            <span class="{{ 'COMMON.STARCLASS' | translate }}">{{
+              "COMMON.STAR" | translate
+            }}</span></label
+          >
+          <ng-select
+            fullWidth
+            id="serviceAvailableCities"
+            name="serviceAvailableCities"
+            placeholder="{{ 'COMMON.SELECTSERVICEAVAILABLECITY' | translate }}"
+            formControlName="serviceArea"
+          >
+            <ng-option
+              *ngFor="let option of serviceAvailableCities"
+              [value]="option._id"
+            >
+              {{ option.name }}
+            </ng-option>
+          </ng-select>
+          <div
+            *ngIf="serviceArea.invalid && (serviceArea.dirty || serviceArea.touched)"
+            class="alert-danger"
+          >
+            <div *ngIf="serviceArea.errors?.['required']">
+              {{ "ERRORS.SERVICEAREA" | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <div class="form-group row">
+      <div [ngClass]="outstationPackageForm.get('_id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+        <button fullWidth type="submit" nbButton status="success" (click)="addOrEditPackage()">
+          <span *ngIf="outstationPackageForm.get('_id').value">
+            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+          </span>
+          <span *ngIf="!outstationPackageForm.get('_id').value">
+            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+          </span>
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<nb-card *ngIf="showTaxi">
+  <nb-card-header>
+    <div class="row align-items-baseline">
+      <!-- <div class="col-md-.5">
+                    <button nbButton ghost status="danger">
+                        <nb-icon icon="arrow-back-outline"></nb-icon>
+                    </button>
+                </div> -->
+      <div class="col-md-11">{{ "OUTSTATION.ADDTAXIS" | translate }}</div>
+      <div class="col-md-1 menubutton">
+        <button nbButton ghost status="primary" [nbContextMenu]="outstationItems">
+          <nb-icon icon="more-vertical"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <ng-container>
+      <ng2-smart-table
+        [settings]="settings"
+        [source]="data"
+        (edit)="onEdit($event.data)"
+      >
+      </ng2-smart-table>
+    </ng-container>
+  </nb-card-body>
+</nb-card>

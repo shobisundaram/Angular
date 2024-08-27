@@ -1,0 +1,19 @@
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="">
+                {{'PRICING.PRICINGTABLE' | translate}}
+            </div>
+            <div class="">
+                <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary"
+                    nbTooltipPlacement="bottom" (click)="initialTableDataRender()" nbButton ghost status="primary">
+                    <nb-icon icon="sync-outline"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="source" (create)="onAdd($event)" (edit)="onEdit($event.data)">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

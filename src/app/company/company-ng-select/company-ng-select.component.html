@@ -1,0 +1,4 @@
+<nb-select [formControl]="selectValue" class="ng-select">
+    <nb-option *ngFor="let option of options" [value]="option.value">{{option.label ? option.label : option.title}}
+    </nb-option>
+</nb-select>

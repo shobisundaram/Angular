@@ -1,5 +1,0 @@
-.card-container {
-    display: flex;  /* Make the container a flexbox */
-    flex-wrap: wrap;  /* Allow cards to wrap to the next line if needed */
-    width: fit-content;  /* Adjust width as needed for responsiveness */
-  }

@@ -1,0 +1,23 @@
+<!-- <p>recent-users works!</p> -->
+<nb-card [size]="breakpoint.width >= breakpoints.xxxl || breakpoint.width < breakpoints.md ? 'large' : 'xlarge'">
+    <nb-tabset fullWidth>
+        <nb-tab tabTitle="Recent Partners">
+            <nb-list>
+                <nb-list-item class="contact" *ngFor="let c of contacts">
+                    <nb-user (click)="RouteToDrivers(c._id)" [picture]=c.profile?temp+c.profile:defaultProfileImage style="cursor:pointer"
+                        [name]="c.fname" [title]="c.email" size="large"></nb-user>
+                    <!-- <i class="i-contact nb-phone"></i> -->
+                </nb-list-item>
+            </nb-list>
+        </nb-tab>
+        <nb-tab tabTitle="Recent Riders">
+            <nb-list>
+                <nb-list-item class="contact" *ngFor="let c of recent">
+                    <nb-user (click)="RouteToRider(c._id)" [picture]=temp+c.profile style="cursor:pointer"
+                        [name]="c.fname" [title]="c.email" size="large"></nb-user>
+                    <span class="time">{{ c.time }}</span>
+                </nb-list-item>
+            </nb-list>
+        </nb-tab>
+    </nb-tabset>
+</nb-card>

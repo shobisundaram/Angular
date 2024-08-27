@@ -1,0 +1,181 @@
+<nb-card>
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="card-headers">
+        <button nbTooltip="{{'COMMON.GoBack' | translate}}" nbTooltipStatus="danger" nbTooltipPlacement="bottom"
+          (click)="goBackBtn()" nbButton ghost status="danger">
+          <nb-icon icon="arrow-back-outline"></nb-icon>
+        </button>
+        <div class="" *ngIf="!packageForm.get('id').value">{{'PACKAGELIST.ADDPACKAGE' | translate}}</div>
+        <div class="" *ngIf="packageForm.get('id').value">{{'PACKAGELIST.EDITPACKAGE' | translate}}</div>
+      </div>
+      <div class="" *ngIf="packageForm.get('id').value">
+        <button nbButton ghost status="primary" [nbContextMenu]="items">
+          <nb-icon icon="more-vertical"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="packageForm" autocomplete="off">
+      <div class="form-group row">
+        <label for="title" class="label col-sm-3 col-form-label">{{'PACKAGELIST.PACKAGENAME' | translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+            translate}}</span></label>
+        <div class="col-sm-9">
+          <input formControlName="packageName" type="text" nbInput fullWidth id="packageName"
+            placeholder="{{'PACKAGELIST.PACKAGENAME' | translate}}" />
+          <div *ngIf="packageName.invalid && (packageName.dirty || packageName.touched)" class="alert-danger">
+            <div *ngIf="packageName.errors?.['required']">
+              {{'ERRORS.PACKAGENAMEREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="description" class="label col-sm-3 col-form-label">{{'COMMON.DESCRIPTION' | translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+        <div class="col-sm-9">
+          <textarea rows="5" formControlName="description" type="text" nbInput fullWidth id="description"
+            placeholder="{{'COMMON.DESCRIPTION' | translate}}"></textarea>
+          <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert-danger">
+            <div *ngIf="description.errors?.['required']">
+              {{'ERRORS.DESCRIPTIONREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" >
+        <label for="title" class="label col-sm-3 col-form-label">{{'PACKAGELIST.CHOOSEPACKAGETYPE' | translate}}
+          <span  class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+            translate}}</span></label>
+        <div class="col-sm-9">
+          <ng-select fullWidth formControlName="packageType" id="packageType"
+            placeholder="{{'PACKAGELIST.CHOOSEPACKAGETYPE' | translate}}">
+            <ng-option *ngFor="let option of packageTypeDropDownData" [value]="option">{{option |
+              titlecase}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="packageType.invalid && (packageType.dirty || packageType.touched)" class="alert-danger">
+            <div *ngIf="packageType.errors?.['required']">
+              {{'ERRORS.PACKAGETYPEREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="packageForm.get('packageType').value">
+        <label for="title" class="label col-sm-3 col-form-label">{{'PACKAGELIST.AMOUNTOFTHEPACKAGE' |
+          translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+            translate}}</span></label>
+        <div class="col-sm-9">
+          <input formControlName="amountOfThePackage" type="number" nbInput fullWidth id="amountOfThePackage"
+            placeholder="{{'PACKAGELIST.AMOUNTOFTHEPACKAGE' | translate}}" />
+          <div *ngIf="amountOfThePackage.invalid && (amountOfThePackage.dirty || amountOfThePackage.touched)"
+            class="alert-danger">
+            <div *ngIf="amountOfThePackage.errors?.['required']">
+              {{'ERRORS.AMOUNTOFTHEPACKAGEREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="packageForm.get('packageType').value == 'TOPUP'">
+        <label for="title" class="label col-sm-3 col-form-label">{{'PACKAGELIST.CREDITFORTHEPACKAGE' |
+          translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+            translate}}</span></label>
+        <div class="col-sm-9">
+          <input formControlName="creditOfThePackage" type="number" nbInput fullWidth id="creditOfThePackage"
+            placeholder="{{'PACKAGELIST.CREDITFORTHEPACKAGE' | translate}}" />
+          <div *ngIf="creditOfThePackage.invalid && (creditOfThePackage.dirty || creditOfThePackage.touched)"
+            class="alert-danger">
+            <div *ngIf="creditOfThePackage.errors?.['required']">
+              {{'ERRORS.CREDITFORTHEPACKAGEREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="packageForm.get('packageType').value == 'SUBSCRIPTION'">
+        <label for="title" class="label col-sm-3 col-form-label">{{'PACKAGELIST.PACKAGEVALIDITY' |
+          translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+            translate}}</span></label>
+        <div class="col-sm-9">
+          <input formControlName="packageValidity" type="number" nbInput fullWidth id="packageValidity"
+            placeholder="{{'PACKAGELIST.PACKAGEVALIDITY' | translate}}" />
+          <div *ngIf="packageValidity.invalid && (packageValidity.dirty || packageValidity.touched)"
+            class="alert-danger">
+            <div *ngIf="packageValidity.errors?.['required']">
+              {{'ERRORS.PACKAGEVALIDITYREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="user_limit" class="label col-sm-3 col-form-label">{{'COMMON.USER_LIMIT' |
+          translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+            translate}}</span></label>
+        <div class="col-sm-9">
+          <input formControlName="userLimit" type="number" nbInput fullWidth id="userLimit"
+            placeholder="{{'COMMON.USER_LIMIT' | translate}}" />
+          <div *ngIf="userLimit.invalid && (userLimit.dirty || userLimit.touched)" class="alert-danger">
+            <div *ngIf="userLimit.errors?.['required']">
+              {{'ERRORS.USER_LIMIT_REQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="packageForm.get('packageType').value">
+        <label for="serviceCity" class="label col-sm-3 col-form-label">{{'COMMON.SERVICEAVAILABLECITY' |
+          translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+            translate}}</span></label>
+        <div class="col-sm-9">
+          <ng-select fullWidth formControlName="serviceCity" id="serviceCity"
+            placeholder="{{'COMMON.SELECTSERVICEAVAILABLECITY' | translate}}">
+            <ng-option *ngFor="let option of serviceAvailableCities" [value]="option._id">
+              {{option.name}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="serviceCity.invalid && (serviceCity.dirty || serviceCity.touched)" class="alert-danger">
+            <div *ngIf="serviceCity.errors?.['required']">
+              {{'ERRORS.SERVICEAVAILABLECITYREQUIRED' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="image" class="label col-sm-3 col-form-label">{{'COMMON.IMAGE' | translate}}
+          <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' |
+            translate}}</span></label>
+        <div class="col-md-6">
+          <input type="file" nbInput fullWidth id="image" (change)="onChange($event.target.files)"
+            placeholder="{{'COMMON.IMAGE' | translate}}">
+        </div>
+        <div class="col-md-3">
+          <img [src]="packageForm.value.image" class="fileImageForForm" />
+        </div>
+      </div>
+      <!-- {{driverForm.get('phone').errors | json}} -->
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="form-group row">
+      <div [ngClass]="packageForm.get('id').value?'offset-sm-0 col-sm-2':'offset-sm-0 col-sm-2'">
+        <button fullWidth type="submit" nbButton status="success" (click)="addOrEditPackage()">
+          <span *ngIf="packageForm.get('id').value">
+            <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+          </span>
+          <span *ngIf="!packageForm.get('id').value">
+            <nb-icon icon="save"></nb-icon> {{'COMMON.SAVEBTN' | translate}}
+          </span>
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
+
+<ng-template class="dialogBox" #DeleteDialog let-data let-ref="dialogRef">
+  <ngx-delete-dialog [PData]="deletePopUpData" (childEvent)=closeDeletePopup($event)></ngx-delete-dialog>
+</ng-template>

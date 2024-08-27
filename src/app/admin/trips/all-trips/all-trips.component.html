@@ -1,0 +1,24 @@
+<nb-card>
+    <nb-card-header>
+        <div class="card-headers">
+            <div class="">
+                {{'TRIPS.TRIPSTABLE' | translate}}
+            </div>
+            <div>
+                <button nbTooltip="{{'COMMON.DOWMLOAD_REPORT' | translate}}" nbTooltipStatus="primary"
+                    nbTooltipPlacement="bottom" (click)="downloadExcel()" nbButton ghost status="primary">
+                    <nb-icon icon="cloud-download-outline"></nb-icon>
+                </button>
+                <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary"
+                    nbTooltipPlacement="bottom" (click)="initialTableDataRender()" nbButton ghost status="primary">
+                    <nb-icon icon="sync-outline"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="source" (custom)="route($event)" *ngIf="source"
+            (edit)="onEdit($event.data)">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

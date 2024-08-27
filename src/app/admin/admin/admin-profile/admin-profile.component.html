@@ -1,0 +1,119 @@
+<nb-card>
+    <nb-card-header>
+        <div class="row align-items-baseline">
+            <div class="col-md-12">{{'ADMIN.ADMINPROFILE' | translate}}</div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="adminForm" autocomplete="off">
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="fname" class="label col-form-label">{{'COMMON.FIRSTNAME' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                    <input formControlName="fname" type="text" nbInput fullWidth id="fname"
+                        placeholder="{{'COMMON.FIRSTNAME' | translate}}" />
+                    <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="alert-danger">
+                        <div *ngIf="fname.errors?.['required']">
+                            {{'ERRORS.FIRSTNAMEREQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="fname.errors?.['pattern']">
+                            {{'ERRORS.TEXTALONEALLOWED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="image" class="label col-form-label">{{'COMMON.IMAGE' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                    <input type="file" nbInput fullWidth id="image" (change)="onChange($event.target.files)"
+                        placeholder="{{'COMMON.IMAGE' | translate}}">
+                    <div *ngIf="image.invalid && (image.dirty || image.touched)" class="alert-danger">
+                        <div *ngIf="image.errors?.['required']">
+                            {{'ERRORS.IMAGEREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="lname" class="label col-form-label">{{'COMMON.LASTNAME' | translate}} <span
+                            class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span>
+                    </label>
+                    <input formControlName="lname" type="text" nbInput fullWidth id="lname"
+                        placeholder="{{'COMMON.LASTNAME' | translate}}" />
+                    <div *ngIf="lname.invalid && (lname.dirty || lname.touched)" class="alert-danger">
+                        <div *ngIf="lname.errors?.['required']">
+                            {{'ERRORS.LASTNAMEREQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="lname.errors?.['pattern']">
+                            {{'ERRORS.TEXTALONEALLOWED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="image" class="label col-form-label">{{'COMMON.IMAGEPREVIEW' |
+                        translate}} </label>
+                    <div class="col-sm-9">
+                        <img [src]="adminForm.value.image" class="fileImageForForm" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="phoneCode" class="label  col-form-label">{{'COMMON.PHONECODE' | translate}}
+                        <span class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                    <ng-select fullWidth formControlName="phoneCode" id="phoneCode"
+                        placeholder="{{'COMMON.SELECTPHONECODE' | translate}}">
+                        <ng-option *ngFor="let option of phoneCodes" [value]="option.phonecode">{{option.phonecode}}
+                        </ng-option>
+                    </ng-select>
+                    <div *ngIf="phoneCode.invalid && (phoneCode.dirty || phoneCode.touched)" class="alert-danger">
+                        <div *ngIf="phoneCode.errors?.['required']">
+                            {{'ERRORS.PHONECODEREQUIRED' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="phone" class="label col-form-label">{{'COMMON.PHONENO' | translate}} <span
+                            class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                    <input formControlName="phone" type="text" nbInput fullWidth id="phone"
+                        placeholder="{{'COMMON.PHONENO' | translate}}" />
+                    <!-- (change)="phoneValidation()" -->
+                    <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert-danger">
+                        <div *ngIf="phone.errors?.['required']">
+                            {{'ERRORS.PHONENOREQUIRED' | translate}}
+                        </div>
+                        <div
+                            *ngIf="phone.errors?.['minlength'] || phone.errors?.['maxlength'] || phone.errors?.['pattern']">
+                            {{'ERRORS.PHONENOVALIDATION' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="label col-form-label">{{'COMMON.EMAIL' | translate}} <span
+                            class="{{'COMMON.STARCLASS' | translate}}">{{'COMMON.STAR' | translate}}</span></label>
+                    <input formControlName="email" type="text" nbInput fullWidth id="email"
+                        placeholder="{{'COMMON.EMAIL' | translate}}" />
+                    <!-- (change)="emailValidation($event.target.value)" -->
+                    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert-danger">
+                        <div *ngIf="email.errors?.['required']">
+                            {{'ERRORS.EMAILREQUIRED' | translate}}
+                        </div>
+                        <div *ngIf="email.errors?.['email']">
+                            {{'ERRORS.EMAILVALIDATION' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- <pre>
+          {{ adminForm.value | json }}
+        </pre> -->
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="form-group row">
+            <div Class="offset-sm-0 col-sm-2">
+                <button fullWidth type="submit" nbButton status="success" (click)="addOrEditAdmin()">
+                    <span>
+                        <nb-icon icon="arrow-circle-up-outline"></nb-icon> {{'COMMON.UPDATEBTN' | translate}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>

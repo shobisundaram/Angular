@@ -1,13 +1,87 @@
 <!doctype html>
-<html lang="en">
+<html>
+
 <head>
   <meta charset="utf-8">
-  <title>AngularProject</title>
+  <title>RebuStarV3</title>
+
+  <!-- <base href="/webadmin/"> -->
   <base href="/">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <script defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA44g-d_HVBtccWniZP7ZHrbY6bGiwPUv8&libraries=places,geometry,drawing"></script>
+  <style>
+    #nb-global-spinner {
+      top: 50%;
+      left: 50%;
+      position: absolute;
+      background-color: #e2e7ed;
+    }
+
+    .loader {
+      height: 4px;
+      width: 130px;
+      --c: no-repeat linear-gradient(#3366ff 0 0);
+      background: var(--c), var(--c), white;
+      background-size: 60% 100%;
+      animation: l16 3s infinite;
+    }
+
+    @keyframes l16 {
+      0% {
+        background-position: -150% 0, -150% 0
+      }
+
+      66% {
+        background-position: 250% 0, -150% 0
+      }
+
+      100% {
+        background-position: 250% 0, 250% 0
+      }
+    }
+
+    /* .loader {
+          width: 120px;
+          height: 22px;
+          border-radius: 40px;
+          color: #514b82;
+          border: 2px solid;
+          position: relative;
+        }
+        .loader::before {
+          content: "";
+          position: absolute;
+          margin: 2px;
+          width: 25%;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          border-radius: inherit;
+          background: currentColor;
+          animation: l3 1s infinite linear;
+        }
+        @keyframes l3 {
+            50% {left:100%;transform: translateX(calc(-100% - 4px))}
+        } */
+  </style>
 </head>
+
 <body>
-  <app-root></app-root>
+  <ngx-app></ngx-app>
+  <div id="nb-global-spinner" [ngClass]="{'show-loader': isLoading}">
+    <div class="loader"></div>
+  </div>
+
 </body>
+
 </html>
+
+<style>
+  body {
+    background-color: #e2e7ed;
+  }
+</style>

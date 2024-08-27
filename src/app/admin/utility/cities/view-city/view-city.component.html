@@ -1,0 +1,64 @@
+<nb-card>
+  <nb-card-header>
+    <div class="card-headers">
+      <div class="">
+        {{'CITY.CITYTABLE' | translate}}
+      </div>
+      <div class="">
+        <button nbTooltip="{{'COMMON.UPLOAD_DATA' | translate}}" nbTooltipStatus="primary" nbTooltipPlacement="bottom"
+          (click)="importFile()" nbButton ghost status="primary">
+          <nb-icon icon="cloud-upload-outline"></nb-icon>
+        </button>
+        <button nbTooltip="{{'COMMON.REFRESH_DATA' | translate}}" nbTooltipStatus="primary" nbTooltipPlacement="bottom"
+          (click)="initialTableDataRender()" nbButton ghost status="primary">
+          <nb-icon icon="sync-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (create)="onAdd($event)" (edit)="onEdit($event.data)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+<ng-template class="dialogBox" #ImportDialog let-data let-ref="dialogRef">
+  <nb-card style="width: 350px;">
+    <nb-card-header>
+      <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <div class="">{{'COMMON.UPLOAD_CITIES' | translate}}</div>
+        <div class="float-right">
+          <button (click)="onClose()" class="p-0" nbButton ghost status="danger">
+            <nb-icon icon="close-outline"></nb-icon>
+          </button>
+        </div>
+      </div>
+    </nb-card-header>
+    <nb-card-body class="popup">
+      <form [formGroup]="FileuploadForm" autocomplete="off">
+        <div id="drop-zone" class="file_upload" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)">
+          <div *ngIf="!files">
+            <nb-icon icon="file-add-outline"></nb-icon>
+          </div>
+          <div *ngIf="files">
+            <nb-icon icon="file-outline"></nb-icon>
+          </div>
+          <p *ngIf="files">{{ files.name }}</p>
+          <div class="alert-danger"
+            *ngIf="FileuploadForm.get('file')?.errors?.invalidFileType && FileuploadForm.get('file')?.touched">
+            {{'ERRORS.INVALIDFILE' | translate}}
+          </div>
+          <label for="file" class="label">
+            <input type="file" class="file input" required (change)="fileEvent($event.target.files)" id="file" />
+            <span>{{ 'COMMON.BROWSE' | translate }}</span>
+          </label>
+          <div class="drop-message">or drag a file here</div>
+          <button type="button" [disabled]="FileuploadForm.invalid" (click)="updateRecord()" size="small"
+            class="my-2 btn btn-primary px-2 py-1">
+            {{ 'COMMON.UPLOAD' | translate }}
+          </button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

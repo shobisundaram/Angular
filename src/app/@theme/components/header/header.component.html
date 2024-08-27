@@ -1,0 +1,41 @@
+<div class="header-container">
+  <div class="logo-container d-none d-xl-flex">
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle ">
+      <nb-icon icon="menu-2-outline"></nb-icon>
+    </a>
+    <!-- <a href="#">
+      <nb-icon icon="star" ></nb-icon>
+    </a> -->
+    <a class="logo" href="#" (click)="navigateHome()">
+      <img src="assets/images/favicon.png" alt="logo icon" width="50px">
+      RebuStar<span>V3</span></a>
+  </div>
+  <a class="logo d-xl-none d-block" href="#" (click)="navigateHome()">Rebustar<span>V3</span></a>
+  <!-- <nb-select
+    [selected]="currentTheme"
+    (selectedChange)="changeTheme($event)"
+    status="primary"
+  >
+    <nb-option *ngFor="let theme of themes" [value]="theme.value">
+      {{ theme.name }}</nb-option
+    >
+  </nb-select> -->
+</div>
+
+<div class="header-container">
+  <nb-actions size="small">
+    <!-- <nb-action class="control-item">
+      <nb-search type="rotate-layout"></nb-search>
+    </nb-action>-->
+    <!-- <nb-action class="control-item" icon="email-outline" (click)="routring()"></nb-action>  -->
+    <nb-action class="control-item" icon="bell-outline" (click)="notificationroute()"></nb-action>
+    <nb-action class="user-action" *nbIsGranted="['view', 'user']">
+      <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="user?.fname"
+        [picture]="user?.picture">
+      </nb-user>
+    </nb-action>
+  </nb-actions>
+  <a (click)="toggleSidebar()" href="#" class="sidebar-toggle d-xl-none d-block">
+    <nb-icon icon="menu-2-outline"></nb-icon>
+  </a>
+</div>

@@ -1,0 +1,116 @@
+.row {
+  gap: 50px;
+}
+
+.downloadsection {
+  button {
+    width: 130px;
+    height: 50px;
+  }
+
+  .nav-pills {
+    background: white;
+    //border-radius: 15px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .nav-link {
+    color: #000000;
+    background: #fff;
+    border: none;
+  }
+
+  .nav-link:focus {
+    outline: none;
+  }
+
+  .nav-pills .nav-link.active,
+  .nav-pills .show>.nav-link {
+    background: linear-gradient(180deg, #353535 0%, #232323 100%);
+    border-radius: 10px;
+    color: #FFFFFF;
+    border: none;
+  }
+}
+
+.mobile {
+  position: relative;
+}
+
+.mobile .home {
+  position: absolute;
+  left: 33%;
+}
+
+.mobile .qrCodeImg {
+  position: relative;
+}
+
+.mobile {
+  position: relative;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  /* Adjust the width as needed */
+  height: auto;
+  /* Adjust the height as needed */
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Maintain aspect ratio and cover the container */
+}
+
+.overlay-image {
+  position: absolute;
+  top: 50px;
+  left: -50px;
+  width: 170px;
+  //height: 100%
+  object-fit: cover;
+  /* Maintain aspect ratio and cover the container */
+  z-index: 1;
+  /* Place the overlay image above the background image */
+}
+
+.downloadcontent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.card-bg {
+  background: white;
+  border-radius: 15px;
+}
+
+@media screen and (max-width: 768px) {
+  .overlay-image {
+    left: -5px;
+    width: 180px;
+  }
+
+  .background-image {
+    width: 200px;
+  }
+
+  .container,
+  .qrCode {
+    padding: 0;
+  }
+}
+
+.nav {
+  flex-wrap: nowrap;
+}

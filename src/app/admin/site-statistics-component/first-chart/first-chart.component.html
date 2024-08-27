@@ -1,0 +1,39 @@
+<nb-card>
+    <nb-card-header>
+        <div class="row">
+            <div class="col-lg-3">
+                {{'SITESTATISTICS.TOTALGENERATEFARE' | translate}}
+            </div>
+            <div class="col-md-3">
+                <nb-select fullWidth [(selected)]="type">
+                    <nb-option *ngFor="let period of types" (click)="changePeriod(period.value)"
+                        [value]="period.value">{{ period.label | translate }}
+                    </nb-option>
+                </nb-select>
+            </div>
+
+            <div class="col-md-3">
+                <input style="padding: 0.5rem 1.5rem;" fieldSize="small" class="form-control" nbInput
+                    placeholder="{{ 'COMMON.CLICK_TO_SELECT_DATE' | translate }}" (ngModelChange)="logDate($event)"
+                    [(ngModel)]="list" [nbDatepicker]="dt2" name="list" required readonly>
+                <nb-datepicker #dt2></nb-datepicker>
+            </div>
+
+            <div class="col-md-3">
+                <nb-select fullWidth placeholder="{{city}}">
+                    <nb-option *ngFor="let city of SerivceCity" (click)="changeCity(city.name)" [value]="city.name">
+                        {{city.name}}
+                    </nb-option>
+                </nb-select>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <div class="row align-items-baseline">
+            <div class="col-md-5">
+                <b *ngIf="type === 'month'">{{getMonthName}}</b>
+            </div>
+        </div>
+        <div echarts [options]="options" class="echart"></div>
+    </nb-card-body>
+</nb-card>

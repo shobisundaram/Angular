@@ -1,0 +1,68 @@
+
+tbody > tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.media{
+    background: #eeeeee;
+    padding: 10px;
+    border-radius: 10px;
+}
+.bb-1{
+    border-bottom: 1px solid #eeeeee;
+}
+
+.location-sec{
+  position: relative;
+}
+.location-sec .dot-hr{
+    position: absolute;
+    top: 42%;
+    background-image: linear-gradient(to right, #6d6868 70%, rgba(0, 0, 0, 0) 0%);
+    background-position: top;
+    background-size: 14px 1px;
+    height: 1px;
+    width: 600px;
+    left: 4%;
+    background-repeat: repeat-x;
+}
+
+.location-sec .dot-vr{
+    position: absolute;
+    width: 1px;
+    height: 60px;
+    top: 20%;
+    left: 10px;
+    background-image: linear-gradient(to bottom, #6d6868 50%, rgba(0, 0, 0, 0) 0%);
+    background-size: 2px 10px;
+    background-repeat: repeat-y;
+}
+.Pickup-info{
+  position: relative
+}
+.Pickup-info  .line-ht{
+    line-height: 30px
+}
+.Pickup-info p{
+    width: 500px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.more{
+    text-decoration: underline !important;
+    cursor: pointer;
+}
+
+.pac-container {
+    z-index: 1050 !important; /* Adjust the z-index value if needed */
+}
+
+.media-image {
+    height: 64px;
+    width: 64px;
+}
+.nb-dialog-size{
+    width: 1000px; 
+    height: 400px;
+}
